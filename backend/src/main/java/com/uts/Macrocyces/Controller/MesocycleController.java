@@ -112,34 +112,74 @@ public class MesocycleController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mesocycle> updateMesocycle(@PathVariable(value = "id") String mesocycleId, @RequestBody Map<String, Object> body) throws ResourceNotFoundException {
-        Mesocycle mesocycle = mesocycleRepository.findById(mesocycleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Mesocycle not found for this id :: " + mesocycleId));
+    public ResponseEntity<Object> updateMesocycle(@PathVariable(value = "id") String mesocycleId, @RequestBody Map<String, Object> body) {
+        try {
+            Mesocycle mesocycle = mesocycleRepository.findById(mesocycleId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Mesocycle not found for this id :: " + mesocycleId));
 
-        ObjectMapper mapper = new ObjectMapper();
-        Mesocycle updatedMesocycle = mapper.convertValue(body, Mesocycle.class);
-        updatedMesocycle.setId(mesocycle.getId());
-        String typeMesocycleName = (String) body.get("typeMicrocycle");
-        TypeMesocycle typeMesocycle = typeMesocycleRepository.findByName(typeMesocycleName)
-                .orElseThrow(() -> new ResourceNotFoundException("TypeMesocycle not found for this name :: " + typeMesocycleName));
+            ObjectMapper mapper = new ObjectMapper();
+            Mesocycle updatedMesocycle = mapper.convertValue(body, Mesocycle.class);
+            updatedMesocycle.setId(mesocycle.getId());
+            String typeMesocycleName = (String) body.get("typeMicrocycle");
+            TypeMesocycle typeMesocycle = typeMesocycleRepository.findByName(typeMesocycleName)
+                    .orElseThrow(() -> new ResourceNotFoundException("TypeMesocycle not found for this name :: " + typeMesocycleName));
 
-        updatedMesocycle.setTypeMicrocycle(typeMesocycle);
-        final Mesocycle savedMesocycle = mesocycleRepository.save(updatedMesocycle);
-        return ResponseEntity.ok(savedMesocycle);
+            updatedMesocycle.setTypeMicrocycle(typeMesocycle);
+            final Mesocycle savedMesocycle = mesocycleRepository.save(updatedMesocycle);
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("data", savedMesocycle);
+            response.put("type", "success");
+            response.put("message", "Mesociclo actualizado exitosamente");
+            response.put("status", "OK");
+            response.put("statusCode", HttpStatus.OK.value());
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (ResourceNotFoundException ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.NOT_FOUND);
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Boolean> deleteMesocycle(@PathVariable(value = "id") String mesocycleId) throws ResourceNotFoundException {
-        Mesocycle mesocycle = mesocycleRepository.findById(mesocycleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Mesocycle not found for this id :: " + mesocycleId));
+    public ResponseEntity<Map<String, Object>> deleteMesocycle(@PathVariable(value = "id") String mesocycleId) {
+        try {
+            Mesocycle mesocycle = mesocycleRepository.findById(mesocycleId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Mesocycle not found for this id :: " + mesocycleId));
 
-        mesocycleRepository.delete(mesocycle);
+            mesocycleRepository.delete(mesocycle);
 
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("message", "Mesociclo eliminado exitosamente");
+            response.put("type", "success");
+            response.put("status", "OK");
+            response.put("statusCode", HttpStatus.OK.value());
 
-        return response;
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (ResourceNotFoundException ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.NOT_FOUND);
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "No se pudo eliminar el Mesociclo con id: " + mesocycleId);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
+
 }
 
 
