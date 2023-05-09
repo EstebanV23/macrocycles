@@ -26,25 +26,18 @@ public class TypeTimeFrameController {
     private TypeTimeFrameRepository typeTimeFrameRepository;
     @Autowired
     private TimeFrameRepository timeFrameRepository;
-    
 
-    @GetMapping("/name/{typetimeframeName}")
-    public ResponseEntity<Object> getTypeTimeFrame(@PathVariable String typeTimeFrameName) {
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getTypeTimeFrameById(@PathVariable(value = "id") String typeTimeFrameId) {
         try {
-            TypeTimeFrame typeTimeFrame = typeTimeFrameRepository.findByName(typeTimeFrameName)
-                    .orElseThrow(() -> new ResourceNotFoundException("TypeTimeFrame not found for name: " + typeTimeFrameName));
-            List<TimeFrame> timeFrame = timeFrameRepository.findByTypeTimeFrame(typeTimeFrame);
-
-            if (timeFrame == null) {
-                typeTimeFrame.setTimeFrames(null);
-            } else {
-                typeTimeFrame.setTimeFrames(timeFrame);
-            }
+            TypeTimeFrame typeTimeFrame = typeTimeFrameRepository.findById(typeTimeFrameId)
+                    .orElseThrow(() -> new ResourceNotFoundException("TypeMicrocycle not found for this id :: " + typeTimeFrameId));
 
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("data", typeTimeFrame);
             response.put("type", "success");
-            response.put("message", "TypeTimeFrame encontrado");
+            response.put("message", "typeTimeFrame encontrado");
             response.put("status", "OK");
             response.put("statusCode", HttpStatus.OK.value());
 
@@ -60,7 +53,7 @@ public class TypeTimeFrameController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar TypeTimeFrame");
+            response.put("message", "Error al buscar el typeTimeFrame");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
@@ -120,4 +113,75 @@ public class TypeTimeFrameController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateTypeTimeFrame(@PathVariable(value = "id") String typeTimeFrameId, @RequestBody Map<String, Object> body) {
+        try {
+            TypeTimeFrame typeTimeFrame = typeTimeFrameRepository.findById(typeTimeFrameId)
+                    .orElseThrow(() -> new ResourceNotFoundException("TypeTimeFrame not found for this id :: " + typeTimeFrameId));
+
+            ObjectMapper mapper = new ObjectMapper();
+            TypeTimeFrame updatedTypeTimeFrame = mapper.convertValue(body, TypeTimeFrame.class);
+            updatedTypeTimeFrame.setId(typeTimeFrame.getId());
+
+            final TypeTimeFrame savedTypeTimeFrame = typeTimeFrameRepository.save(updatedTypeTimeFrame);
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("data", savedTypeTimeFrame);
+            response.put("type", "success");
+            response.put("message", "TypeTimeFrame updated successfully");
+            response.put("status", "OK");
+            response.put("statusCode", HttpStatus.OK.value());
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (ResourceNotFoundException ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.NOT_FOUND);
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+
+    public ResponseEntity<Map<String, Object>> deleteTypeTimeFrame(@PathVariable(value = "id") String typeTimeFrameId) {
+        try {
+            TypeTimeFrame typeTimeFrame = typeTimeFrameRepository.findById(typeTimeFrameId)
+                    .orElseThrow(() -> new ResourceNotFoundException("TypeTimeFrame not found for this id :: " + typeTimeFrameId));
+
+            typeTimeFrameRepository.delete(typeTimeFrame);
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "success");
+            response.put("message", "TypeTimeFrame deleted successfully");
+            response.put("status", "OK");
+            response.put("statusCode", HttpStatus.OK.value());
+            response.put("data", null);
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (ResourceNotFoundException ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.NOT_FOUND);
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+            response.put("data", null);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "An error occurred while deleting the TypeTimeFrame");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("data", null);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 }
