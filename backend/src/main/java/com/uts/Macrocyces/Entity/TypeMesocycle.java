@@ -1,5 +1,6 @@
 package com.uts.Macrocyces.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -7,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import java.util.List;
 
 @Document(collection = "type_mesocycles")
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TypeMesocycle {
 
     @MongoId

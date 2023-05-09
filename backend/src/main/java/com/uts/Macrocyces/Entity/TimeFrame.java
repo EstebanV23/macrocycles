@@ -1,10 +1,12 @@
 package com.uts.Macrocyces.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document(collation = "time_frame")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TimeFrame {
     @MongoId
     private String id;
