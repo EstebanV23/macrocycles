@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.List;
 
-@Document(collation = "type_time_frame")
+@Document(collection = "type_time_frame")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TypeTimeFrame {
     @MongoId
@@ -18,6 +18,10 @@ public class TypeTimeFrame {
     private List <TimeFrame> timeFrames;
 
     public TypeTimeFrame() {
+    }
+
+    public TypeTimeFrame(String name) {
+        this.name = name;
     }
 
     public TypeTimeFrame(String name, List<TimeFrame> timeFrames) {

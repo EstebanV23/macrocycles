@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Document(collation = "time_frame")
+@Document(collection = "time_frame")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TimeFrame {
     @MongoId

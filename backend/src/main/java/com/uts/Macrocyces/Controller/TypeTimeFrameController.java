@@ -26,6 +26,7 @@ public class TypeTimeFrameController {
     private TypeTimeFrameRepository typeTimeFrameRepository;
     @Autowired
     private TimeFrameRepository timeFrameRepository;
+    
 
     @GetMapping("/name/{typetimeframeName}")
     public ResponseEntity<Object> getTypeTimeFrame(@PathVariable String typeTimeFrameName) {
