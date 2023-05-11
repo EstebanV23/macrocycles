@@ -7,33 +7,32 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.List;
 
-@Document(collection = "type_mesocycles")
+@Document(collection = "type_time_frame")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TypeMesocycle {
-
+public class TypeTimeFrame {
     @MongoId
     private String id;
     private String name;
 
     @DBRef
-    private List<Mesocycle> mesocycles;
+    private List <TimeFrame> timeFrames;
 
-    public TypeMesocycle() {
+    public TypeTimeFrame() {
     }
 
-    public TypeMesocycle(String name) {
+    public TypeTimeFrame(String name) {
         this.name = name;
     }
 
-    public TypeMesocycle(String id, String name) {
+    public TypeTimeFrame(String name, List<TimeFrame> timeFrames) {
+        this.name = name;
+        this.timeFrames = timeFrames;
+    }
+
+    public TypeTimeFrame(String id, String name, List<TimeFrame> timeFrames) {
         this.id = id;
         this.name = name;
-    }
-
-    public TypeMesocycle(String id, String name, List<Mesocycle> mesocycles) {
-        this.id = id;
-        this.name = name;
-        this.mesocycles = mesocycles;
+        this.timeFrames = timeFrames;
     }
 
     public String getId() {
@@ -52,11 +51,11 @@ public class TypeMesocycle {
         this.name = name;
     }
 
-    public List<Mesocycle> getMesocycles() {
-        return mesocycles;
+    public List<TimeFrame> getTimeFrames() {
+        return timeFrames;
     }
 
-    public void setMesocycles(List<Mesocycle> mesocycles) {
-        this.mesocycles = mesocycles;
+    public void setTimeFrames(List<TimeFrame> timeFrames) {
+        this.timeFrames = timeFrames;
     }
 }

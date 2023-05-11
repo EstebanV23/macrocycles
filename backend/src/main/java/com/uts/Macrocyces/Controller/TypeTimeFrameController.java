@@ -1,51 +1,43 @@
 package com.uts.Macrocyces.Controller;
 
+
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uts.Macrocyces.Entity.Mesocycle;
-import com.uts.Macrocyces.Entity.TypeMesocycle;
+import com.uts.Macrocyces.Entity.TimeFrame;
+import com.uts.Macrocyces.Entity.TypeTimeFrame;
 import com.uts.Macrocyces.Exceptions.ResourceNotFoundException;
-import com.uts.Macrocyces.Repository.MesocycleRepository;
-import com.uts.Macrocyces.Repository.TypeMesocycleRepository;
+import com.uts.Macrocyces.Repository.TimeFrameRepository;
+import com.uts.Macrocyces.Repository.TypeTimeFrameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/typemesocycles")
+@RequestMapping("/api/typetimeframe")
 @CrossOrigin(origins = "*")
-public class TypeMesocycleController {
+public class TypeTimeFrameController {
 
     @Autowired
-    private TypeMesocycleRepository typeMesocycleRepository;
-
+    private TypeTimeFrameRepository typeTimeFrameRepository;
     @Autowired
-    private MesocycleRepository mesocycleRepository;
+    private TimeFrameRepository timeFrameRepository;
 
 
-
-    @GetMapping("/name/{typeMesocycleName}")
-    public ResponseEntity<Object> getTypeMesocycle(@PathVariable String typeMesocycleName) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getTypeTimeFrameById(@PathVariable(value = "id") String typeTimeFrameId) {
         try {
-            TypeMesocycle typeMesocycle = typeMesocycleRepository.findByName(typeMesocycleName)
-                    .orElseThrow(() -> new ResourceNotFoundException("TypeMesocycle not found for name: " + typeMesocycleName));
-            List<Mesocycle> mesocycles = mesocycleRepository.findByTypeMesocycle(typeMesocycle);
-
-            if (mesocycles == null) {
-                typeMesocycle.setMesocycles(null);
-            } else {
-                typeMesocycle.setMesocycles(mesocycles);
-            }
+            TypeTimeFrame typeTimeFrame = typeTimeFrameRepository.findById(typeTimeFrameId)
+                    .orElseThrow(() -> new ResourceNotFoundException("TypeMicrocycle not found for this id :: " + typeTimeFrameId));
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", typeMesocycle);
+            response.put("data", typeTimeFrame);
             response.put("type", "success");
-            response.put("message", "TypeMesocycle encontrado");
+            response.put("message", "typeTimeFrame encontrado");
             response.put("status", "OK");
             response.put("statusCode", HttpStatus.OK.value());
 
@@ -61,7 +53,7 @@ public class TypeMesocycleController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar TypeMesocycle");
+            response.put("message", "Error al buscar el typeTimeFrame");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
@@ -70,17 +62,17 @@ public class TypeMesocycleController {
     }
 
     @GetMapping("/types")
-    public ResponseEntity<Object> getAllTypeMesocycles() {
+    public ResponseEntity<Object> getAllTypeTimeFrame() {
         try {
-            List<TypeMesocycle> allTypeMesocycles = typeMesocycleRepository.findAll();
-            for (TypeMesocycle typeMesocycle : allTypeMesocycles) {
-                List<Mesocycle> mesocycles = mesocycleRepository.findByTypeMesocycle(typeMesocycle);
-                typeMesocycle.setMesocycles(mesocycles);
+            List<TypeTimeFrame> allTypeTimeFrame = typeTimeFrameRepository.findAll();
+            for (TypeTimeFrame typeTimeFrame : allTypeTimeFrame) {
+                List<TimeFrame> timeFrames = timeFrameRepository.findByTypeTimeFrame(typeTimeFrame);
+                typeTimeFrame.setTimeFrames(timeFrames);
             }
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", allTypeMesocycles);
+            response.put("data", allTypeTimeFrame);
             response.put("type", "success");
-            response.put("message", "Lista de tipos de mesociclos encontrada");
+            response.put("message", "Lista TypeTimeFrame encontrada");
             response.put("status", "OK");
             response.put("statusCode", HttpStatus.OK.value());
 
@@ -88,40 +80,7 @@ public class TypeMesocycleController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar la lista de tipos de mesociclos");
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getTypeMesocycleById(@PathVariable(value = "id") String typeMesocycleId) {
-        try {
-            TypeMesocycle typeMesocycle = typeMesocycleRepository.findById(typeMesocycleId)
-                    .orElseThrow(() -> new ResourceNotFoundException("TypeMicrocycle not found for this id :: " + typeMesocycleId));
-
-            Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", typeMesocycle);
-            response.put("type", "success");
-            response.put("message", "Tipo de mesociclo encontrado");
-            response.put("status", "OK");
-            response.put("statusCode", HttpStatus.OK.value());
-
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (ResourceNotFoundException ex) {
-            Map<String, Object> response = new LinkedHashMap<>();
-            response.put("type", "error");
-            response.put("message", ex.getMessage());
-            response.put("status", HttpStatus.NOT_FOUND);
-            response.put("statusCode", HttpStatus.NOT_FOUND.value());
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } catch (Exception ex) {
-            Map<String, Object> response = new LinkedHashMap<>();
-            response.put("type", "error");
-            response.put("message", "Error al buscar el tipo de mesociclo");
+            response.put("message", "Error al buscar la lista TypeTimeFrame");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
@@ -130,16 +89,16 @@ public class TypeMesocycleController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> createTypeMesocycles(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<Object> createTypeTimeFrame(@RequestBody Map<String, Object> body) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            TypeMesocycle typeMesocycle = mapper.convertValue(body, TypeMesocycle.class);
-            TypeMesocycle createdTypeMesocycle = typeMesocycleRepository.save(typeMesocycle);
+            TypeTimeFrame typeTimeFrame = mapper.convertValue(body, TypeTimeFrame.class);
+            TypeTimeFrame createdTypeMesocycle = typeTimeFrameRepository.save(typeTimeFrame);
 
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("data", createdTypeMesocycle);
             response.put("type", "success");
-            response.put("message", "TypeMesocycle created successfully");
+            response.put("message", "TypeTimeFrame created successfully");
             response.put("status", "OK");
             response.put("statusCode", HttpStatus.OK.value());
 
@@ -147,7 +106,7 @@ public class TypeMesocycleController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Failed to create TypeMesocycle");
+            response.put("message", "Failed to create TypeTimeFrame");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
@@ -156,21 +115,21 @@ public class TypeMesocycleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateTypeMesocycles(@PathVariable(value = "id") String typeMesocycleId, @RequestBody Map<String, Object> body) {
+    public ResponseEntity<Object> updateTypeTimeFrame(@PathVariable(value = "id") String typeTimeFrameId, @RequestBody Map<String, Object> body) {
         try {
-            TypeMesocycle typeMesocycle = typeMesocycleRepository.findById(typeMesocycleId)
-                    .orElseThrow(() -> new ResourceNotFoundException("TypeMesocycle not found for this id :: " + typeMesocycleId));
+            TypeTimeFrame typeTimeFrame = typeTimeFrameRepository.findById(typeTimeFrameId)
+                    .orElseThrow(() -> new ResourceNotFoundException("TypeTimeFrame not found for this id :: " + typeTimeFrameId));
 
             ObjectMapper mapper = new ObjectMapper();
-            TypeMesocycle updatedTypeMesocycle = mapper.convertValue(body, TypeMesocycle.class);
-            updatedTypeMesocycle.setId(typeMesocycle.getId());
+            TypeTimeFrame updatedTypeTimeFrame = mapper.convertValue(body, TypeTimeFrame.class);
+            updatedTypeTimeFrame.setId(typeTimeFrame.getId());
 
-            final TypeMesocycle savedTypeMesocycle = typeMesocycleRepository.save(updatedTypeMesocycle);
+            final TypeTimeFrame savedTypeTimeFrame = typeTimeFrameRepository.save(updatedTypeTimeFrame);
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", savedTypeMesocycle);
+            response.put("data", savedTypeTimeFrame);
             response.put("type", "success");
-            response.put("message", "TypeMesocycle updated successfully");
+            response.put("message", "TypeTimeFrame updated successfully");
             response.put("status", "OK");
             response.put("statusCode", HttpStatus.OK.value());
 
@@ -186,18 +145,19 @@ public class TypeMesocycleController {
         }
     }
 
+
     @DeleteMapping("/{id}")
 
-    public ResponseEntity<Map<String, Object>> deleteTypeMesocycles(@PathVariable(value = "id") String typeMicrocycleId) {
+    public ResponseEntity<Map<String, Object>> deleteTypeTimeFrame(@PathVariable(value = "id") String typeTimeFrameId) {
         try {
-            TypeMesocycle typeMesocycle = typeMesocycleRepository.findById(typeMicrocycleId)
-                    .orElseThrow(() -> new ResourceNotFoundException("TypeMicrocycle not found for this id :: " + typeMicrocycleId));
+            TypeTimeFrame typeTimeFrame = typeTimeFrameRepository.findById(typeTimeFrameId)
+                    .orElseThrow(() -> new ResourceNotFoundException("TypeTimeFrame not found for this id :: " + typeTimeFrameId));
 
-            typeMesocycleRepository.delete(typeMesocycle);
+            typeTimeFrameRepository.delete(typeTimeFrame);
 
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "success");
-            response.put("message", "TypeMesocycle deleted successfully");
+            response.put("message", "TypeTimeFrame deleted successfully");
             response.put("status", "OK");
             response.put("statusCode", HttpStatus.OK.value());
             response.put("data", null);
@@ -215,7 +175,7 @@ public class TypeMesocycleController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "An error occurred while deleting the TypeMesocycle");
+            response.put("message", "An error occurred while deleting the TypeTimeFrame");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.put("data", null);
@@ -224,9 +184,4 @@ public class TypeMesocycleController {
         }
     }
 
-
-
-
 }
-
-
