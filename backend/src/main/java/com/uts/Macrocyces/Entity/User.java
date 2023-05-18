@@ -1,10 +1,11 @@
 package com.uts.Macrocyces.Entity;
 
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.uts.Macrocyces.Crypto.AESCryptoUtil;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+
 
 @Document(collection = "user")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -16,6 +17,11 @@ public class User {
     private String surname;
     private String email;
     private String password;
+
+
+
+
+
 
     public User() {
     }
@@ -67,12 +73,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public void setPassword(String password) throws Exception {
+        this.password = AESCryptoUtil.encrypt(password);
     }
 
-    public void setPassword(String password) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
+    public String getPassword() throws Exception {
+        return AESCryptoUtil.decrypt(password);
     }
+
 }

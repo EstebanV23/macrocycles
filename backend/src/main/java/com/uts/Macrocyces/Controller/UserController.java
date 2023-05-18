@@ -1,17 +1,24 @@
 package com.uts.Macrocyces.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uts.Macrocyces.Crypto.AESCryptoUtil;
 import com.uts.Macrocyces.Entity.User;
+import com.uts.Macrocyces.Exceptions.InvalidCredentialsException;
+import com.uts.Macrocyces.Exceptions.ResourceNotFoundException;
 import com.uts.Macrocyces.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,6 +27,10 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    private static final String SECRET_KEY = "SecretKey123456";
+
+
     @GetMapping("/")
     public ResponseEntity<Object> getAllUsers() {
         try {
@@ -44,28 +55,74 @@ public class UserController {
         }
     }
 
-    @PostMapping("")
-    public ResponseEntity<Object> addUser(@RequestBody User user) {
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> loginUser(@RequestBody Map<String, Object> body) {
         try {
-            // Encriptar la contraseña del usuario antes de guardarla en la base de datos
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(hashedPassword);
+            String email = (String) body.get("email");
+            String password = (String) body.get("password");
 
-            User savedUser = userRepository.save(user);
+            User user = userRepository.findByEmail(email).orElse(null);
 
+            if (user == null) {
+                // El correo electrónico es incorrecto
+                throw new InvalidCredentialsException("Credenciales inválidas");
+            }
+
+            String decryptedPassword = AESCryptoUtil.decrypt(user.getPassword());
+
+            if (password.equals(decryptedPassword)) {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("data", user);
+                response.put("type", "success");
+                response.put("message", "Inicio de sesión exitoso");
+                response.put("status", "OK");
+                response.put("statusCode", HttpStatus.OK.value());
+
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else {
+                throw new InvalidCredentialsException("La contraseña no coincide ");
+            }
+        } catch (InvalidCredentialsException ex) {
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", savedUser);
-            response.put("type", "success");
-            response.put("message", "Usuario agregado exitosamente");
-            response.put("status", "OK");
-            response.put("statusCode", HttpStatus.CREATED.value());
+            response.put("type", "error");
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.UNAUTHORIZED);
+            response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al agregar el usuario");
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
+    @PostMapping("")
+    public ResponseEntity<Object> createUser(@RequestBody User user) {
+        try {
+            String encryptedPassword = AESCryptoUtil.encrypt(user.getPassword());
+            user.setPassword(encryptedPassword);
+
+            userRepository.save(user);
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("data", user);
+            response.put("type", "success");
+            response.put("message", "Usuario creado exitosamente");
+            response.put("status", "OK");
+            response.put("statusCode", HttpStatus.OK.value());
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", ex.getMessage());
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
@@ -74,33 +131,17 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable("id") String id, @RequestBody User user) {
+    public ResponseEntity<Object> updateUser(@PathVariable("id") String id, @RequestBody User updatedUser) {
         try {
-            // Buscar el usuario en la base de datos
-            Optional<User> existingUser = userRepository.findById(id);
-            if (!existingUser.isPresent()) {
-                Map<String, Object> response = new LinkedHashMap<>();
-                response.put("type", "error");
-                response.put("message", "No se pudo encontrar el usuario con el ID " + id);
-                response.put("status", HttpStatus.NOT_FOUND);
-                response.put("statusCode", HttpStatus.NOT_FOUND.value());
+            User existingUser = userRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + id));
 
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-            }
+            existingUser.setName(updatedUser.getName());
+            existingUser.setSurname(updatedUser.getSurname());
+            existingUser.setEmail(updatedUser.getEmail());
+            existingUser.setPassword(AESCryptoUtil.encrypt(updatedUser.getPassword()));
 
-            // Actualizar los datos del usuario
-            User updatedUser = existingUser.get();
-            updatedUser.setName(user.getName());
-            updatedUser.setSurname(user.getSurname());
-            updatedUser.setEmail(user.getEmail());
-            updatedUser.setPassword(user.getPassword());
-
-            // Encriptar la contraseña del usuario antes de guardarla en la base de datos
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(updatedUser.getPassword());
-            updatedUser.setPassword(hashedPassword);
-
-            User savedUser = userRepository.save(updatedUser);
+            User savedUser = userRepository.save(existingUser);
 
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("data", savedUser);
@@ -110,10 +151,18 @@ public class UserController {
             response.put("statusCode", HttpStatus.OK.value());
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (ResourceNotFoundException ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.NOT_FOUND);
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al actualizar el usuario");
+            response.put("message", ex.getMessage());
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
@@ -156,6 +205,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
 
 
