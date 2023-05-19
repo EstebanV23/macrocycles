@@ -13,7 +13,6 @@ export default function useAlert () {
 
   const setAlert = () => {
     if (alert.type && alert.message) {
-      console.log('entre')
       const { type, message } = alert
       Toast.show({
         type,

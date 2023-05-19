@@ -1,4 +1,4 @@
-package com.app.macrocycles;
+package com.newmacrocycle.macrocycles;
 
 import android.os.Build;
 import android.os.Bundle;

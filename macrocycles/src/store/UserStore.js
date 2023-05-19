@@ -61,8 +61,8 @@ export function UserStore ({ children }) {
     await AsyncStorage.removeItem('user')
   }
 
-  const restartAlert = () => {
-    setAlert(initialAlert)
+  const newAlert = (type, message) => {
+    setAlert({ type, message })
   }
 
   const values = {
@@ -71,7 +71,7 @@ export function UserStore ({ children }) {
     login,
     logout,
     alert,
-    restartAlert
+    newAlert
   }
 
   return (

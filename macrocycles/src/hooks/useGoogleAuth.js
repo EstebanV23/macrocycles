@@ -1,41 +1,52 @@
-import { useIdTokenAuthRequest } from 'expo-auth-session/build/providers/Google'
-import { useEffect, useState } from 'react'
+// import { useIdTokenAuthRequest } from 'expo-auth-session/providers/google'
+import { useContext, useState } from 'react'
+import auth from '@react-native-firebase/auth'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { UserContext } from '../store/UserStore'
 
 export default function useGoogleAuth () {
+  GoogleSignin.configure({
+    webClientId: '595835428562-bsv74aucn08lt0k56o6ivh5ltvs960rd.apps.googleusercontent.com'
+  })
+  // clientId: 595835428562-bsv74aucn08lt0k56o6ivh5ltvs960rd.apps.googleusercontent.com
   // Web: 938380144821-e4lbolkhjcskac0fuvk48gmgm3ef8m7o.apps.googleusercontent.com
   // IOs: 938380144821-lvgs17852kh1k59bfuur6pejrt76tmnl.apps.googleusercontent.com
   // android: 938380144821-mfcq5iegq76hnebsosl557bgimbfhjst.apps.googleusercontent.com
+  const [user, setUser] = useState(null)
+  const { newAlert } = useContext(UserContext)
 
-  const [googleAuth, setGoogleAuth] = useState(null)
-  const [data, setData] = useState(null)
-  const [request, response, promptAsync] = useIdTokenAuthRequest({
-    clientId: '938380144821-e4lbolkhjcskac0fuvk48gmgm3ef8m7o.apps.googleusercontent.com',
-    iosClientId: '938380144821-lvgs17852kh1k59bfuur6pejrt76tmnl.apps.googleusercontent.com',
-    androidClientId: '938380144821-mfcq5iegq76hnebsosl557bgimbfhjst.apps.googleusercontent.com'
-  })
+  async function onGoogleButtonPress () {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn()
 
-  console.log({ request })
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken)
 
-  // console.log({ response, data, googleAuth })
-
-  useEffect(() => {
-    if (response?.type === 'success') {
-      console.log({ responseAuth: response?.authentication })
-      setGoogleAuth(response?.authentication?.accessToken)
-      googleAuth && fetchGoogleUser()
-    }
-  }, [response, googleAuth])
-
-  const fetchGoogleUser = async () => {
-    const response = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-      headers: {
-        Authorization: `Bearer ${googleAuth}`
-      }
-    })
-    const newData = await response.json()
-    setData(newData)
-    console.log({ newData })
+    // Sign-in the user with the credential
+    const user = auth().signInWithCredential(googleCredential)
+    user()
+      .then(user => setUser(user))
+      .catch(error => newAlert('error', error.message))
   }
 
-  return [promptAsync]
+  // const [request, response, promptAsync] = useIdTokenAuthRequest({
+  //   clientId: '938380144821-e4lbolkhjcskac0fuvk48gmgm3ef8m7o.apps.googleusercontent.com',
+  //   iosClientId: '938380144821-lvgs17852kh1k59bfuur6pejrt76tmnl.apps.googleusercontent.com',
+  //   androidClientId: '938380144821-mfcq5iegq76hnebsosl557bgimbfhjst.apps.googleusercontent.com'
+  // })
+
+  // async function fetchGoogleUser () {
+  //   const response = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`
+  //     }
+  //   })
+  //   const user = await response.json()
+  //   setUser(user)
+  //   console.log({ user })
+  // }
+
+  return [user, onGoogleButtonPress]
 }

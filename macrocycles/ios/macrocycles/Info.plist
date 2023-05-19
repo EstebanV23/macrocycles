@@ -25,7 +25,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.app.macrocycles</string>
+          <string>com.newmacrocycle.macrocycles</string>
         </array>
       </dict>
     </array>
