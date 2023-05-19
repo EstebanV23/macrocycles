@@ -9,6 +9,9 @@ import { useContext } from 'react'
 import { LoadingContext } from './store/LoadingStore'
 import Loader from './components/loader/Loader'
 import Register from './components/register/Register'
+import * as WebBrowser from 'expo-web-browser'
+
+WebBrowser.maybeCompleteAuthSession()
 
 export default function Main () {
   useAlert()
