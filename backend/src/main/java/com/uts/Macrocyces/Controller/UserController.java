@@ -1,6 +1,5 @@
 package com.uts.Macrocyces.Controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uts.Macrocyces.Crypto.AESCryptoUtil;
 import com.uts.Macrocyces.Entity.User;
 import com.uts.Macrocyces.Exceptions.InvalidCredentialsException;
@@ -11,13 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.*;
 
 @RestController
@@ -185,7 +178,6 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
 
-            // Eliminar el usuario de la base de datos
             userRepository.deleteById(id);
 
             Map<String, Object> response = new LinkedHashMap<>();
