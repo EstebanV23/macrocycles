@@ -26,7 +26,7 @@ const theme = {
     },
     blue: {
       default: '#4E6E81',
-      100: '#DBE0E9',
+      100: '#DBE0E940',
       200: '#B5C1D2',
       300: '#8EA4BB',
       400: '#6889A4',

@@ -3,22 +3,14 @@ import theme from '../../theme/theme'
 
 const StyleNavbarBot = StyleSheet.create({
   navbarContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 0,
     position: 'absolute',
-    paddingBottom: 30,
+    paddingBottom: 10,
     width: Dimensions.get('window').width,
     bottom: 0,
     left: 0,
     backgroundColor: theme.colors.white
-  },
-  contentLinks: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 35
   }
 })
 

@@ -9,6 +9,7 @@ import { useContext } from 'react'
 import { LoadingContext } from './store/LoadingStore'
 import Loader from './components/loader/Loader'
 import Register from './components/register/Register'
+import NewMacro from './components/newMacro/NewMacro'
 
 export default function Main () {
   useAlert()
@@ -25,6 +26,7 @@ export default function Main () {
           <Route path='/login' element={<ProtectedRoute userNoLoged><Login /></ProtectedRoute>} />
           <Route path='/register' element={<ProtectedRoute userNoLoged><Register /></ProtectedRoute>} />
           <Route path='/' element={<ProtectedRoute userLoged><Home /></ProtectedRoute>} />
+          <Route path='/new-macro' element={<ProtectedRoute userLoged><NewMacro /></ProtectedRoute>} />
         </Routes>
       </View>
     </>

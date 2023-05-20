@@ -80,9 +80,8 @@ export default function FormLogin () {
       <ButtonGoogle />
       <ButtonForm
         onPress={handleSubmit(onSubmit, dataInvalid)}
-      >
-        Ingresar {'>'}
-      </ButtonForm>
+        title='Iniciar sesión >'
+      />
     </View>
   )
 }

@@ -15,9 +15,8 @@ export default function ButtonGoogle () {
         onPress={() => {
           console.log('login with google')
         }}
-      >
-        Iniciar sesión con Google
-      </ButtonForm>
+        title='Iniciar sesión con Google'
+      />
     </View>
   )
 }

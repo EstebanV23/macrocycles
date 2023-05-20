@@ -6,7 +6,7 @@ const StyleLinkNavbar = StyleSheet.create({
     color: theme.colors.blue.default,
     borderRadius: 89,
     padding: 6,
-    backgroundColor: theme.colors.blue[100],
+    backgroundColor: theme.colors.blue[100]
   }
 })
 

@@ -123,9 +123,8 @@ export default function RegisterForm () {
       </View>
       <ButtonForm
         onPress={handleSubmit(onSubmit, dataInvalid)}
-      >
-        Registrarse {'>'}
-      </ButtonForm>
+        title='Registrarse >'
+      />
     </View>
   )
 }

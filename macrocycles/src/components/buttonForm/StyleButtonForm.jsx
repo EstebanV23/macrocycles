@@ -6,7 +6,7 @@ const StyleButtonForm = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 5,
-    alignSelf: 'center',
+    textAlign: 'center',
     color: theme.colors.white
   }
 })

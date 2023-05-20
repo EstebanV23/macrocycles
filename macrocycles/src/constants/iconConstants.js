@@ -3,7 +3,8 @@ const iconsConstants = {
   list: 'format-list-bulleted',
   run: 'run',
   camera: 'camera-plus-outline',
-  account: 'account-circle-outline'
+  account: 'account-circle-outline',
+  arrowLeft: 'arrow-left'
 }
 
 export default iconsConstants
