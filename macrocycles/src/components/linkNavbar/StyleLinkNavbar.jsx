@@ -4,8 +4,9 @@ import theme from '../../theme/theme'
 const StyleLinkNavbar = StyleSheet.create({
   link: {
     color: theme.colors.blue.default,
-    borderRadius: '50%',
-    padding: 3
+    borderRadius: 89,
+    padding: 6,
+    backgroundColor: theme.colors.blue[100],
   }
 })
 
