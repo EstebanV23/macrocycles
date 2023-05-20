@@ -8,7 +8,9 @@ const StyleInput = StyleSheet.create({
     fontFamily: theme.fonts.quicksand.regular
   },
   leading: {
-    fontFamily: theme.fonts.quicksand.regular
+    fontFamily: theme.fonts.quicksand.regular,
+    fontSize: theme.sizes.medium,
+    borderColor: theme.colors.white
   }
 })
 

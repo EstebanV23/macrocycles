@@ -54,10 +54,12 @@ const theme = {
     }
   },
   sizes: {
-    small: 14,
+    small: 12,
     medium: 18,
     big: 24,
-    extraBig: 44
+    mediumBig: 32,
+    extraBig: 44,
+    lowMedium: 16
   }
 }
 

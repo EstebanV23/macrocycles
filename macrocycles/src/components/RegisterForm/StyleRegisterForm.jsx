@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native'
 
-const StyleRegisterForm = StyleSheet.create({
+const StyleFormLogin = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 17
+    gap: 12,
+    paddingVertical: 12
   },
   containerGeneral: {
     display: 'flex',
@@ -16,7 +17,10 @@ const StyleRegisterForm = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 10
+  },
+  scroll: {
+    maxHeight: 300
   }
 })
 
-export default StyleRegisterForm
+export default StyleFormLogin

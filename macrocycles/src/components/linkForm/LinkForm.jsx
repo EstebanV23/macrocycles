@@ -5,12 +5,12 @@ import StyleLinkForm from './StyleLinkForm'
 export default function LinkForm ({ to, children }) {
   return (
     <Link
+      role='button'
       to={to}
       style={StyleLinkForm.link}
     >
       <Txt
         light
-        small
         green
       >
         {children}

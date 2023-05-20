@@ -2,8 +2,6 @@ import { useForm } from 'react-hook-form'
 import { View } from 'react-native'
 import Input from '../input/Input'
 import rulesLogin from '../../rules/rulesLogin'
-import { Icon, IconButton } from '@react-native-material/core'
-import theme from '../../theme/theme'
 import Style from './StyleFormLogin'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../store/UserStore'
@@ -12,24 +10,34 @@ import ButtonForm from '../buttonForm/ButtonForm'
 import { LoadingContext } from '../../store/LoadingStore'
 import LinkForm from '../linkForm/LinkForm'
 import ButtonGoogle from '../buttonGoogle/ButtonGoogle'
+import Visible from '../visible/Visible'
+import setDataSend from '../../helpers/setDataSend'
 
 export default function FormLogin () {
   const { control, handleSubmit, formState: { errors } } = useForm()
   const [visible, setVisible] = useState(false)
-  const { login } = useContext(UserContext)
+  const { login, newAlert } = useContext(UserContext)
   const { loading, setLoading } = useContext(LoadingContext)
+
   const navigate = useNavigate()
 
   const onSubmit = async (data) => {
     try {
+      const newData = {
+        ...data,
+        email: setDataSend(data.email)
+      }
       setLoading(true)
-      const response = await login(data)
+      const response = await login(newData)
       setLoading(false)
       if (response) navigate('/')
     } catch (error) {
       setLoading(false)
       console.log(error)
     }
+  }
+  const dataInvalid = () => {
+    newAlert('info', 'Hay errores en el formulario')
   }
 
   return (
@@ -56,7 +64,7 @@ export default function FormLogin () {
           rules={rulesLogin}
           secureTextEntry={!visible}
           editable={!loading}
-          icon={<IconButton icon={<Icon name='visibility' size={24} color={theme.colors.gray} />} onPress={() => setVisible(!visible)} style={Style.eyeIcon} />}
+          icon={<Visible visible={visible} setVisible={setVisible} />}
         />
       </View>
       <View
@@ -71,7 +79,7 @@ export default function FormLogin () {
       </View>
       <ButtonGoogle />
       <ButtonForm
-        onPress={handleSubmit(onSubmit)}
+        onPress={handleSubmit(onSubmit, dataInvalid)}
       >
         Ingresar {'>'}
       </ButtonForm>

@@ -25,7 +25,13 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.newmacrocycle.macrocycles</string>
+          <string>com.mymacroapp.macrocycles</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.595835428562-21omjqvc8gdtvhi5fm8n3ja2n3qn3826</string>
         </array>
       </dict>
     </array>

@@ -25,6 +25,7 @@ prepare_react_native_project!
 #   }
 # }
 # ```
+
 flipper_config = FlipperConfiguration.disabled
 if ENV['NO_FLIPPER'] == '1' then
   # Explicitly disabled through environment variables
@@ -41,7 +42,7 @@ end
 target 'macrocycles' do
   use_expo_modules!
   config = use_native_modules!
-
+  pod 'RNGoogleSignin', :path => '../node_modules/@react-native-community/google-signin'
   use_frameworks! :linkage => podfile_properties['ios.useFrameworks'].to_sym if podfile_properties['ios.useFrameworks']
   use_frameworks! :linkage => ENV['USE_FRAMEWORKS'].to_sym if ENV['USE_FRAMEWORKS']
 

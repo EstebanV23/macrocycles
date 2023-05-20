@@ -1,4 +1,4 @@
-package com.newmacrocycle.macrocycles;
+package com.mymacroapp.macrocycles;
 
 import android.app.Application;
 import android.content.res.Configuration;

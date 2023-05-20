@@ -37,6 +37,24 @@ const StyleTxt = StyleSheet.create({
   },
   lightQuick: {
     fontFamily: theme.fonts.quicksand.light
+  },
+  error: {
+    color: theme.colors.red[300]
+  },
+  gray: {
+    color: theme.colors.gray
+  },
+  quickBold: {
+    fontFamily: theme.fonts.quicksand.bold
+  },
+  primary: {
+    color: theme.colors.blue.default
+  },
+  lowMedium: {
+    fontSize: theme.sizes.lowMedium
+  },
+  mediumBig: {
+    fontSize: theme.sizes.mediumBig
   }
 })
 

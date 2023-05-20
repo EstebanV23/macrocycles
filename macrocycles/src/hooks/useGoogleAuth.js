@@ -1,4 +1,46 @@
-// import { useIdTokenAuthRequest } from 'expo-auth-session/providers/google'
+// clientId: 595835428562-bsv74aucn08lt0k56o6ivh5ltvs960rd.apps.googleusercontent.com
+// Web: 938380144821-e4lbolkhjcskac0fuvk48gmgm3ef8m7o.apps.googleusercontent.com
+// IOs: 938380144821-lvgs17852kh1k59bfuur6pejrt76tmnl.apps.googleusercontent.com
+// android: 938380144821-mfcq5iegq76hnebsosl557bgimbfhjst.apps.googleusercontent.com
+
+// import statusCodes along with GoogleSignin
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin'
+import { useState } from 'react'
+
+GoogleSignin.configure({
+  webClientId: '595835428562-hdr7kbvilear7eakgg0k3qkk21tl8tsn.apps.googleusercontent.com'
+})
+
+export default function useGoogleAuth () {
+  const [userInfo, setUserInfo] = useState(null)
+
+  // Somewhere in your code
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices()
+      const userInfo = await GoogleSignin.signIn()
+      setUserInfo(userInfo)
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        console.log('Cancelado')
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+        console.log('Progress')
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+        console.log('Servicio no valido')
+      } else {
+        // some other error happened
+        console.log('otro error')
+      }
+    }
+  }
+  return [userInfo, signIn]
+}
+
+
+/*
 import { useContext, useState } from 'react'
 import auth from '@react-native-firebase/auth'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
@@ -8,10 +50,6 @@ export default function useGoogleAuth () {
   GoogleSignin.configure({
     webClientId: '595835428562-bsv74aucn08lt0k56o6ivh5ltvs960rd.apps.googleusercontent.com'
   })
-  // clientId: 595835428562-bsv74aucn08lt0k56o6ivh5ltvs960rd.apps.googleusercontent.com
-  // Web: 938380144821-e4lbolkhjcskac0fuvk48gmgm3ef8m7o.apps.googleusercontent.com
-  // IOs: 938380144821-lvgs17852kh1k59bfuur6pejrt76tmnl.apps.googleusercontent.com
-  // android: 938380144821-mfcq5iegq76hnebsosl557bgimbfhjst.apps.googleusercontent.com
   const [user, setUser] = useState(null)
   const { newAlert } = useContext(UserContext)
 
@@ -31,22 +69,6 @@ export default function useGoogleAuth () {
       .catch(error => newAlert('error', error.message))
   }
 
-  // const [request, response, promptAsync] = useIdTokenAuthRequest({
-  //   clientId: '938380144821-e4lbolkhjcskac0fuvk48gmgm3ef8m7o.apps.googleusercontent.com',
-  //   iosClientId: '938380144821-lvgs17852kh1k59bfuur6pejrt76tmnl.apps.googleusercontent.com',
-  //   androidClientId: '938380144821-mfcq5iegq76hnebsosl557bgimbfhjst.apps.googleusercontent.com'
-  // })
-
-  // async function fetchGoogleUser () {
-  //   const response = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-  //     headers: {
-  //       Authorization: `Bearer ${accessToken}`
-  //     }
-  //   })
-  //   const user = await response.json()
-  //   setUser(user)
-  //   console.log({ user })
-  // }
-
   return [user, onGoogleButtonPress]
 }
+*/
