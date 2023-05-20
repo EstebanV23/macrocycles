@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +33,18 @@ public class TimeFrameController {
         try {
             List<TimeFrame> timeFrames = timeFrameRepository.findAll();
 
+            List<Map<String, Object>> timeFramesData = new ArrayList<>();
+            for (TimeFrame timeFrame : timeFrames) {
+                Map<String, Object> timeFrameData = new LinkedHashMap<>();
+                timeFrameData.put("id", timeFrame.getId());
+                timeFrameData.put("typeTimeFrame", timeFrame.getTypeTimeFrame());
+                timeFrameData.put("stage", timeFrame.getStage()); // Nuevo atributo añadido
+
+                timeFramesData.add(timeFrameData);
+            }
+
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", timeFrames);
+            response.put("data", timeFramesData);
             response.put("type", "success");
             response.put("message", "Lista de timeFrames encontrada");
             response.put("status", "OK");
@@ -50,6 +61,7 @@ public class TimeFrameController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
     @PostMapping("")
     public ResponseEntity<Object> createTimeFrame(@RequestBody Map<String, Object> body) {

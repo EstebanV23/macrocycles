@@ -8,22 +8,33 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Document(collection = "time_frame")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TimeFrame {
-    @MongoId
-    private String id;
+        @MongoId
+        private String id;
 
-    @DBRef
-    private TypeTimeFrame typeTimeFrame;
+        @DBRef
+        private TypeTimeFrame typeTimeFrame;
+
+         @DBRef
+        private Stage stage;
+
+
 
     public TimeFrame() {
+    }
+
+    public TimeFrame(TypeTimeFrame typeTimeFrame, Stage stage) {
+        this.typeTimeFrame = typeTimeFrame;
+        this.stage = stage;
     }
 
     public TimeFrame(TypeTimeFrame typeTimeFrame) {
         this.typeTimeFrame = typeTimeFrame;
     }
 
-    public TimeFrame(String id, TypeTimeFrame typeTimeFrame) {
+    public TimeFrame(String id, TypeTimeFrame typeTimeFrame, Stage stage) {
         this.id = id;
         this.typeTimeFrame = typeTimeFrame;
+        this.stage = stage;
     }
 
     public String getId() {
@@ -40,5 +51,13 @@ public class TimeFrame {
 
     public void setTypeTimeFrame(TypeTimeFrame typeTimeFrame) {
         this.typeTimeFrame = typeTimeFrame;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }
