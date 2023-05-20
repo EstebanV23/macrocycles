@@ -58,7 +58,6 @@ public class UserController {
             User user = userRepository.findByEmail(email).orElse(null);
 
             if (user == null) {
-                // El correo electrónico es incorrecto
                 throw new InvalidCredentialsException("Credenciales inválidas");
             }
 
@@ -94,9 +93,46 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+    @PostMapping("/login-google")
+    public ResponseEntity<Object> loginGoogleUser(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            Optional<User> existingUserOptional = userRepository.findByEmail(email);
+            if (existingUserOptional.isPresent()) {
+                User existingUser = existingUserOptional.get();
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("user", existingUser);
+                response.put("message", "Inicio de sesión exitoso");
+                response.put("status", "OK");
+                response.put("statusCode", HttpStatus.OK.value());
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else {
+                User newUser = new User();
+                newUser.setEmail(email);
+                newUser.setName("");
+                newUser.setSurname("");
+                newUser.setPassword("");
+                userRepository.save(newUser);
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("user", newUser);
+                response.put("message", "Usuario creado con éxito");
+                response.put("status", "OK");
+                response.put("statusCode", HttpStatus.OK.value());
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 
-    @PostMapping("")
+
+
+@PostMapping("")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
         try {
             String encryptedPassword = AESCryptoUtil.encrypt(user.getPassword());
