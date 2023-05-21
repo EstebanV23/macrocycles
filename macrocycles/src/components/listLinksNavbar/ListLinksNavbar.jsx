@@ -10,7 +10,7 @@ export default function ListLinksNavbar () {
         return (
           <LinkNavbar
             key={link.id}
-            to={link.to}
+            to={link.path}
             icon={link.iconName}
             style={link.bigLink && Style.linkBig}
             size={link.bigLink && 60}

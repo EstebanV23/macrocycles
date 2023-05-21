@@ -5,6 +5,12 @@ const StyleTxt = StyleSheet.create({
   small: {
     fontSize: theme.sizes.small
   },
+  justify: {
+    textAlign: 'justify'
+  },
+  red: {
+    color: theme.colors.red.default
+  },
   medium: {
     fontSize: theme.sizes.medium
   },

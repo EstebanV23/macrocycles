@@ -17,7 +17,7 @@ const listNavbar = {
     id: 3,
     iconName: iconsConstants.newDocument,
     title: 'Nuevo macrociclo',
-    path: '/',
+    path: '/new-macro',
     bigLink: true
   },
   newSession: {

@@ -21,7 +21,7 @@ export function UserStore ({ children }) {
   const [loading, setLoading] = useState(true)
   const [alert, setAlert] = useState(initialAlert)
 
-  console.log({ user })
+  // console.log({ user })
 
   useEffect(() => {
     AsyncStorage.getItem('user')
@@ -29,7 +29,6 @@ export function UserStore ({ children }) {
         if (userString) {
           setUser(JSON.parse(userString))
         }
-        console.log({ userString })
       })
       .catch(err => {
         console.error(err)
@@ -41,7 +40,6 @@ export function UserStore ({ children }) {
 
   const login = async ({ email, password }) => {
     const dataResponse = await serviceLogin({ email, password })
-    console.log({ dataResponse })
     setAlert({
       type: dataResponse.type,
       message: dataResponse.message
@@ -52,7 +50,6 @@ export function UserStore ({ children }) {
     const newUser = dataResponse.data
     setUser(newUser)
     await AsyncStorage.setItem('user', JSON.stringify(newUser))
-    console.log({ newUser }, 'Saved and loged')
     return true
   }
 

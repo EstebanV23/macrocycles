@@ -9,7 +9,7 @@ export default function ContainerForm ({ children, title }) {
     >
       <Txt
         extraBig
-        green
+        red
         style={StyleContainerForm.title}
       >
         {title}

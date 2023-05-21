@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react'
+import useCount from '../hooks/useCount'
 
 export const RoatMapContext = createContext()
 
@@ -6,17 +7,20 @@ const stages = [
   {
     roadPosition: 1,
     refrence: 'macroInfo',
+    text: 'Info macrociclo',
     path: '/new-macro/macroInfo',
     completed: false
   },
   {
     roadPosition: 2,
     refrence: 'frameAndStage',
+    text: 'Periodo & Etapa',
     path: '/new-macro/frameAndStage',
     completed: false
   },
   {
     roadPosition: 3,
+    text: 'Info Mesociclo',
     refrence: 'mesoInfo',
     path: '/new-macro/mesoInfo',
     completed: false
@@ -34,20 +38,23 @@ const initialRoatMap = {
 
 export default function RoadMapStore ({ children }) {
   const [roadMap, setRoadMap] = useState(initialRoatMap)
+  const [count, increment, decrement, reset] = useCount(1)
 
   const restartRoadMap = () => {
     setRoadMap(initialRoatMap)
   }
 
   const initRoadMap = () => {
-    const newRoapMap = structuredClone(roadMap)
-    newRoapMap.currentStage = stages.find(stage => stage.roadPosition === 1)
+    const newRoapMap = { ...roadMap }
+    newRoapMap.currentStage = stages.find(stage => stage.roadPosition === MIN_STAGE)
     newRoapMap.currentStage.currentMake = true
     setRoadMap(newRoapMap)
+    reset()
+    return newRoapMap
   }
 
   const nextStage = () => {
-    const currentRoapMap = structuredClone(roadMap)
+    const currentRoapMap = { ...roadMap }
     const { currentStage } = currentRoapMap
     currentStage.completed = true
     const currentNumberStage = currentStage.roadPosition
@@ -55,18 +62,21 @@ export default function RoadMapStore ({ children }) {
     if (nextNumberStage > ALL_STAGES) {
       currentRoapMap.finished = true
       setRoadMap(currentRoapMap)
-      return
+      return currentRoapMap
     }
+    increment()
     const nextStage = stages.find(stage => stage.roadPosition === nextNumberStage)
     currentRoapMap.stagesCompleted.push(currentStage)
     currentRoapMap.currentStage = nextStage
     setRoadMap(currentRoapMap)
+    return currentRoapMap
   }
 
   const previusStage = () => {
-    const currentRoapMap = structuredClone(roadMap)
+    const currentRoapMap = { ...roadMap }
     const { currentStage } = currentRoapMap
     const previusNumberStage = currentStage.roadPosition - 1
+    decrement()
     if (previusNumberStage < MIN_STAGE) {
       setRoadMap(initialRoatMap)
       return false
@@ -82,7 +92,9 @@ export default function RoadMapStore ({ children }) {
     restartRoadMap,
     initRoadMap,
     nextStage,
-    previusStage
+    previusStage,
+    count,
+    reset
   }
 
   return (

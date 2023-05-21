@@ -3,7 +3,7 @@ import Style from './StyleLinkNavbar'
 import { useNavigate } from 'react-router-native'
 import theme from '../../theme/theme'
 
-export default function LinkNavbar ({ to, icon, size = 34, style }) {
+export default function LinkNavbar ({ to, icon, size = 34, style, onPress }) {
   const navigate = useNavigate()
 
   const redirect = () => {
@@ -13,7 +13,7 @@ export default function LinkNavbar ({ to, icon, size = 34, style }) {
   return (
     <Pressable
       style={[Style.link, style]}
-      onPress={redirect}
+      onPress={onPress || redirect}
     >
       <Icon name={icon} size={size} color={theme.colors.blue.default} />
     </Pressable>

@@ -5,17 +5,9 @@ import { Navigate } from 'react-router-native'
 export default function ProtectedRoute ({ children, userNoLoged, userLoged }) {
   const { user } = useContext(UserContext)
 
-  console.log({ userProtected: user })
+  if (userNoLoged && user.id) return <Navigate to='/' />
 
-  if (userNoLoged && user.id) {
-    console.log('No log')
-    return <Navigate to='/' />
-  }
-
-  if (userLoged && !user.id) {
-    console.log('No user')
-    return <Navigate to='/login' />
-  }
+  if (userLoged && !user.id) return <Navigate to='/login' />
 
   return children
 }

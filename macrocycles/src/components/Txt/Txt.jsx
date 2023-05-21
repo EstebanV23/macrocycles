@@ -3,6 +3,7 @@ import { Text } from 'react-native'
 
 export default function Txt ({
   children,
+  justify,
   small,
   error,
   medium,
@@ -11,6 +12,7 @@ export default function Txt ({
   big,
   bold,
   color,
+  red,
   green,
   light,
   white,
@@ -28,6 +30,7 @@ export default function Txt ({
     small && Style.small,
     medium && Style.medium,
     big && Style.big,
+    justify && Style.justify,
     bold && Style.bold,
     green && Style.green,
     light && Style.light,
@@ -41,6 +44,7 @@ export default function Txt ({
     primary && Style.primary,
     lowMedium && Style.lowMedium,
     mediumBig && Style.mediumBig,
+    red && Style.red,
     style
   ]
   return (

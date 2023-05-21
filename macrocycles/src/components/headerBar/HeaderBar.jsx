@@ -5,7 +5,7 @@ import Txt from '../Txt/Txt'
 import iconsConstants from '../../constants/iconConstants'
 import LinkNavbar from '../linkNavbar/LinkNavbar'
 
-export default function HeaderBar ({ title, subtitle, iconName }) {
+export default function HeaderBar ({ title, subtitle, iconName, onPress }) {
   return (
     <View style={Style.header}>
       <ContainerData>
@@ -15,6 +15,7 @@ export default function HeaderBar ({ title, subtitle, iconName }) {
             to='/'
             size={26}
             style={Style.iconBack}
+            onPress={onPress}
           />
           <LinkNavbar
             icon={iconName}

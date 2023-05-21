@@ -3,9 +3,8 @@ import theme from '../../theme/theme'
 
 const StyleLinkForm = StyleSheet.create({
   link: {
-    color: theme.colors.green.default,
     borderBottomWidth: 1,
-    borderColor: theme.colors.green.default
+    borderColor: theme.colors.red.default
   }
 })
 

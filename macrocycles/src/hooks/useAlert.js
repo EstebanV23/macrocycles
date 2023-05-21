@@ -16,8 +16,8 @@ export default function useAlert () {
       const { type, message } = alert
       Toast.show({
         type,
-        text1: messagesAlert[type],
-        text2: message,
+        text1: message,
+        text2: messagesAlert[type],
         visibilityTime: 3000,
         autoHide: true,
         bottomOffset: 40,

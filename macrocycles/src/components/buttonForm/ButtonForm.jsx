@@ -5,6 +5,6 @@ import iconsConstants from '../../constants/iconConstants'
 
 export default function ButtonForm ({ onPress, title }) {
   return (
-    <Button onPress={onPress} style={Style.buttonLogout} title={title} color={theme.colors.green.default} icon={iconsConstants.logout} />
+    <Button onPress={onPress} style={Style.buttonForm} title={title} color={theme.colors.red.default} tintColor={theme.colors.white} icon={iconsConstants.logout} />
   )
 }

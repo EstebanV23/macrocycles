@@ -12,6 +12,11 @@ const StyleHome = StyleSheet.create({
     flexDirection: 'column',
     gap: 15,
     marginTop: 30
+  },
+  buttonLogout: {
+    paddingVertical: 5,
+    borderRadius: 5,
+    textAlign: 'center'
   }
 })
 

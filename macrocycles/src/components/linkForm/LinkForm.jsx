@@ -11,7 +11,7 @@ export default function LinkForm ({ to, children }) {
     >
       <Txt
         light
-        green
+        red
       >
         {children}
       </Txt>

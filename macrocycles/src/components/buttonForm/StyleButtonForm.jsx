@@ -3,8 +3,7 @@ import theme from '../../theme/theme'
 
 const StyleButtonForm = StyleSheet.create({
   buttonForm: {
-    paddingVertical: 10,
-    paddingHorizontal: 30,
+    paddingVertical: 5,
     borderRadius: 5,
     textAlign: 'center',
     color: theme.colors.white

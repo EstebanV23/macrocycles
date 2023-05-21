@@ -10,6 +10,9 @@ import { LoadingContext } from './store/LoadingStore'
 import Loader from './components/loader/Loader'
 import Register from './components/register/Register'
 import NewMacro from './components/newMacro/NewMacro'
+import InfoMacro from './components/infoMacro/InfoMacro'
+import MesoInfo from './components/mesoInfo/MesoInfo'
+import FrameAndStage from './components/frameAndStage/FrameAndStage'
 
 export default function Main () {
   useAlert()
@@ -26,7 +29,11 @@ export default function Main () {
           <Route path='/login' element={<ProtectedRoute userNoLoged><Login /></ProtectedRoute>} />
           <Route path='/register' element={<ProtectedRoute userNoLoged><Register /></ProtectedRoute>} />
           <Route path='/' element={<ProtectedRoute userLoged><Home /></ProtectedRoute>} />
-          <Route path='/new-macro' element={<ProtectedRoute userLoged><NewMacro /></ProtectedRoute>} />
+          <Route path='/new-macro' element={<ProtectedRoute userLoged><NewMacro /></ProtectedRoute>}>
+            <Route path='macroInfo' element={<InfoMacro />} />
+            <Route path='mesoInfo' element={<MesoInfo />} />
+            <Route path='frameAndStage' element={<FrameAndStage />} />
+          </Route>
         </Routes>
       </View>
     </>

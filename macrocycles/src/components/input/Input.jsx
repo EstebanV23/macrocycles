@@ -29,9 +29,9 @@ export default function Input ({ control, name, required = true, defaultValue, l
             onFocus={() => setSelect(true)}
             value={value}
             secureTextEntry={secureTextEntry}
-            label={<Txt quick gray={!select} green={select} error={select && errors[name]}>{label}</Txt>}
+            label={<Txt quick gray={!select} red={select} error={select && errors[name]}>{label}</Txt>}
             variant='outlined'
-            color={!errors[name] ? theme.colors.green.default : theme.colors.red[300]}
+            color={!errors[name] ? theme.colors.red.default : theme.colors.red[300]}
             style={Style.leading}
             trailing={icon}
             editable={editable}
