@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-native'
+import { Outlet } from 'react-router-native'
 import iconsConstants from '../../constants/iconConstants'
 import HeaderBar from '../headerBar/HeaderBar'
 import { useContext, useEffect } from 'react'
@@ -9,25 +9,14 @@ import { Dimensions, ScrollView, View } from 'react-native'
 import Style from './StyleNewMacro'
 
 export default function NewMacro () {
-  const { roadMap, initRoadMap, count, reset } = useContext(RoatMapContext)
-  const navigate = useNavigate()
+  const { roadMap, initRoadMap } = useContext(RoatMapContext)
 
   useEffect(() => {
-    const currentRoadMap = initRoadMap()
-    navigate(currentRoadMap.currentStage.path)
+    initRoadMap()
   }, [])
 
-  useEffect(() => {
-    if (count === 0) {
-      reset()
-      navigate('/')
-      return
-    }
-
-    roadMap.currentStage && navigate(roadMap.currentStage.path)
-  }, [count])
-
   if (roadMap.currentStage === null) return <Loader />
+
   return (
     <>
       <HeaderBar

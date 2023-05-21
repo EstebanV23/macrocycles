@@ -1,5 +1,6 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import useCount from '../hooks/useCount'
+import { useNavigate } from 'react-router-native'
 
 export const RoatMapContext = createContext()
 
@@ -39,6 +40,12 @@ const initialRoatMap = {
 export default function RoadMapStore ({ children }) {
   const [roadMap, setRoadMap] = useState(initialRoatMap)
   const [count, increment, decrement, reset] = useCount(1)
+  const [currentFunction, setCurrentFunction] = useState(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    roadMap.currentStage && navigate(roadMap.currentStage.path)
+  }, [count])
 
   const restartRoadMap = () => {
     setRoadMap(initialRoatMap)
@@ -50,6 +57,7 @@ export default function RoadMapStore ({ children }) {
     newRoapMap.currentStage.currentMake = true
     setRoadMap(newRoapMap)
     reset()
+    navigate(newRoapMap.currentStage.path)
     return newRoapMap
   }
 
@@ -94,7 +102,9 @@ export default function RoadMapStore ({ children }) {
     nextStage,
     previusStage,
     count,
-    reset
+    reset,
+    setCurrentFunction,
+    currentFunction
   }
 
   return (

@@ -14,10 +14,6 @@ const StyleButtonsBottom = StyleSheet.create({
     left: 0,
     gap: 10,
     backgroundColor: theme.colors.blue[200]
-  },
-  button: {
-    paddingVertical: 4,
-    paddingHorizontal: 10
   }
 })
 
