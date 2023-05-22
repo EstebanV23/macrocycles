@@ -21,8 +21,22 @@ public class StageController {
     @Autowired
     private StageRepository stageRepository;
 
-    @Autowired
-    private TimeFrameRepository timeFrameRepository;
+    @GetMapping("/get")
+    public  List<Stage> getAllmm(){
+        List<Stage> complete =  stageRepository.findAll();
+        List<Stage> stages = new ArrayList<>();
+        for (Stage stage : complete){
+            List<TimeFrame> timeframes = stage.getTimeFrames();
+            List<TimeFrame> times = new ArrayList<>();
+            for (TimeFrame timeFrame : timeframes){
+                timeFrame.setStage(null);
+                times.add(timeFrame);
+            }
+            stage.setTimeFrames(times);
+            stages.add(stage);
+        }
+        return  stages;
+    }
 
     @GetMapping("/")
     public ResponseEntity<Object> getAllStages() {
