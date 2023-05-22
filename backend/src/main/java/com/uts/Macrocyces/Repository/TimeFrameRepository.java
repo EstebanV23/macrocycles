@@ -1,6 +1,7 @@
 package com.uts.Macrocyces.Repository;
 
 
+import com.uts.Macrocyces.Entity.Stage;
 import com.uts.Macrocyces.Entity.TimeFrame;
 import com.uts.Macrocyces.Entity.TypeTimeFrame;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -14,6 +15,8 @@ public interface TimeFrameRepository extends MongoRepository<TimeFrame, String> 
     List<TimeFrame> findByTypeTimeFrame(TypeTimeFrame typeTimeFrame);
 
     Optional<TimeFrame> findById(String id);
+
+    List<TimeFrame> findByStage(Stage stage);
 
 
 

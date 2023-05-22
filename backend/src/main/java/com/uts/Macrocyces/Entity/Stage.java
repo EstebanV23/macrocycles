@@ -17,7 +17,7 @@ public class Stage {
     private String id;
     private String name;
 
-    @JsonIgnore
+
     @DBRef
     private List<TimeFrame> timeFrames;
 

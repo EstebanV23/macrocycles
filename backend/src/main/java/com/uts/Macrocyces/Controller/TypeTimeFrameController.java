@@ -34,6 +34,14 @@ public class TypeTimeFrameController {
             TypeTimeFrame typeTimeFrame = typeTimeFrameRepository.findById(typeTimeFrameId)
                     .orElseThrow(() -> new ResourceNotFoundException("TypeMicrocycle not found for this id :: " + typeTimeFrameId));
 
+            // Obtener los TimeFrames y establecer stage en null para cada uno
+            List<TimeFrame> timeFrames = timeFrameRepository.findByTypeTimeFrame(typeTimeFrame);
+            for (TimeFrame timeFrame : timeFrames) {
+                timeFrame.setStage(null);
+            }
+
+            typeTimeFrame.setTimeFrames(timeFrames);
+
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("data", typeTimeFrame);
             response.put("type", "success");
@@ -61,12 +69,19 @@ public class TypeTimeFrameController {
         }
     }
 
+
     @GetMapping("/types")
     public ResponseEntity<Object> getAllTypeTimeFrame() {
         try {
             List<TypeTimeFrame> allTypeTimeFrame = typeTimeFrameRepository.findAll();
             for (TypeTimeFrame typeTimeFrame : allTypeTimeFrame) {
                 List<TimeFrame> timeFrames = timeFrameRepository.findByTypeTimeFrame(typeTimeFrame);
+
+                // Establecer stage en null para cada TimeFrame
+                for (TimeFrame timeFrame : timeFrames) {
+                    timeFrame.setStage(null);
+                }
+
                 typeTimeFrame.setTimeFrames(timeFrames);
             }
             Map<String, Object> response = new LinkedHashMap<>();
@@ -87,6 +102,7 @@ public class TypeTimeFrameController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
     @PostMapping("")
     public ResponseEntity<Object> createTypeTimeFrame(@RequestBody Map<String, Object> body) {

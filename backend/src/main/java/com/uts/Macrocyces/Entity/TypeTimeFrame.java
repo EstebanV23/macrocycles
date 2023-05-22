@@ -14,7 +14,7 @@ public class TypeTimeFrame {
     @MongoId
     private String id;
     private String name;
-    @JsonIgnore
+
     @DBRef
     private List <TimeFrame> timeFrames;
 

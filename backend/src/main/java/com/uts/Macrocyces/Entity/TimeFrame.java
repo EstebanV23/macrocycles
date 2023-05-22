@@ -12,10 +12,10 @@ public class TimeFrame {
         @MongoId
         private String id;
 
-        @JsonIgnore
+
         @DBRef
         private TypeTimeFrame typeTimeFrame;
-         @JsonIgnore
+
          @DBRef
         private Stage stage;
 

@@ -2,6 +2,7 @@ package com.uts.Macrocyces.Controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uts.Macrocyces.Entity.Stage;
 import com.uts.Macrocyces.Entity.TimeFrame;
 import com.uts.Macrocyces.Entity.TypeTimeFrame;
 import com.uts.Macrocyces.Exceptions.ResourceNotFoundException;
@@ -38,7 +39,20 @@ public class TimeFrameController {
                 Map<String, Object> timeFrameData = new LinkedHashMap<>();
                 timeFrameData.put("id", timeFrame.getId());
                 timeFrameData.put("typeTimeFrame", timeFrame.getTypeTimeFrame());
-                timeFrameData.put("stage", timeFrame.getStage()); // Nuevo atributo añadido
+
+                // Obtener el objeto Stage asociado a cada TimeFrame
+                Stage stage = timeFrame.getStage();
+                if (stage != null) {
+                    // Crear un nuevo objeto Stage sin la lista de TimeFrames para evitar el bucle infinito
+                    Stage updatedStage = new Stage();
+                    updatedStage.setId(stage.getId());
+                    updatedStage.setName(stage.getName());
+                    updatedStage.setTimeFrames(null);
+
+                    timeFrameData.put("stage", updatedStage);
+                } else {
+                    timeFrameData.put("stage", null);
+                }
 
                 timeFramesData.add(timeFrameData);
             }
@@ -61,6 +75,7 @@ public class TimeFrameController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
 
     @PostMapping("")

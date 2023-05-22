@@ -2,6 +2,7 @@ package com.uts.Macrocyces.Controller;
 
 import com.uts.Macrocyces.Entity.Stage;
 import com.uts.Macrocyces.Entity.TimeFrame;
+import com.uts.Macrocyces.Exceptions.ResourceNotFoundException;
 import com.uts.Macrocyces.Repository.StageRepository;
 import com.uts.Macrocyces.Repository.TimeFrameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/stage")
@@ -21,22 +23,28 @@ public class StageController {
 
     @Autowired
     private TimeFrameRepository timeFrameRepository;
+
     @GetMapping("/")
     public ResponseEntity<Object> getAllStages() {
         try {
             List<Stage> stages = stageRepository.findAll();
 
-            // Crear la respuesta con los TimeFrames incluidos
             List<Map<String, Object>> stageList = new ArrayList<>();
             for (Stage stage : stages) {
                 Map<String, Object> stageMap = new LinkedHashMap<>();
                 stageMap.put("id", stage.getId());
                 stageMap.put("name", stage.getName());
-                stageMap.put("timeFrames", stage.getTimeFrames());
+
+                List<TimeFrame> timeFrames = new ArrayList<>();
+                for (TimeFrame timeFrame : stage.getTimeFrames()) {
+                    timeFrame.setStage(null);
+                    timeFrames.add(timeFrame);
+                }
+                stageMap.put("timeFrames", timeFrames);
+
                 stageList.add(stageMap);
             }
 
-            // Crear la respuesta final
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("data", stageList);
             response.put("type", "success");
@@ -57,102 +65,63 @@ public class StageController {
     }
 
 
-
-
     @PostMapping("")
-    public ResponseEntity<Object> createStage(@RequestBody Stage stageRequest) {
-    try {
-        List<TimeFrame> timeFrames = new ArrayList<>();
-        for (TimeFrame timeFrame : stageRequest.getTimeFrames()) {
-            Optional<TimeFrame> existingTimeFrame = timeFrameRepository.findById(timeFrame.getId());
-            existingTimeFrame.ifPresent(tf -> {
-                tf.setStage(stageRequest); // Establece la relación inversa con el Stage
-                timeFrames.add(tf);
-            });
-        }
-
-        // Crear una copia del objeto stageRequest
-        Stage stage = new Stage();
-        stage.setName(stageRequest.getName());
-
-        // Establecer la relación con los timeFrames
-        stage.setTimeFrames(timeFrames);
-
-        // Guardar la entidad Stage en la base de datos
-        Stage savedStage = stageRepository.save(stage);
-
-        // Actualizar la relación inversa en los TimeFrames
-        for (TimeFrame timeFrame : timeFrames) {
-            timeFrame.setStage(savedStage);
-        }
-
-        // Guardar los TimeFrames actualizados en la base de datos
-        timeFrameRepository.saveAll(timeFrames);
-
-        // Crear la respuesta
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("data", savedStage);
-        response.put("type", "success");
-        response.put("message", "La etapa fue creada exitosamente");
-        response.put("status", "OK");
-        response.put("statusCode", HttpStatus.OK.value());
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception ex) {
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("type", "error");
-        response.put("message", "Error al crear la etapa");
-        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-        response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-    }
-}
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateStage(@PathVariable("id") String stageId, @RequestBody Stage stageRequest) {
+    public ResponseEntity<Object> addStage(@RequestBody Stage newStage) {
         try {
-            Optional<Stage> existingStage = stageRepository.findById(stageId);
+            // Guardar el nuevo Stage en la base de datos
+            Stage savedStage = stageRepository.save(newStage);
 
-            if (existingStage.isPresent()) {
-                Stage stage = existingStage.get();
-                stage.setName(stageRequest.getName());
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("data", savedStage);
+            response.put("type", "success");
+            response.put("message", "La etapa se añadido exitosamente");
+            response.put("status", "OK");
+            response.put("statusCode", HttpStatus.OK.value());
 
-                List<TimeFrame> timeFrames = new ArrayList<>();
-                for (TimeFrame timeFrame : stageRequest.getTimeFrames()) {
-                    Optional<TimeFrame> existingTimeFrame = timeFrameRepository.findById(timeFrame.getId());
-                    existingTimeFrame.ifPresentOrElse(
-                            tf -> {
-                                tf.setStage(stage);
-                                timeFrames.add(tf);
-                            },
-                            () -> {
-                                timeFrames.add(timeFrame);
-                            }
-                    );
-                }
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al añadir la etapa");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
-                stage.setTimeFrames(timeFrames);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
-                Stage savedStage = stageRepository.save(stage);
+    @PutMapping("/{stageId}")
+    public ResponseEntity<Object> updateStage(@PathVariable(value = "stageId") String stageId, @RequestBody Stage updatedStage) {
+        try {
+            Stage existingStage = stageRepository.findById(stageId)
+                    .orElseThrow(() -> new ResourceNotFoundException("No se encontro el id de la etapa : " + stageId));
 
-                Map<String, Object> response = new LinkedHashMap<>();
-                response.put("data", savedStage);
-                response.put("type", "success");
-                response.put("message", "La etapa fue actualizada exitosamente");
-                response.put("status", "OK");
-                response.put("statusCode", HttpStatus.OK.value());
+            // Actualizar los campos del stage existente con los valores del stage actualizado
+            existingStage.setName(updatedStage.getName());
 
-                return ResponseEntity.status(HttpStatus.OK).body(response);
-            } else {
-                Map<String, Object> response = new LinkedHashMap<>();
-                response.put("type", "error");
-                response.put("message", "No se encontró la etapa con el ID proporcionado");
-                response.put("status", HttpStatus.NOT_FOUND);
-                response.put("statusCode", HttpStatus.NOT_FOUND.value());
+            // Actualizar la lista de TimeFrames
+            existingStage.getTimeFrames().clear(); // Limpiar la lista actual
+            existingStage.getTimeFrames().addAll(updatedStage.getTimeFrames());
 
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-            }
+            // Guardar el stage actualizado en la base de datos
+            Stage savedStage = stageRepository.save(existingStage);
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("data", savedStage);
+            response.put("type", "success");
+            response.put("message", "Etapa actualizada exitosamente");
+            response.put("status", "OK");
+            response.put("statusCode", HttpStatus.OK.value());
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (ResourceNotFoundException ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.NOT_FOUND);
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
@@ -163,6 +132,49 @@ public class StageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @DeleteMapping("/{stageId}")
+    public ResponseEntity<Object> deleteStage(@PathVariable String stageId) {
+        try {
+            // Verificar si el Stage existe en la base de datos
+            Optional<Stage> optionalStage = stageRepository.findById(stageId);
+            if (!optionalStage.isPresent()) {
+                throw new ResourceNotFoundException("No se encontro una etapa con ese id : " + stageId);
+            }
+
+            // Eliminar el Stage de la base de datos
+            stageRepository.deleteById(stageId);
+
+            // Crear la respuesta de éxito
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "success");
+            response.put("message", "Etapa eliminada exitosamente");
+            response.put("status", "OK");
+            response.put("statusCode", HttpStatus.OK.value());
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (ResourceNotFoundException ex) {
+            // Manejar el caso cuando el Stage no se encuentra
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", ex.getMessage());
+            response.put("status", HttpStatus.NOT_FOUND);
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception ex) {
+            // Manejar cualquier otro error
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al eliminar la etapa");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
 
 
 
