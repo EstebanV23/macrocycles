@@ -1,5 +1,6 @@
 package com.uts.Macrocyces.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,7 +14,7 @@ public class TypeTimeFrame {
     @MongoId
     private String id;
     private String name;
-
+    @JsonIgnore
     @DBRef
     private List <TimeFrame> timeFrames;
 
