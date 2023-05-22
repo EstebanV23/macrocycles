@@ -3,7 +3,7 @@ import theme from '../../theme/theme'
 
 const StyleDateInput = StyleSheet.create({
   dateInput: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.white,
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -28,7 +28,7 @@ const StyleDateInput = StyleSheet.create({
   modal: {
     padding: 20,
     width: '95%',
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.white,
     borderRadius: 5,
     shadowColor: theme.colors.text,
     elevation: 5,

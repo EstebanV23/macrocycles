@@ -48,7 +48,7 @@ const StyleTxt = StyleSheet.create({
     color: theme.colors.red[300]
   },
   gray: {
-    color: theme.colors.gray
+    color: `${theme.colors.gray}90`
   },
   quickBold: {
     fontFamily: theme.fonts.quicksand.bold
@@ -61,6 +61,9 @@ const StyleTxt = StyleSheet.create({
   },
   mediumBig: {
     fontSize: theme.sizes.mediumBig
+  },
+  disabled: {
+    color: theme.colors.disbaled
   }
 })
 

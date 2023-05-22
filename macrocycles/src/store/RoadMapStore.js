@@ -30,11 +30,35 @@ const stages = [
 
 const ALL_STAGES = stages.length
 const MIN_STAGE = 1
+let count = 1
+
+const generateMicro = (startDate, endDate) => {
+  const micro = {
+    startDate,
+    endDate,
+    identity: count
+  }
+  count++
+  return micro
+}
+
+const generateMicros = (quantity) => {
+  const micros = []
+  for (let i = 0; i < quantity; i++) {
+    micros.push(generateMicro(null, null))
+  }
+  return micros
+}
 
 const initialRoatMap = {
   currentStage: null,
   stagesCompleted: [],
-  finished: false
+  finished: false,
+  data: {
+    microcycles: generateMicros(32),
+    macrocycle: {},
+    mesocycles: generateMicros(6)
+  }
 }
 
 export default function RoadMapStore ({ children }) {
@@ -51,10 +75,16 @@ export default function RoadMapStore ({ children }) {
     setRoadMap(initialRoatMap)
   }
 
+  const modifyMicrocyles = (microcycles) => {
+    const newRoapMap = { ...roadMap }
+    newRoapMap.data.microcycles = microcycles
+    setRoadMap(newRoapMap)
+    return newRoapMap
+  }
+
   const initRoadMap = () => {
     const newRoapMap = { ...roadMap }
     newRoapMap.currentStage = stages.find(stage => stage.roadPosition === MIN_STAGE)
-    newRoapMap.currentStage.currentMake = true
     setRoadMap(newRoapMap)
     reset()
     navigate(newRoapMap.currentStage.path)
@@ -87,6 +117,7 @@ export default function RoadMapStore ({ children }) {
     decrement()
     if (previusNumberStage < MIN_STAGE) {
       setRoadMap(initialRoatMap)
+      navigate('/')
       return false
     }
     const previusStage = stages.find(stage => stage.roadPosition === previusNumberStage)
@@ -104,7 +135,8 @@ export default function RoadMapStore ({ children }) {
     count,
     reset,
     setCurrentFunction,
-    currentFunction
+    currentFunction,
+    modifyMicrocyles
   }
 
   return (

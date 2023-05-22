@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { UserContext } from '../store/UserStore'
 import Toast from 'react-native-toast-message'
+import Constants from 'expo-constants'
 
 const messagesAlert = {
   success: 'Todo está bien',
@@ -20,7 +21,7 @@ export default function useAlert () {
         text2: messagesAlert[type],
         visibilityTime: 3000,
         autoHide: true,
-        bottomOffset: 40,
+        topOffset: Constants.statusBarHeight + 20,
         position: 'top'
       })
     }

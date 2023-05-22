@@ -5,11 +5,13 @@ import { useContext, useEffect } from 'react'
 import { RoatMapContext } from '../../store/RoadMapStore'
 import Loader from '../loader/Loader'
 import ButtonsBottom from '../buttonsBottom/ButtonsBottom'
-import { Dimensions, ScrollView, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import Style from './StyleNewMacro'
+import ProgressBar from '../progressBar/ProgressBar'
 
 export default function NewMacro () {
   const { roadMap, initRoadMap } = useContext(RoatMapContext)
+  const { data: { macrocycle, microcycles, mesocycles } } = roadMap
 
   useEffect(() => {
     initRoadMap()
@@ -23,6 +25,11 @@ export default function NewMacro () {
         title='Nuevo macrociclo'
         subtitle={roadMap.currentStage.text}
         iconName={iconsConstants.newDocument}
+      />
+      <ProgressBar
+        macrocycle={macrocycle}
+        microcycles={microcycles}
+        mesocycles={mesocycles}
       />
       <View style={Style.contentGeneral}>
         <View style={Style.containerOutlet}>

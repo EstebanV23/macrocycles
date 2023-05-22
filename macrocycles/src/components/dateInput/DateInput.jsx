@@ -4,27 +4,22 @@ import Txt from '../Txt/Txt'
 import { useEffect, useState } from 'react'
 import formatDataFromDate from '../../helpers/formatDataFromDate'
 import DateTimePicker from 'react-native-modern-datepicker'
-import Loader from '../loader/Loader'
 import { Icon, Pressable } from '@react-native-material/core'
 import theme from '../../theme/theme'
 import ButtonGeneral from '../buttonGeneral/ButtonGeneral'
 import iconsConstants from '../../constants/iconConstants'
+import { BasicInputNoControl } from '../basicInput/BasicInput'
 
 export default function DateInput ({
   label,
-  setDateTop,
-  initialDate,
   limitDate,
-  minDate = formatDataFromDate(new Date()),
-  disabled = false
+  minDate = formatDataFromDate(),
+  disabled = false,
+  setValue,
+  value
 }) {
-  const [value, setValue] = useState(initialDate)
   const [open, setOpen] = useState(false)
   const currentYear = new Date().getFullYear()
-
-  useEffect(() => {
-    setDateTop(value)
-  }, [value])
 
   const handleChange = (date) => {
     setValue(date)
@@ -43,11 +38,11 @@ export default function DateInput ({
           onPress={handlePress}
           style={Style.containerDateInput}
         >
-          <TextInput
+          <BasicInputNoControl
             editable={false}
             placeholder='YYYY/MM/DD'
             value={value}
-            style={[Style.dateInput, disabled && Style.disabled]}
+            disabled={disabled}
           />
           <View
             style={Style.containerIcon}
