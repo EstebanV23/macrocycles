@@ -55,6 +55,7 @@ const initialRoatMap = {
   currentStage: null,
   stagesCompleted: [],
   finished: false,
+  amountMicros: 0,
   data: {
     startDate: null,
     endDate: null,
@@ -71,6 +72,9 @@ export default function RoadMapStore ({ children }) {
   const [amountMicros, setAmountMicros] = useState(0)
   const navigate = useNavigate()
 
+  // console.log('🚀 ~ file: RoadMapStore.js:66 ~ initialRoatMap:', initialRoatMap)
+  console.log('🚀 ~ file: RoadMapStore.js:66 ~ roadMap:', roadMap)
+
   useEffect(() => {
     roadMap.currentStage && navigate(roadMap.currentStage.path)
   }, [count])
@@ -82,23 +86,15 @@ export default function RoadMapStore ({ children }) {
     setRoadMap(newRoapMap)
   }, [amountMicros])
 
-  const setStartDate = (startDate) => {
+  const setDataFirstStage = (startDate, endDate, name, amountMicro) => {
     const newRoapMap = JSON.parse(JSON.stringify(roadMap))
     newRoapMap.data.startDate = startDate
-    setRoadMap(newRoapMap)
-    return newRoapMap
-  }
-
-  const setNameMacro = (name) => {
-    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
-    newRoapMap.data.macrocycle.name = name
-    setRoadMap(newRoapMap)
-    return newRoapMap
-  }
-
-  const setEndDate = (endDate) => {
-    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
     newRoapMap.data.endDate = endDate
+    newRoapMap.data.macrocycle.name = name
+    newRoapMap.amountMicros = amountMicro
+    const micros = generateMicros(amountMicro)
+    newRoapMap.data.microcycles = micros
+    console.log('🚀 ~ file: RoadMapStore.js:95 ~ setDataFirstStage ~ newRoapMap:', newRoapMap)
     setRoadMap(newRoapMap)
     return newRoapMap
   }
@@ -107,15 +103,8 @@ export default function RoadMapStore ({ children }) {
     setRoadMap(initialRoatMap)
   }
 
-  const modifyMicrocyles = (microcycles) => {
-    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
-    newRoapMap.data.microcycles = microcycles
-    setRoadMap(newRoapMap)
-    return newRoapMap
-  }
-
   const initRoadMap = () => {
-    const newRoapMap = initialRoatMap
+    const newRoapMap = JSON.parse(JSON.stringify(initialRoatMap))
     newRoapMap.currentStage = stages.find(stage => stage.roadPosition === MIN_STAGE)
     setRoadMap(newRoapMap)
     reset()
@@ -123,7 +112,7 @@ export default function RoadMapStore ({ children }) {
     return newRoapMap
   }
 
-  const nextStage = () => {
+  const nextStage = (roadMap) => {
     const currentRoapMap = JSON.parse(JSON.stringify(roadMap))
     const { currentStage } = currentRoapMap
     currentStage.completed = true
@@ -160,6 +149,7 @@ export default function RoadMapStore ({ children }) {
     }
     const previusStage = stages.find(stage => stage.roadPosition === previusNumberStage)
     currentRoapMap.currentStage = previusStage
+    console.log('🚀 ~ file: RoadMapStore.js:156 ~ previusStage ~ currentRoapMap:', currentRoapMap)
     setRoadMap(currentRoapMap)
     return true
   }
@@ -174,12 +164,9 @@ export default function RoadMapStore ({ children }) {
     reset,
     setCurrentFunction,
     currentFunction,
-    modifyMicrocyles,
     amountMicros,
     setAmountMicros,
-    setStartDate,
-    setEndDate,
-    setNameMacro
+    setDataFirstStage
   }
 
   return (

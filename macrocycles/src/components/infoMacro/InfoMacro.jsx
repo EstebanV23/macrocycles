@@ -17,14 +17,13 @@ import useInternalErros from '../../hooks/useInternalErros'
 import getAmountMicrosForAmount from '../../logic/getAmountMicrosForAmount'
 
 export default function InfoMacro () {
-  const { setCurrentFunction, setAmountMicros, amountMicros, setStartDate: setStartDateRoadMap, setEndDate: setEndDateRoadMap, setNameMacro, roadMap } = useContext(RoatMapContext)
+  const { setCurrentFunction, setAmountMicros, amountMicros, setDataFirstStage, roadMap } = useContext(RoatMapContext)
   const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates(roadMap.data.startDate, roadMap.data.endDate)
-  console.log('🚀 ~ file: InfoMacro.jsx:22 ~ InfoMacro ~ differentsDays:', differentsDays)
   const { newAlert } = useContext(UserContext)
   const [check, setCheck] = useState(false)
   const [macroName, setMacroName] = useState(roadMap.data.macrocycle.name)
   const { errors, handlerError, removeError, resetErrors } = useInternalErros()
-  const [selectedValue, setSelectedValue] = useState(amountMicros)
+  const [selectedValue, setSelectedValue] = useState(roadMap.amountMicros)
   const [open, setOpen] = useState(false)
   const [items, setItems] = useState([])
   const [minMicros, maxMicros] = useMinMax(differentsDays)
@@ -35,7 +34,7 @@ export default function InfoMacro () {
 
     resetErrors()
 
-    if (macroName.trim() === '') {
+    /* if (macroName.trim() === '') {
       handlerError('macroName', 'El nombre de la macrociclo es obligatorio')
       next = false
     }
@@ -55,19 +54,16 @@ export default function InfoMacro () {
       next = false
     }
 
-    if (!next) newAlert('error', 'Hay campos obligatorios sin completar')
+    if (!next) newAlert('error', 'Hay campos obligatorios sin completar') */
 
-    if (next) {
-      setNameMacro(macroName)
-      setStartDateRoadMap(startDate)
-      setEndDateRoadMap(endDate)
-    }
+    console.log('🚀 ~ file: InfoMacro.jsx:54 ~ handlerFunction ~ dataGroup', { startDate, endDate, macroName, selectedValue })
+    if (next) next = setDataFirstStage(startDate, endDate, macroName, selectedValue)
     return next
   }
 
   useEffect(() => {
     setCurrentFunction(() => handlerFunction)
-  }, [startDate, endDate, differentsDays, macroName])
+  }, [startDate, endDate, differentsDays, macroName, selectedValue])
 
   useEffect(() => {
     setItems(getMicrosEquals(differentsDays))
@@ -75,7 +71,6 @@ export default function InfoMacro () {
 
   useEffect(() => {
     setAmountMicros(selectedValue)
-    console.log('🚀 ~ file: InfoMacro.jsx:83 ~ useEffect ~ selectedValue:', selectedValue)
     if (selectedValue && selectedValue >= minMicros && selectedValue <= maxMicros) {
       const information = getAmountMicrosForAmount(differentsDays, selectedValue)
       setMessageAmount(information.message)

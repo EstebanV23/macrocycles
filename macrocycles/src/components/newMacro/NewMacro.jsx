@@ -10,25 +10,14 @@ import Style from './StyleNewMacro'
 import ProgressBar from '../progressBar/ProgressBar'
 
 export default function NewMacro () {
-  const { roadMap, initRoadMap, restartRoadMap } = useContext(RoatMapContext)
+  const { roadMap, initRoadMap } = useContext(RoatMapContext)
   const { data: { macrocycle, microcycles, mesocycles } } = roadMap
-  const [loading, setLoading] = useState(true)
-
-  const asyncInitRoadMap = async () => {
-    return new Promise((resolve, reject) => {
-      restartRoadMap()
-      initRoadMap()
-      setTimeout(() => {
-        resolve()
-      }, 1000)
-    })
-  }
 
   useEffect(() => {
-    asyncInitRoadMap().then(() => setLoading(false))
+    initRoadMap()
   }, [])
 
-  if (roadMap.currentStage === null || loading) return <Loader />
+  if (roadMap.currentStage === null) return <Loader />
 
   return (
     <>

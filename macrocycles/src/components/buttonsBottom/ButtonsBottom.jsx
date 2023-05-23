@@ -10,7 +10,7 @@ export default function ButtonsBottom () {
 
   const handleNextStage = (...args) => {
     const functionExecuted = currentFunction(...args)
-    if (functionExecuted) nextStage()
+    if (functionExecuted) nextStage(functionExecuted)
   }
 
   const handlePreviusStage = () => {

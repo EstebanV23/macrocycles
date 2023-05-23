@@ -9,7 +9,7 @@ import ButtonForm from '../buttonForm/ButtonForm'
 import { LoadingContext } from '../../store/LoadingStore'
 import LinkForm from '../linkForm/LinkForm'
 import rulesRegister from '../../rules/rulesRegister'
-import setDataSend from '../../helpers/setDataSend'
+import setDataSend from '../../logic/setDataSend'
 import serviceRegister from '../../services/serviceRegister'
 import Visible from '../visible/Visible'
 
