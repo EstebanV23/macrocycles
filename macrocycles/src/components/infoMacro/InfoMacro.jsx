@@ -18,12 +18,12 @@ import getAmountMicrosForAmount from '../../logic/getAmountMicrosForAmount'
 
 export default function InfoMacro () {
   const { setCurrentFunction, setAmountMicros, amountMicros, setDataFirstStage, roadMap } = useContext(RoatMapContext)
-  const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates(roadMap.data.startDate, roadMap.data.endDate)
+  const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates(roadMap.data.startDate, roadMap.data.endDate, roadMap.data.durationInDays)
   const { newAlert } = useContext(UserContext)
   const [check, setCheck] = useState(false)
   const [macroName, setMacroName] = useState(roadMap.data.macrocycle.name)
   const { errors, handlerError, removeError, resetErrors } = useInternalErros()
-  const [selectedValue, setSelectedValue] = useState(roadMap.amountMicros)
+  const [selectedValue, setSelectedValue] = useState(roadMap.data.amountMicros)
   const [open, setOpen] = useState(false)
   const [items, setItems] = useState([])
   const [minMicros, maxMicros] = useMinMax(differentsDays)
@@ -56,8 +56,11 @@ export default function InfoMacro () {
 
     if (!next) newAlert('error', 'Hay campos obligatorios sin completar') */
 
-    console.log('🚀 ~ file: InfoMacro.jsx:54 ~ handlerFunction ~ dataGroup', { startDate, endDate, macroName, selectedValue })
-    if (next) next = setDataFirstStage(startDate, endDate, macroName, selectedValue)
+    console.log('🚀 ~ file: InfoMacro.jsx:54 ~ handlerFunction ~ dataGroup', { startDate, endDate, macroName, selectedValue, differentsDays })
+    if (next) {
+      const { daysMicros, lastDaysMicrocycle } = getAmountMicrosForAmount(differentsDays, selectedValue)
+      next = setDataFirstStage(startDate, endDate, macroName, selectedValue, differentsDays, daysMicros, lastDaysMicrocycle)
+    }
     return next
   }
 

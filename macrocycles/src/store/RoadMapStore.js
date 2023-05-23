@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from 'react'
 import useCount from '../hooks/useCount'
 import { useNavigate } from 'react-router-native'
 import { Alert } from 'react-native'
+import formatDataFromDate from '../logic/formatDataFromDate'
 
 export const RoatMapContext = createContext()
 
@@ -31,23 +32,35 @@ const stages = [
 
 const ALL_STAGES = stages.length
 const MIN_STAGE = 1
-let count = 1
 
-const generateMicro = (startDate, endDate) => {
+const generateMicro = (startDate, endDate, identity) => {
   const micro = {
     startDate,
     endDate,
-    identity: count
+    identity
   }
-  count++
   return micro
 }
 
 const generateMicros = (quantity) => {
   const micros = []
   for (let i = 0; i < quantity; i++) {
-    micros.push(generateMicro(null, null))
+    micros.push(generateMicro(null, null, i))
   }
+  return micros
+}
+
+const generateMicrosWithData = (quantity, daysMicros, lastDayMicros, startDate, endDate) => {
+  const micros = []
+  const lastMicrocycle = quantity - 1
+  let lastEndDate = startDate
+  for (let i = 0; i < quantity; i++) {
+    const startDateMicro = lastEndDate === startDate ? lastEndDate : formatDataFromDate(lastEndDate, false, 2)
+    const endDateMicro = i === lastMicrocycle ? endDate : formatDataFromDate(startDate, false, (i + 1) * daysMicros)
+    lastEndDate = endDateMicro
+    micros.push(generateMicro(startDateMicro, endDateMicro, i))
+  }
+  console.log('🚀 ~ file: RoadMapStore.js:65 ~ generateMicrosWithData ~ micros:', micros)
   return micros
 }
 
@@ -55,8 +68,11 @@ const initialRoatMap = {
   currentStage: null,
   stagesCompleted: [],
   finished: false,
-  amountMicros: 0,
   data: {
+    amountMicros: 0,
+    durationInDays: 0,
+    initialDayMicro: null,
+    initialLastDayMicro: null,
     startDate: null,
     endDate: null,
     microcycles: [],
@@ -86,13 +102,16 @@ export default function RoadMapStore ({ children }) {
     setRoadMap(newRoapMap)
   }, [amountMicros])
 
-  const setDataFirstStage = (startDate, endDate, name, amountMicro) => {
+  const setDataFirstStage = (startDate, endDate, name, amountMicro, differentsDays, initialDayMicro, initialLastDayMicro) => {
     const newRoapMap = JSON.parse(JSON.stringify(roadMap))
     newRoapMap.data.startDate = startDate
     newRoapMap.data.endDate = endDate
     newRoapMap.data.macrocycle.name = name
-    newRoapMap.amountMicros = amountMicro
-    const micros = generateMicros(amountMicro)
+    newRoapMap.data.amountMicros = amountMicro
+    newRoapMap.data.durationInDays = differentsDays
+    newRoapMap.data.initialDayMicro = initialDayMicro
+    newRoapMap.data.initialLastDayMicro = initialLastDayMicro
+    const micros = generateMicrosWithData(amountMicro, initialDayMicro, initialLastDayMicro, startDate, endDate)
     newRoapMap.data.microcycles = micros
     console.log('🚀 ~ file: RoadMapStore.js:95 ~ setDataFirstStage ~ newRoapMap:', newRoapMap)
     setRoadMap(newRoapMap)
