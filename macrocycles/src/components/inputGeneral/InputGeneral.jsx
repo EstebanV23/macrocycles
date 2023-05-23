@@ -13,22 +13,26 @@ export default function InputGeneral ({
   disabled,
   onChangeText,
   editable = true,
-  errors
+  errors,
+  style
 }) {
   const [selected, setSelected] = useState(false)
 
   return (
     <View
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 3,
-        width: '100%'
-      }}
+      style={[
+        {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3,
+          width: '100%'
+        },
+        style
+      ]}
     >
       <Txt quick gray={!selected} red={selected} error={errors[name]}>{label}</Txt>
       <BasicInputNoControl
-        editable={editable}
+        editable={editable ?? disabled}
         placeholder={placeholder}
         value={value}
         disabled={disabled}

@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from 'react'
 import useCount from '../hooks/useCount'
 import { useNavigate } from 'react-router-native'
+import { Alert } from 'react-native'
 
 export const RoatMapContext = createContext()
 
@@ -55,9 +56,11 @@ const initialRoatMap = {
   stagesCompleted: [],
   finished: false,
   data: {
-    microcycles: generateMicros(32),
+    startDate: null,
+    endDate: null,
+    microcycles: [],
     macrocycle: {},
-    mesocycles: generateMicros(6)
+    mesocycles: []
   }
 }
 
@@ -65,25 +68,54 @@ export default function RoadMapStore ({ children }) {
   const [roadMap, setRoadMap] = useState(initialRoatMap)
   const [count, increment, decrement, reset] = useCount(1)
   const [currentFunction, setCurrentFunction] = useState(null)
+  const [amountMicros, setAmountMicros] = useState(0)
   const navigate = useNavigate()
 
   useEffect(() => {
     roadMap.currentStage && navigate(roadMap.currentStage.path)
   }, [count])
 
+  useEffect(() => {
+    const newMicros = generateMicros(amountMicros)
+    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
+    newRoapMap.data.microcycles = newMicros
+    setRoadMap(newRoapMap)
+  }, [amountMicros])
+
+  const setStartDate = (startDate) => {
+    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
+    newRoapMap.data.startDate = startDate
+    setRoadMap(newRoapMap)
+    return newRoapMap
+  }
+
+  const setNameMacro = (name) => {
+    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
+    newRoapMap.data.macrocycle.name = name
+    setRoadMap(newRoapMap)
+    return newRoapMap
+  }
+
+  const setEndDate = (endDate) => {
+    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
+    newRoapMap.data.endDate = endDate
+    setRoadMap(newRoapMap)
+    return newRoapMap
+  }
+
   const restartRoadMap = () => {
     setRoadMap(initialRoatMap)
   }
 
   const modifyMicrocyles = (microcycles) => {
-    const newRoapMap = { ...roadMap }
+    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
     newRoapMap.data.microcycles = microcycles
     setRoadMap(newRoapMap)
     return newRoapMap
   }
 
   const initRoadMap = () => {
-    const newRoapMap = { ...roadMap }
+    const newRoapMap = initialRoatMap
     newRoapMap.currentStage = stages.find(stage => stage.roadPosition === MIN_STAGE)
     setRoadMap(newRoapMap)
     reset()
@@ -92,7 +124,7 @@ export default function RoadMapStore ({ children }) {
   }
 
   const nextStage = () => {
-    const currentRoapMap = { ...roadMap }
+    const currentRoapMap = JSON.parse(JSON.stringify(roadMap))
     const { currentStage } = currentRoapMap
     currentStage.completed = true
     const currentNumberStage = currentStage.roadPosition
@@ -111,14 +143,20 @@ export default function RoadMapStore ({ children }) {
   }
 
   const previusStage = () => {
-    const currentRoapMap = { ...roadMap }
+    const currentRoapMap = JSON.parse(JSON.stringify(roadMap))
     const { currentStage } = currentRoapMap
     const previusNumberStage = currentStage.roadPosition - 1
     decrement()
     if (previusNumberStage < MIN_STAGE) {
-      setRoadMap(initialRoatMap)
-      navigate('/')
-      return false
+      Alert.alert('Cancelar información', 'Si aceptas se perderán los datos que llevas almacenados, si no lo deseas hacer, presiona por fuera de esta alerta', [{
+        text: 'Si, cancelar información',
+        onPress: () => {
+          setRoadMap(initialRoatMap)
+          navigate('/')
+          return false
+        }
+      }], { cancelable: true, onDismiss: () => { return false } })
+      return
     }
     const previusStage = stages.find(stage => stage.roadPosition === previusNumberStage)
     currentRoapMap.currentStage = previusStage
@@ -136,7 +174,12 @@ export default function RoadMapStore ({ children }) {
     reset,
     setCurrentFunction,
     currentFunction,
-    modifyMicrocyles
+    modifyMicrocyles,
+    amountMicros,
+    setAmountMicros,
+    setStartDate,
+    setEndDate,
+    setNameMacro
   }
 
   return (

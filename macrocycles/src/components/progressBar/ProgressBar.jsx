@@ -2,7 +2,7 @@ import { View } from 'react-native'
 import Style from './StyleProgressBar'
 import UnitProgress from '../unitProgress/UnitProgress'
 
-const ListProgress = ({ arrayContent }) => {
+const ListProgress = ({ arrayContent, ...props }) => {
   const widthComponent = 100 / arrayContent.length
   const lastElement = arrayContent.length - 1
   const unitsProgress = arrayContent.map((item, index) => (
@@ -12,6 +12,7 @@ const ListProgress = ({ arrayContent }) => {
     >
       <UnitProgress
         widthComponent={widthComponent}
+        {...props}
       />
     </View>
   ))
@@ -30,9 +31,9 @@ export default function ProgressBar ({
 }) {
   return (
     <View style={Style.containerUnits}>
-      <UnitProgress full={macrocycle} />
+      <UnitProgress full={macrocycle} orange />
       <ListProgress arrayContent={mesocycles} />
-      <ListProgress arrayContent={microcycles} />
+      <ListProgress arrayContent={microcycles} blue />
     </View>
   )
 }

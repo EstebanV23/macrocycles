@@ -17,6 +17,21 @@ const StyleUnitProgress = StyleSheet.create({
   },
   red: {
     backgroundColor: theme.colors.red[500]
+  },
+  orange: {
+    backgroundColor: theme.colors.orange[500]
+  },
+  blue: {
+    backgroundColor: theme.colors.blue[500]
+  },
+  yellow: {
+    backgroundColor: theme.colors.yellow[500]
+  },
+  purple: {
+    backgroundColor: theme.colors.purple[500]
+  },
+  menta: {
+    backgroundColor: theme.colors.menta[500]
   }
 })
 

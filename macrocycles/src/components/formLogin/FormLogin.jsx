@@ -11,7 +11,7 @@ import { LoadingContext } from '../../store/LoadingStore'
 import LinkForm from '../linkForm/LinkForm'
 import ButtonGoogle from '../buttonGoogle/ButtonGoogle'
 import Visible from '../visible/Visible'
-import setDataSend from '../../helpers/setDataSend'
+import setDataSend from '../../logic/setDataSend'
 
 export default function FormLogin () {
   const { control, handleSubmit, formState: { errors } } = useForm()
@@ -74,7 +74,7 @@ export default function FormLogin () {
           Aún no tienes cuenta?
         </LinkForm>
         <LinkForm to=''>
-          Aún no tienes cuenta?
+          Olvidé contraseña
         </LinkForm>
       </View>
       <ButtonGoogle />

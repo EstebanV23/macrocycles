@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import getDiferenceHours from '../helpers/getDiferenceHours'
+import getDiferenceHours from '../logic/getDiferenceHours'
 
-export default function useHanlderDates () {
-  const [startDate, setStartDate] = useState(null)
-  const [endDate, setEndDate] = useState(null)
+export default function useHanlderDates (initialStartDate = null, initialEndDate = null) {
+  const [startDate, setStartDate] = useState(initialStartDate)
+  const [endDate, setEndDate] = useState(initialEndDate)
   const [differentsDays, setDifferentsDays] = useState(0)
 
   useEffect(() => {
@@ -16,5 +16,6 @@ export default function useHanlderDates () {
     }
     setDifferentsDays(days)
   }, [startDate, endDate])
+
   return { startDate, setStartDate, endDate, setEndDate, differentsDays }
 }

@@ -21,6 +21,12 @@ const StyleBasicInput = StyleSheet.create({
   },
   selected: {
     borderColor: theme.colors.red.default
+  },
+  errorPick: {
+    color: theme.colors.red[300]
+  },
+  selectedPick: {
+    color: theme.colors.red.default
   }
 })
 

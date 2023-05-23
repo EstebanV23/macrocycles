@@ -7,14 +7,15 @@ const StyleNewMacro = StyleSheet.create({
     paddingHorizontal: 20
   },
   containerScroll: {
-    maxHeight: Dimensions.get('screen').height - 250,
+    maxHeight: Dimensions.get('screen').height - 320,
     width: '100%',
     borderRadius: 10,
     backgroundColor: theme.colors.white,
     padding: 10,
     elevation: 4,
     shadowColor: theme.colors.text,
-    shadowRadius: 20
+    shadowRadius: 20,
+    paddingBottom: 60
   }
 })
 

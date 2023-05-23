@@ -9,10 +9,10 @@ const StylePessableLink = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 20,
+    paddingRight: 30,
     borderRadius: 10,
     backgroundColor: '#fff',
     shadowColor: '#00000060',
-    shadowOffset: { width: 0, height: 0 },
     shadowRadius: 5,
     elevation: 30
   }

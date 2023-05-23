@@ -45,18 +45,19 @@ export default function BasicInput ({
   )
 }
 
-export function BasicInputNoControl ({ editable, selected, setSelected, onChangeText, value, placeholder, disabled, error, multiline, inputMode }) {
+export function BasicInputNoControl ({ editable, selected, setSelected, onChangeText, value, placeholder, style, disabled, error, multiline, inputMode }) {
   return (
     <TextInput
       editable={editable}
       placeholder={placeholder}
       value={value}
-      style={[Style.input, disabled && Style.disabled, error && Style.error, selected && Style.selected]}
+      style={[Style.input, disabled && Style.disabled, error && Style.error, selected && Style.selected, style]}
       onChangeText={onChangeText}
       onBlur={() => setSelected(false)}
       onFocus={() => setSelected(true)}
       multiline={multiline}
       inputMode={inputMode}
+      cursorColor={error ? Style.errorPick : Style.selectedPick}
     />
   )
 }

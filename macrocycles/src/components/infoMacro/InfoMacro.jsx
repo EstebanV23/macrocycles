@@ -1,44 +1,88 @@
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 import Txt from '../Txt/Txt'
 import DateInput from '../dateInput/DateInput'
 import { useContext, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { RoatMapContext } from '../../store/RoadMapStore'
 import InputGeneral from '../inputGeneral/InputGeneral'
-import formatDataFromDate from '../../helpers/formatDataFromDate'
+import formatDataFromDate from '../../logic/formatDataFromDate'
 import Check from '../check/Check'
 import useHanlderDates from '../../hooks/useHanlderDates'
 import { UserContext } from '../../store/UserStore'
+import Select from '../select/Select'
+import AmountMicros from '../amountMicros/AmountMicros'
+import maxMinDaysMicros from '../../constants/maxMinDaysMicros'
+import getMicrosEquals from '../../logic/getMicrosEquals'
+import useMinMax from '../../hooks/useMinMax'
+import useInternalErros from '../../hooks/useInternalErros'
+import getAmountMicrosForAmount from '../../logic/getAmountMicrosForAmount'
 
 export default function InfoMacro () {
-  const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates()
-  const { setCurrentFunction } = useContext(RoatMapContext)
+  const { setCurrentFunction, setAmountMicros, amountMicros, setStartDate: setStartDateRoadMap, setEndDate: setEndDateRoadMap, setNameMacro, roadMap } = useContext(RoatMapContext)
+  const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates(roadMap.data.startDate, roadMap.data.endDate)
+  console.log('🚀 ~ file: InfoMacro.jsx:22 ~ InfoMacro ~ differentsDays:', differentsDays)
   const { newAlert } = useContext(UserContext)
   const [check, setCheck] = useState(false)
-  const [macroName, setMacroName] = useState('')
-  const [errors, setErrors] = useState({})
+  const [macroName, setMacroName] = useState(roadMap.data.macrocycle.name)
+  const { errors, handlerError, removeError, resetErrors } = useInternalErros()
+  const [selectedValue, setSelectedValue] = useState(amountMicros)
+  const [open, setOpen] = useState(false)
+  const [items, setItems] = useState([])
+  const [minMicros, maxMicros] = useMinMax(differentsDays)
+  const [messageAmount, setMessageAmount] = useState(null)
 
   const handlerFunction = () => {
-    console.log({ startDate, endDate, differentsDays, macroName })
+    let next = true
+
+    resetErrors()
+
     if (macroName.trim() === '') {
-      newAlert('error', 'Campos incompletos')
-      setErrors({
-        ...errors,
-        macroName: { message: 'El nombre es requerido' }
-      })
-      return false
-    } else {
-      setErrors({
-        ...errors,
-        macroName: null
-      })
+      handlerError('macroName', 'El nombre de la macrociclo es obligatorio')
+      next = false
     }
-    return false
+
+    if (!startDate) {
+      handlerError('startDate', 'La fecha de inicio es obligatoria')
+      next = false
+    }
+
+    if (!endDate) {
+      handlerError('endDate', 'La fecha de fin es obligatoria')
+      next = false
+    }
+
+    if (selectedValue < minMicros || selectedValue > maxMicros) {
+      handlerError('amount', `El número de microciclos debe estar entre ${minMicros} y ${maxMicros}`)
+      next = false
+    }
+
+    if (!next) newAlert('error', 'Hay campos obligatorios sin completar')
+
+    if (next) {
+      setNameMacro(macroName)
+      setStartDateRoadMap(startDate)
+      setEndDateRoadMap(endDate)
+    }
+    return next
   }
 
   useEffect(() => {
     setCurrentFunction(() => handlerFunction)
   }, [startDate, endDate, differentsDays, macroName])
+
+  useEffect(() => {
+    setItems(getMicrosEquals(differentsDays))
+  }, [check, differentsDays])
+
+  useEffect(() => {
+    setAmountMicros(selectedValue)
+    console.log('🚀 ~ file: InfoMacro.jsx:83 ~ useEffect ~ selectedValue:', selectedValue)
+    if (selectedValue && selectedValue >= minMicros && selectedValue <= maxMicros) {
+      const information = getAmountMicrosForAmount(differentsDays, selectedValue)
+      setMessageAmount(information.message)
+    } else {
+      setMessageAmount(null)
+    }
+  }, [selectedValue])
 
   return (
     <View>
@@ -59,14 +103,18 @@ export default function InfoMacro () {
           setValue={setStartDate}
           label='Fecha de inicio'
           value={startDate}
+          errors={errors}
+          name='startDate'
         />
         <DateInput
           setDateTop={setEndDate}
           label='Fecha de fin'
           disabled={!startDate}
-          minDate={formatDataFromDate(startDate, false, 4)}
+          minDate={formatDataFromDate(startDate, false, maxMinDaysMicros.maxDays + 1)}
           value={endDate}
           setValue={setEndDate}
+          errors={errors}
+          name='endDate'
         />
         <Check
           initialCheck={check}
@@ -75,7 +123,40 @@ export default function InfoMacro () {
           text='Duración de macrociclos iguales?'
           information='Se crearán microciclos con una duración de 4 a 15 días'
         />
+        {check &&
+          <Select
+            items={items}
+            selectedValue={selectedValue}
+            setSelectedValue={setSelectedValue}
+            open={open}
+            setOpen={setOpen}
+            setItems={setItems}
+            disabled={!check}
+            text='No hay posibilidad de microciclos iguales'
+          />}
+        {!check &&
+          <View>
+            <AmountMicros
+              minMicros={minMicros}
+              maxMicros={maxMicros}
+            />
+            <InputGeneral
+              style={{ marginTop: 10 }}
+              disabled={!endDate || !startDate}
+              errors={errors}
+              name='amount'
+              inputMode='numeric'
+              label='Número de microciclos'
+              onChangeText={setSelectedValue}
+              placeholder='Cantidad de microciclos'
+              value={selectedValue}
+              editable={Boolean(endDate) && Boolean(startDate)}
+            />
+            <Txt small quick gray style={{ marginTop: 0 }}>{messageAmount}</Txt>
+          </View>}
+
       </View>
+      <Text />
     </View>
   )
 }

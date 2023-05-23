@@ -36,6 +36,50 @@ const theme = {
       700: '#334D55',
       800: '#263B3E'
     },
+    orange: {
+      default: '#FFA500',
+      100: '#FFD8A5',
+      200: '#FFC48C',
+      300: '#FFB072',
+      400: '#FF9C59',
+      500: '#FFA500',
+      600: '#FF9100',
+      700: '#FF7D00',
+      800: '#FF6900'
+    },
+    yellow: {
+      default: '#FFD700',
+      100: '#FFF4A5',
+      200: '#FFED8C',
+      300: '#FFE672',
+      400: '#FFDF59',
+      500: '#FFD700',
+      600: '#FFD000',
+      700: '#FFC800',
+      800: '#FFC000'
+    },
+    menta: {
+      default: '#00FFC4',
+      100: '#A5FFF4',
+      200: '#8CFFED',
+      300: '#72FFE6',
+      400: '#59FFDF',
+      500: '#00FFC4',
+      600: '#00FFB0',
+      700: '#00FF9C',
+      800: '#00FF88'
+    },
+    purple: {
+      default: '#800080',
+      100: '#E5A5E5',
+      200: '#D28CD2',
+      300: '#C072C0',
+      400: '#B059B0',
+      500: '#800080',
+      600: '#6F006F',
+      700: '#5F005F',
+      800: '#4E004E'
+    },
     white: '#FFFFFF',
     buttons: {
       green: '#476B4180',
@@ -58,8 +102,8 @@ const theme = {
     small: 12,
     medium: 18,
     big: 24,
-    mediumBig: 32,
-    extraBig: 44,
+    mediumBig: 28,
+    extraBig: 40,
     lowMedium: 16
   }
 }

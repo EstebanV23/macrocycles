@@ -1,12 +1,16 @@
-import { Link } from 'react-router-native'
+import { Link, useNavigate } from 'react-router-native'
 import Txt from '../Txt/Txt'
 import StyleLinkForm from './StyleLinkForm'
+import { TouchableOpacity } from 'react-native'
 
 export default function LinkForm ({ to, children }) {
+  const navigate = useNavigate()
+  const onPressButton = () => {
+    navigate(to)
+  }
   return (
-    <Link
-      role='button'
-      to={to}
+    <TouchableOpacity
+      onPress={onPressButton}
       style={StyleLinkForm.link}
     >
       <Txt
@@ -15,6 +19,6 @@ export default function LinkForm ({ to, children }) {
       >
         {children}
       </Txt>
-    </Link>
+    </TouchableOpacity>
   )
 }

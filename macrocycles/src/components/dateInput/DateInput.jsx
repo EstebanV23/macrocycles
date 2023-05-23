@@ -2,7 +2,7 @@ import { View, TextInput, Modal } from 'react-native'
 import Style from './StyleDateInput'
 import Txt from '../Txt/Txt'
 import { useEffect, useState } from 'react'
-import formatDataFromDate from '../../helpers/formatDataFromDate'
+import formatDataFromDate from '../../logic/formatDataFromDate'
 import DateTimePicker from 'react-native-modern-datepicker'
 import { Icon, Pressable } from '@react-native-material/core'
 import theme from '../../theme/theme'
@@ -16,7 +16,9 @@ export default function DateInput ({
   minDate = formatDataFromDate(),
   disabled = false,
   setValue,
-  value
+  value,
+  errors,
+  name
 }) {
   const [open, setOpen] = useState(false)
   const currentYear = new Date().getFullYear()
@@ -30,15 +32,18 @@ export default function DateInput ({
     !disabled && setOpen(true)
   }
 
+  const error = errors[name]?.message
+
   return (
     <View>
       <View>
-        <Txt quick gray>{label}</Txt>
+        <Txt quick gray={!error} error={Boolean(error)}>{label}</Txt>
         <Pressable
           onPress={handlePress}
           style={Style.containerDateInput}
         >
           <BasicInputNoControl
+            style={{ borderColor: error ? theme.colors.red[300] : theme.colors.gray }}
             editable={false}
             placeholder='YYYY/MM/DD'
             value={value}
@@ -50,6 +55,7 @@ export default function DateInput ({
             <Icon name={value ? iconsConstants.calendarCheck : iconsConstants.calendar} size={24} color={value ? `${theme.colors.green[400]}80` : theme.colors.gray} />
           </View>
         </Pressable>
+        <Txt quick small red>{error}</Txt>
       </View>
       <Modal
         visible={open}
@@ -58,7 +64,6 @@ export default function DateInput ({
       >
         <View
           style={Style.contentModal}
-          onTouchMove={() => setOpen(false)}
         >
           <View
             style={Style.modal}
