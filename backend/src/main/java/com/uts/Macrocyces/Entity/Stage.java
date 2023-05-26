@@ -1,13 +1,10 @@
 package com.uts.Macrocyces.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @Document(collection = "stage")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -15,25 +12,24 @@ public class Stage {
 
     @MongoId
     private String id;
-    private String name;
-
-
-    @DBRef
-    private List<TimeFrame> timeFrames;
-
+    private String type;
+    private LocalDate start_date;
+    private LocalDate end_date;
 
     public Stage() {
     }
 
-    public Stage(String name, List<TimeFrame> timeFrames) {
-        this.name = name;
-        this.timeFrames = timeFrames;
+    public Stage(String name, LocalDate start_date, LocalDate end_date) {
+        this.type = name;
+        this.start_date = start_date;
+        this.end_date = end_date;
     }
 
-    public Stage(String id, String name, List<TimeFrame> timeFrames) {
+    public Stage(String id, String name, LocalDate start_date, LocalDate end_date) {
         this.id = id;
-        this.name = name;
-        this.timeFrames = timeFrames;
+        this.type = name;
+        this.start_date = start_date;
+        this.end_date = end_date;
     }
 
     public String getId() {
@@ -44,19 +40,27 @@ public class Stage {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public List<TimeFrame> getTimeFrames() {
-        return timeFrames;
+    public LocalDate getStart_date() {
+        return start_date;
     }
 
-    public void setTimeFrames(List<TimeFrame> timeFrames) {
-        this.timeFrames = timeFrames;
+    public void setStart_date(LocalDate start_date) {
+        this.start_date = start_date;
+    }
+
+    public LocalDate getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(LocalDate end_date) {
+        this.end_date = end_date;
     }
 }

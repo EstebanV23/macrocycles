@@ -1,40 +1,42 @@
 package com.uts.Macrocyces.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.util.List;
+import java.util.Objects;
 
-@Document(collection = "excercise")
+@Document(collection = "exercise")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Exercises {
+public class Exercise {
 
     @MongoId
     private String id;
     private String name;
     private String description;
-    private String duration;
-    @DBRef
-    private List<StageSession> stageSessions;
+    private int duration;
 
-    public Exercises() {
+    @DBRef
+    private SessionStage sessionStage;
+
+    public Exercise() {
     }
 
-    public Exercises(String name, String description, String duration, List<StageSession> stageSessions) {
+    public Exercise(String name, String description, int duration, SessionStage sessionStage) {
         this.name = name;
         this.description = description;
         this.duration = duration;
-        this.stageSessions = stageSessions;
+        this.sessionStage = sessionStage;
     }
 
-    public Exercises(String id, String name, String description, String duration, List<StageSession> stageSessions) {
+    public Exercise(String id, String name, String description, int duration, SessionStage sessionStage) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.duration = duration;
-        this.stageSessions = stageSessions;
+        this.sessionStage = sessionStage;
     }
 
     public String getId() {
@@ -61,19 +63,23 @@ public class Exercises {
         this.description = description;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    public List<StageSession> getStageSessions() {
-        return stageSessions;
+    public SessionStage getSessionStage() {
+        return sessionStage;
     }
 
-    public void setStageSessions(List<StageSession> stageSessions) {
-        this.stageSessions = stageSessions;
+    public void setSessionStage(SessionStage sessionStage) {
+        this.sessionStage = sessionStage;
     }
+
+
+
+
 }
