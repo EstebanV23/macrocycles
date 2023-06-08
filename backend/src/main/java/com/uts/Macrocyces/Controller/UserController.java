@@ -48,6 +48,39 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
+        try {
+            Optional<User> userOptional = userRepository.findById(id);
+            if (userOptional.isEmpty()) {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Usuario no encontrado");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            User user = userOptional.get();
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("data", user);
+            response.put("type", "success");
+            response.put("message", "Usuario encontrado");
+            response.put("status", HttpStatus.OK.value());
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al buscar el usuario");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
 
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody Map<String, Object> body) {
@@ -169,6 +202,7 @@ public class UserController {
             existingUser.setSurname(updatedUser.getSurname());
             existingUser.setEmail(updatedUser.getEmail());
             existingUser.setPassword(AESCryptoUtil.encrypt(updatedUser.getPassword()));
+            existingUser.setMacrocycles(updatedUser.getMacrocycles());
 
             User savedUser = userRepository.save(existingUser);
 
@@ -202,7 +236,6 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable("id") String id) {
         try {
-            // Buscar el usuario en la base de datos
             Optional<User> existingUser = userRepository.findById(id);
             if (!existingUser.isPresent()) {
                 Map<String, Object> response = new LinkedHashMap<>();

@@ -2,9 +2,11 @@ package com.uts.Macrocyces.Entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.uts.Macrocyces.Crypto.AESCryptoUtil;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+
+import java.util.List;
 
 
 @Document(collection = "user")
@@ -18,22 +20,27 @@ public class User {
     private String email;
     private String password;
 
+    @DBRef
+    private List<Macrocycle> macrocycles;
+
     public User() {
     }
 
-    public User(String name, String surname, String email, String password) {
+    public User(String name, String surname, String email, String password, List<Macrocycle> macrocycles) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.macrocycles = macrocycles;
     }
 
-    public User(String id, String name, String surname, String email, String password) {
+    public User(String id, String name, String surname, String email, String password, List<Macrocycle> macrocycles) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.macrocycles = macrocycles;
     }
 
     public String getId() {
@@ -68,12 +75,19 @@ public class User {
         this.email = email;
     }
 
-    public void setPassword(String password) throws Exception {
-        this.password = AESCryptoUtil.encrypt(password);
+    public String getPassword() {
+        return password;
     }
 
-    public String getPassword() throws Exception {
-        return AESCryptoUtil.decrypt(password);
+    public void setPassword(String password) {
+        this.password = password;
     }
 
+    public List<Macrocycle> getMacrocycles() {
+        return macrocycles;
+    }
+
+    public void setMacrocycles(List<Macrocycle> macrocycles) {
+        this.macrocycles = macrocycles;
+    }
 }
