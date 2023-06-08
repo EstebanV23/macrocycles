@@ -17,6 +17,8 @@ public class SessionStage {
     @DBRef
     private List<Exercise> exercises;
 
+
+
     public SessionStage() {
     }
 

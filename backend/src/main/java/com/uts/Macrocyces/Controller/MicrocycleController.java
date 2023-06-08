@@ -1,8 +1,7 @@
 package com.uts.Macrocyces.Controller;
 
-import com.uts.Macrocyces.Entity.SessionStage;
-import com.uts.Macrocyces.Repository.ExerciseRepository;
-import com.uts.Macrocyces.Repository.SessionStageRepository;
+import com.uts.Macrocyces.Entity.Microcycle;
+import com.uts.Macrocyces.Repository.MicrocycleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,56 +13,52 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/session-stage")
+@RequestMapping("/api/microcycle")
 @CrossOrigin(origins = "*")
-public class SessionStageController {
+public class MicrocycleController {
 
     @Autowired
-    private SessionStageRepository sessionStageRepository;
-
+    private MicrocycleRepository microcycleRepository;
 
 
     @GetMapping("/")
-    public ResponseEntity<Object> getAllSessionStages() {
+    public ResponseEntity<Object> getAllMicrocycles() {
         try {
-            List<SessionStage> sessionStages = sessionStageRepository.findAll();
+            List<Microcycle> microcycles = microcycleRepository.findAll();
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", sessionStages);
+            response.put("data", microcycles);
             response.put("type", "success");
-            response.put("message", "Lista de las etapas de sesiones encontrada");
+            response.put("message", "Lista de microciclos encontrada");
             response.put("status", HttpStatus.OK.value());
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar la lista de las etapas de sesiones");
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("message", "Error al buscar la lista de microciclos");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getSessionStageById(@PathVariable String id) {
+    public ResponseEntity<Object> getMicrocycleById(@PathVariable String id) {
         try {
-            Optional<SessionStage> optionalSessionStage = sessionStageRepository.findById(id);
-            if (optionalSessionStage.isPresent()) {
-                SessionStage sessionStage = optionalSessionStage.get();
-
+            Optional<Microcycle> microcycle = microcycleRepository.findById(id);
+            if (microcycle.isPresent()) {
                 Map<String, Object> response = new LinkedHashMap<>();
-                response.put("data", sessionStage);
+                response.put("data", microcycle.get());
                 response.put("type", "success");
-                response.put("message", "Etapa de sesion encontrada exitosamente");
+                response.put("message", "Microciclo encontrado exitosamente");
                 response.put("status", HttpStatus.OK.value());
 
-                return ResponseEntity.ok(response);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             } else {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "Etapa de sesion no encontrada");
+                response.put("message", "Microciclo no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -71,7 +66,7 @@ public class SessionStageController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar la etapa de sesion");
+            response.put("message", "Error al buscar el microciclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -79,21 +74,21 @@ public class SessionStageController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> createSessionStage(@RequestBody SessionStage sessionStage) {
+    public ResponseEntity<Object> addMicrocycle(@RequestBody Microcycle microcycle) {
         try {
-            SessionStage createdSessionStage = sessionStageRepository.save(sessionStage);
+            Microcycle savedMicrocycle = microcycleRepository.save(microcycle);
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", createdSessionStage);
+            response.put("data", savedMicrocycle);
             response.put("type", "success");
-            response.put("message", "Etapa de sesion creada exitosamente");
+            response.put("message", "Microciclo añadido exitosamente");
             response.put("status", HttpStatus.CREATED.value());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al crear la etapa de sesion");
+            response.put("message", "Error al añadir el microciclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -101,26 +96,31 @@ public class SessionStageController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSessionStage(@PathVariable String id, @RequestBody SessionStage updatedSessionStage) {
+    public ResponseEntity<Object> updateMicrocycle(@PathVariable String id, @RequestBody Microcycle microcycle) {
         try {
-            Optional<SessionStage> optionalSessionStage = sessionStageRepository.findById(id);
-            if (optionalSessionStage.isPresent()) {
-                SessionStage sessionStage = optionalSessionStage.get();
-                sessionStage.setName(updatedSessionStage.getName());
-                sessionStage.setExercises(updatedSessionStage.getExercises());
-                SessionStage savedSessionStage = sessionStageRepository.save(sessionStage);
+            Optional<Microcycle> existingMicrocycle = microcycleRepository.findById(id);
+            if (existingMicrocycle.isPresent()) {
+                Microcycle updatedMicrocycle = existingMicrocycle.get();
+                updatedMicrocycle.setType(microcycle.getType());
+                updatedMicrocycle.setStartDate(microcycle.getStartDate());
+                updatedMicrocycle.setEndDate(microcycle.getEndDate());
+                updatedMicrocycle.setFrequency(microcycle.getFrequency());
+                updatedMicrocycle.setTest(microcycle.getTest());
+                updatedMicrocycle.setSessions(microcycle.getSessions());
+
+                Microcycle savedMicrocycle = microcycleRepository.save(updatedMicrocycle);
 
                 Map<String, Object> response = new LinkedHashMap<>();
-                response.put("data", savedSessionStage);
+                response.put("data", savedMicrocycle);
                 response.put("type", "success");
-                response.put("message", "SessionStage actualizado exitosamente");
+                response.put("message", "Microciclo actualizado exitosamente");
                 response.put("status", HttpStatus.OK.value());
 
-                return ResponseEntity.ok(response);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             } else {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "SessionStage no encontrado");
+                response.put("message", "Microciclo no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -128,7 +128,7 @@ public class SessionStageController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al actualizar el SessionStage");
+            response.put("message", "Error al actualizar el microciclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -136,23 +136,22 @@ public class SessionStageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteSessionStage(@PathVariable String id) {
+    public ResponseEntity<Object> deleteMicrocycle(@PathVariable String id) {
         try {
-            Optional<SessionStage> optionalSessionStage = sessionStageRepository.findById(id);
-            if (optionalSessionStage.isPresent()) {
-                SessionStage sessionStage = optionalSessionStage.get();
-                sessionStageRepository.delete(sessionStage);
+            Optional<Microcycle> microcycle = microcycleRepository.findById(id);
+            if (microcycle.isPresent()) {
+                microcycleRepository.deleteById(id);
 
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "success");
-                response.put("message", "Etapa de sesion eliminada exitosamente");
+                response.put("message", "Microciclo eliminado exitosamente");
                 response.put("status", HttpStatus.OK.value());
 
-                return ResponseEntity.ok(response);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             } else {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "Etapa de sesion no encontrada");
+                response.put("message", "Microciclo no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -160,7 +159,7 @@ public class SessionStageController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al eliminar el SessionStage");
+            response.put("message", "Error al eliminar el microciclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

@@ -18,32 +18,15 @@ public class ExerciseController {
     @Autowired
     private ExerciseRepository exerciseRepository;
 
-    @Autowired
-    private SessionStageRepository sessionStageRepository;
 
     @GetMapping("/")
     public ResponseEntity<Object> getAllExercises() {
         try {
             List<Exercise> exercises = exerciseRepository.findAll();
 
-            List<Map<String, Object>> exerciseData = new ArrayList<>();
-            for (Exercise exercise : exercises) {
-                Map<String, Object> exerciseInfo = new LinkedHashMap<>();
-                exerciseInfo.put("id", exercise.getId());
-                exerciseInfo.put("name", exercise.getName());
-                exerciseInfo.put("description", exercise.getDescription());
-                exerciseInfo.put("duration", exercise.getDuration());
-
-                // Obtener el objeto SessionStage asociado a cada ejercicio
-                SessionStage sessionStage = sessionStageRepository.findById(exercise.getSessionStage().getId()).orElse(null);
-
-                exerciseInfo.put("sessionStage", sessionStage);
-
-                exerciseData.add(exerciseInfo);
-            }
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", exerciseData);
+            response.put("data", exercises);
             response.put("type", "success");
             response.put("message", "Lista de ejercicios encontrada");
             response.put("status", HttpStatus.OK.value());
@@ -58,6 +41,8 @@ public class ExerciseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getExerciseById(@PathVariable String id) {
