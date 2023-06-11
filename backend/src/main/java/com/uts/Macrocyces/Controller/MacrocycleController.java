@@ -1,7 +1,7 @@
 package com.uts.Macrocyces.Controller;
 
-import com.uts.Macrocyces.Entity.Mesocycle;
-import com.uts.Macrocyces.Repository.MesocycleRepository;
+import com.uts.Macrocyces.Entity.Macrocycle;
+import com.uts.Macrocyces.Repository.MacrocycleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,29 +13,29 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/mesocycle")
+@RequestMapping("/api/macrocycle")
 @CrossOrigin(origins = "*")
-public class MesocycleController {
+public class MacrocycleController {
 
     @Autowired
-    private MesocycleRepository mesocycleRepository;
+    private MacrocycleRepository macrocycleRepository;
 
     @GetMapping("/")
-    public ResponseEntity<Object> getAllMesocycles() {
+    public ResponseEntity<Object> getAllMacrocycles() {
         try {
-            List<Mesocycle> mesocycles = mesocycleRepository.findAll();
+            List<Macrocycle> macrocycles = macrocycleRepository.findAll();
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", mesocycles);
+            response.put("data", macrocycles);
             response.put("type", "success");
-            response.put("message", "Lista de mesociclos encontrada");
+            response.put("message", "Lista de macrociclos encontrada");
             response.put("status", HttpStatus.OK.value());
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar la lista de mesociclos");
+            response.put("message", "Error al buscar la lista de macrociclos");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -43,31 +43,31 @@ public class MesocycleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getMesocycleById(@PathVariable("id") String id) {
+    public ResponseEntity<Object> getMacrocycleById(@PathVariable("id") String id) {
         try {
-            Optional<Mesocycle> mesocycleOptional = mesocycleRepository.findById(id);
-            if (mesocycleOptional.isEmpty()) {
+            Optional<Macrocycle> macrocycleOptional = macrocycleRepository.findById(id);
+            if (macrocycleOptional.isEmpty()) {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "Mesociclo no encontrado");
+                response.put("message", "Macrociclo no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
 
-            Mesocycle mesocycle = mesocycleOptional.get();
+            Macrocycle macrocycle = macrocycleOptional.get();
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", mesocycle);
+            response.put("data", macrocycle);
             response.put("type", "success");
-            response.put("message", "Mesociclo encontrado exitosamente");
+            response.put("message", "Macrociclo encontrado");
             response.put("status", HttpStatus.OK.value());
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar el mesociclo");
+            response.put("message", "Error al buscar el macrociclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -75,21 +75,21 @@ public class MesocycleController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> addMesocycle(@RequestBody Mesocycle mesocycle) {
+    public ResponseEntity<Object> addMacrocycle(@RequestBody Macrocycle macrocycle) {
         try {
-            Mesocycle savedMesocycle = mesocycleRepository.save(mesocycle);
+            Macrocycle newMacrocycle = macrocycleRepository.save(macrocycle);
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", savedMesocycle);
+            response.put("data", newMacrocycle);
             response.put("type", "success");
-            response.put("message", "Mesociclo añadido exitosamente");
+            response.put("message", "Macrociclo añadido exitosamente");
             response.put("status", HttpStatus.CREATED.value());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al añadir el mesociclo");
+            response.put("message", "Error al añadir el macrociclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -97,37 +97,39 @@ public class MesocycleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateMesocycle(@PathVariable("id") String id, @RequestBody Mesocycle updatedMesocycle) {
+    public ResponseEntity<Object> updateMacrocycle(@PathVariable("id") String id, @RequestBody Macrocycle updatedMacrocycle) {
         try {
-            Optional<Mesocycle> mesocycleOptional = mesocycleRepository.findById(id);
-            if (mesocycleOptional.isEmpty()) {
+            Optional<Macrocycle> macrocycleOptional = macrocycleRepository.findById(id);
+            if (macrocycleOptional.isEmpty()) {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "Mesociclo no encontrado");
+                response.put("message", "Macrociclo no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
 
-            Mesocycle mesocycle = mesocycleOptional.get();
-            mesocycle.setType(updatedMesocycle.getType());
-            mesocycle.setStartDate(updatedMesocycle.getStartDate());
-            mesocycle.setEndDate(updatedMesocycle.getEndDate());
-            mesocycle.setMicrocycles(updatedMesocycle.getMicrocycles());
+            Macrocycle existingMacrocycle = macrocycleOptional.get();
+            existingMacrocycle.setName(updatedMacrocycle.getName());
+            existingMacrocycle.setStart_date(updatedMacrocycle.getStart_date());
+            existingMacrocycle.setEnd_date(updatedMacrocycle.getEnd_date());
+            existingMacrocycle.setTime_frame(updatedMacrocycle.getTime_frame());
+            existingMacrocycle.setStages(updatedMacrocycle.getStages());
+            existingMacrocycle.setMesocycles(updatedMacrocycle.getMesocycles());
 
-            updatedMesocycle = mesocycleRepository.save(mesocycle);
+            Macrocycle updatedMacrocycleEntity = macrocycleRepository.save(existingMacrocycle);
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", updatedMesocycle);
+            response.put("data", updatedMacrocycleEntity);
             response.put("type", "success");
-            response.put("message", "Mesociclo actualizado exitosamente");
+            response.put("message", "Macrociclo actualizado exitosamente");
             response.put("status", HttpStatus.OK.value());
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al actualizar el mesociclo");
+            response.put("message", "Error al actualizar el macrociclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -135,33 +137,36 @@ public class MesocycleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteMesocycle(@PathVariable("id") String id) {
+    public ResponseEntity<Object> deleteMacrocycle(@PathVariable("id") String id) {
         try {
-            Optional<Mesocycle> mesocycleOptional = mesocycleRepository.findById(id);
-            if (mesocycleOptional.isEmpty()) {
+            Optional<Macrocycle> macrocycleOptional = macrocycleRepository.findById(id);
+            if (macrocycleOptional.isEmpty()) {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "Mesociclo no encontrado");
+                response.put("message", "Macrociclo no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
 
-            mesocycleRepository.deleteById(id);
+            Macrocycle macrocycleToDelete = macrocycleOptional.get();
+            macrocycleRepository.delete(macrocycleToDelete);
 
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "success");
-            response.put("message", "Mesociclo eliminado exitosamente");
+            response.put("message", "Macrociclo eliminado exitosamente");
             response.put("status", HttpStatus.OK.value());
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al eliminar el mesociclo");
+            response.put("message", "Error al eliminar el macrociclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+
 }

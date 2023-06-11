@@ -1,7 +1,7 @@
 package com.uts.Macrocyces.Controller;
 
-import com.uts.Macrocyces.Entity.TimeFrame;
-import com.uts.Macrocyces.Repository.TimeFrameRepository;
+import com.uts.Macrocyces.Entity.Microcycle;
+import com.uts.Macrocyces.Repository.MicrocycleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,64 +13,52 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/time-frame")
+@RequestMapping("/api/microcycle")
 @CrossOrigin(origins = "*")
-public class TimeFrameController {
+public class MicrocycleController {
 
     @Autowired
-    private TimeFrameRepository timeFrameRepository;
+    private MicrocycleRepository microcycleRepository;
+
 
     @GetMapping("/")
-    public ResponseEntity<Object> getAllTimeFrames() {
+    public ResponseEntity<Object> getAllMicrocycles() {
         try {
-            List<TimeFrame> timeFrames = timeFrameRepository.findAll();
+            List<Microcycle> microcycles = microcycleRepository.findAll();
 
-            if (!timeFrames.isEmpty()) {
-                Map<String, Object> response = new LinkedHashMap<>();
-                response.put("data", timeFrames);
-                response.put("type", "success");
-                response.put("message", "Lista de los periodos encontrados");
-                response.put("status", HttpStatus.OK.value());
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("data", microcycles);
+            response.put("type", "success");
+            response.put("message", "Lista de microciclos encontrada");
+            response.put("status", HttpStatus.OK.value());
 
-                return ResponseEntity.ok(response);
-            } else {
-                Map<String, Object> response = new LinkedHashMap<>();
-                response.put("data", timeFrames);
-                response.put("type", "error");
-                response.put("message", "No se encontraron los periodos");
-                response.put("status", HttpStatus.NOT_FOUND.value());
-
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-            }
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar la lista de los periodos");
+            response.put("message", "Error al buscar la lista de microciclos");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getTimeFrameById(@PathVariable String id) {
+    public ResponseEntity<Object> getMicrocycleById(@PathVariable String id) {
         try {
-            Optional<TimeFrame> optionalTimeFrame = timeFrameRepository.findById(id);
-            if (optionalTimeFrame.isPresent()) {
-                TimeFrame timeFrame = optionalTimeFrame.get();
-
+            Optional<Microcycle> microcycle = microcycleRepository.findById(id);
+            if (microcycle.isPresent()) {
                 Map<String, Object> response = new LinkedHashMap<>();
-                response.put("data", timeFrame);
+                response.put("data", microcycle.get());
                 response.put("type", "success");
-                response.put("message", "Periodo encontrado exitosamente");
+                response.put("message", "Microciclo encontrado exitosamente");
                 response.put("status", HttpStatus.OK.value());
 
-                return ResponseEntity.ok(response);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             } else {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "Periodo no encontrado");
+                response.put("message", "Microciclo no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -78,30 +66,29 @@ public class TimeFrameController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar el Periodo");
+            response.put("message", "Error al buscar el microciclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-
     @PostMapping("")
-    public ResponseEntity<Object> createTimeFrame(@RequestBody TimeFrame timeFrame) {
+    public ResponseEntity<Object> addMicrocycle(@RequestBody Microcycle microcycle) {
         try {
-            TimeFrame createdTimeFrame = timeFrameRepository.save(timeFrame);
+            Microcycle savedMicrocycle = microcycleRepository.save(microcycle);
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", createdTimeFrame);
+            response.put("data", savedMicrocycle);
             response.put("type", "success");
-            response.put("message", "Periodo creado exitosamente");
+            response.put("message", "Microciclo añadido exitosamente");
             response.put("status", HttpStatus.CREATED.value());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al crear el periodo");
+            response.put("message", "Error al añadir el microciclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -109,27 +96,31 @@ public class TimeFrameController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateTimeFrame(@PathVariable String id, @RequestBody TimeFrame updatedTimeFrame) {
+    public ResponseEntity<Object> updateMicrocycle(@PathVariable String id, @RequestBody Microcycle microcycle) {
         try {
-            Optional<TimeFrame> optionalTimeFrame = timeFrameRepository.findById(id);
-            if (optionalTimeFrame.isPresent()) {
-                TimeFrame timeFrame = optionalTimeFrame.get();
-                timeFrame.setType(updatedTimeFrame.getType());
-                timeFrame.setStart_date(updatedTimeFrame.getStart_date());
-                timeFrame.setEnd_date(updatedTimeFrame.getEnd_date());
-                TimeFrame savedTimeFrame = timeFrameRepository.save(timeFrame);
+            Optional<Microcycle> existingMicrocycle = microcycleRepository.findById(id);
+            if (existingMicrocycle.isPresent()) {
+                Microcycle updatedMicrocycle = existingMicrocycle.get();
+                updatedMicrocycle.setType(microcycle.getType());
+                updatedMicrocycle.setStartDate(microcycle.getStartDate());
+                updatedMicrocycle.setEndDate(microcycle.getEndDate());
+                updatedMicrocycle.setFrequency(microcycle.getFrequency());
+                updatedMicrocycle.setTest(microcycle.getTest());
+                updatedMicrocycle.setSessions(microcycle.getSessions());
+
+                Microcycle savedMicrocycle = microcycleRepository.save(updatedMicrocycle);
 
                 Map<String, Object> response = new LinkedHashMap<>();
-                response.put("data", savedTimeFrame);
+                response.put("data", savedMicrocycle);
                 response.put("type", "success");
-                response.put("message", "Periodo actualizado exitosamente");
+                response.put("message", "Microciclo actualizado exitosamente");
                 response.put("status", HttpStatus.OK.value());
 
-                return ResponseEntity.ok(response);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             } else {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "Periodo no encontrado");
+                response.put("message", "Microciclo no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -137,7 +128,7 @@ public class TimeFrameController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al actualizar el Periodo");
+            response.put("message", "Error al actualizar el microciclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -145,23 +136,22 @@ public class TimeFrameController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteTimeFrame(@PathVariable String id) {
+    public ResponseEntity<Object> deleteMicrocycle(@PathVariable String id) {
         try {
-            Optional<TimeFrame> optionalTimeFrame = timeFrameRepository.findById(id);
-            if (optionalTimeFrame.isPresent()) {
-                TimeFrame timeFrame = optionalTimeFrame.get();
-                timeFrameRepository.delete(timeFrame);
+            Optional<Microcycle> microcycle = microcycleRepository.findById(id);
+            if (microcycle.isPresent()) {
+                microcycleRepository.deleteById(id);
 
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "success");
-                response.put("message", "Periodo eliminado exitosamente");
+                response.put("message", "Microciclo eliminado exitosamente");
                 response.put("status", HttpStatus.OK.value());
 
-                return ResponseEntity.ok(response);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             } else {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "Periodo no encontrado");
+                response.put("message", "Microciclo no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -169,11 +159,10 @@ public class TimeFrameController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al eliminar el TimeFrame");
+            response.put("message", "Error al eliminar el microciclo");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
 }

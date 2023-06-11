@@ -1,5 +1,6 @@
 package com.uts.Macrocyces.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -7,32 +8,29 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.List;
 
-@Document(collection = "type_time_frame")
+@Document(collection = "session_stage")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TypeTimeFrame {
+public class SessionStage {
     @MongoId
     private String id;
     private String name;
-
     @DBRef
-    private List <TimeFrame> timeFrames;
+    private List<Exercise> exercises;
 
-    public TypeTimeFrame() {
+
+
+    public SessionStage() {
     }
 
-    public TypeTimeFrame(String name) {
+    public SessionStage(String name, List<Exercise> exercises) {
         this.name = name;
+        this.exercises = exercises;
     }
 
-    public TypeTimeFrame(String name, List<TimeFrame> timeFrames) {
-        this.name = name;
-        this.timeFrames = timeFrames;
-    }
-
-    public TypeTimeFrame(String id, String name, List<TimeFrame> timeFrames) {
+    public SessionStage(String id, String name, List<Exercise> exercises) {
         this.id = id;
         this.name = name;
-        this.timeFrames = timeFrames;
+        this.exercises = exercises;
     }
 
     public String getId() {
@@ -51,11 +49,11 @@ public class TypeTimeFrame {
         this.name = name;
     }
 
-    public List<TimeFrame> getTimeFrames() {
-        return timeFrames;
+    public List<Exercise> getExercises() {
+        return exercises;
     }
 
-    public void setTimeFrames(List<TimeFrame> timeFrames) {
-        this.timeFrames = timeFrames;
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
     }
 }

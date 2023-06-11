@@ -6,30 +6,28 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDate;
 
-@Document(collection = "time_frame")
+@Document(collection = "stage")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TimeFrame {
+public class Stage {
 
     @MongoId
     private String id;
     private String type;
-
     private LocalDate start_date;
     private LocalDate end_date;
 
-
-    public TimeFrame() {
+    public Stage() {
     }
 
-    public TimeFrame(String type, LocalDate start_date, LocalDate end_date) {
-        this.type = type;
+    public Stage(String name, LocalDate start_date, LocalDate end_date) {
+        this.type = name;
         this.start_date = start_date;
         this.end_date = end_date;
     }
 
-    public TimeFrame(String id, String type, LocalDate start_date, LocalDate end_date) {
+    public Stage(String id, String name, LocalDate start_date, LocalDate end_date) {
         this.id = id;
-        this.type = type;
+        this.type = name;
         this.start_date = start_date;
         this.end_date = end_date;
     }

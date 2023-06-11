@@ -4,40 +4,43 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Document(collection = "microcycles")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Microcycle {
-
     @MongoId
     private String id;
-
-    private LocalDate start_date;
-    private LocalDate  end_date;
-
-
+    private String type;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private int frequency;
+    private String test;
     @DBRef
-    private List<Mesocycle> mesocycle;
-
-
-
+    private List<Session> sessions;
 
     public Microcycle() {
     }
 
-    public Microcycle(LocalDate start_date, LocalDate end_date,  List<Mesocycle> mesocycle) {
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.mesocycle = mesocycle;
+    public Microcycle(String type, LocalDate startDate, LocalDate endDate, int frequency, String test, List<Session> sessions) {
+        this.type = type;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.frequency = frequency;
+        this.test = test;
+        this.sessions = sessions;
     }
 
-    public Microcycle(String id, LocalDate start_date, LocalDate end_date,  List<Mesocycle> mesocycle) {
+    public Microcycle(String id, String type, LocalDate startDate, LocalDate endDate, int frequency, String test, List<Session> sessions) {
         this.id = id;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.mesocycle = mesocycle;
+        this.type = type;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.frequency = frequency;
+        this.test = test;
+        this.sessions = sessions;
     }
 
     public String getId() {
@@ -48,28 +51,51 @@ public class Microcycle {
         this.id = id;
     }
 
-    public LocalDate getStart_date() {
-        return start_date;
+    public String getType() {
+        return type;
     }
 
-    public void setStart_date(LocalDate start_date) {
-        this.start_date = start_date;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public LocalDate getEnd_date() {
-        return end_date;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setEnd_date(LocalDate end_date) {
-        this.end_date = end_date;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-
-    public List<Mesocycle> getMesocycle() {
-        return mesocycle;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setMesocycle(List<Mesocycle> mesocycle) {
-        this.mesocycle = mesocycle;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
 }
