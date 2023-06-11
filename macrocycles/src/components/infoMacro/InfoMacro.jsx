@@ -15,6 +15,7 @@ import getMicrosEquals from '../../logic/getMicrosEquals'
 import useMinMax from '../../hooks/useMinMax'
 import useInternalErros from '../../hooks/useInternalErros'
 import getAmountMicrosForAmount from '../../logic/getAmountMicrosForAmount'
+import getAmountMicrosFromDay from '../../logic/getAmountMicrosFromDay'
 
 export default function InfoMacro () {
   const { setCurrentFunction, setAmountMicros, amountMicros, setDataFirstStage, roadMap } = useContext(RoatMapContext)
@@ -73,9 +74,12 @@ export default function InfoMacro () {
   }, [check, differentsDays])
 
   useEffect(() => {
-    setAmountMicros(selectedValue)
-    if (selectedValue && selectedValue >= minMicros && selectedValue <= maxMicros) {
-      const information = getAmountMicrosForAmount(differentsDays, selectedValue)
+    if (!selectedValue) return
+    const micros = getAmountMicrosFromDay(differentsDays, selectedValue)
+    console.log('🚀 ~ file: InfoMacro.jsx:77 ~ useEffect ~ micros', micros)
+    setAmountMicros(micros)
+    if (micros && micros >= minMicros && micros <= maxMicros) {
+      const information = getAmountMicrosForAmount(differentsDays, micros)
       setMessageAmount(information.message)
     } else {
       setMessageAmount(null)
@@ -144,9 +148,9 @@ export default function InfoMacro () {
               errors={errors}
               name='amount'
               inputMode='numeric'
-              label='Número de microciclos'
+              label='Duración de los microciclos'
               onChangeText={setSelectedValue}
-              placeholder='Cantidad de microciclos'
+              placeholder='Cantidad (Días)'
               value={selectedValue}
               editable={Boolean(endDate) && Boolean(startDate)}
             />
