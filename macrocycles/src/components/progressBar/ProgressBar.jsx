@@ -1,39 +1,52 @@
 import { View } from 'react-native'
 import Style from './StyleProgressBar'
 import UnitProgress from '../unitProgress/UnitProgress'
-
-const ListProgress = ({ arrayContent, ...props }) => {
-  const widthComponent = 100 / arrayContent.length
-  const lastElement = arrayContent.length - 1
-  const unitsProgress = arrayContent.map((item, index) => (
-    <View
-      key={item.identity}
-      style={[index !== lastElement && Style.contentUnit, Style.containerProgress(widthComponent)]}
-    >
-      <UnitProgress
-        widthComponent={widthComponent}
-        {...props}
-      />
-    </View>
-  ))
-
-  return (
-    <View style={Style.containerFlex}>
-      {unitsProgress}
-    </View>
-  )
-}
+import IndicationName from '../indicationName/IndicationName'
+import { useContext } from 'react'
+import { RoatMapContext } from '../../store/RoadMapStore'
+import Txt from '../Txt/Txt'
+import formatDateToString from '../../logic/formatDateToString'
+import ListProgress from '../listProgress/ListProgress'
+import DatesBars from '../datesBars/DatesBars'
 
 export default function ProgressBar ({
   macrocycle,
   microcycles,
   mesocycles
 }) {
+  const colors = {
+    macrocycle: {
+      orange: macrocycle.name
+    },
+    mesocycle: {
+      blue: mesocycles.length > 0
+    },
+    microcycle: {
+      yellow: microcycles.length > 0
+    }
+  }
+
+  const { roadMap } = useContext(RoatMapContext)
+  const { startDate, endDate, durationInDays } = roadMap.data
+
   return (
     <View style={Style.containerUnits}>
-      <UnitProgress full={macrocycle} orange />
-      <ListProgress arrayContent={mesocycles} />
-      <ListProgress arrayContent={microcycles} blue />
+      <View style={Style.containerIndications}>
+        <IndicationName text='Macrociclos' gray {...colors.macrocycle} />
+        <IndicationName text='Periodo' gray {...colors.mesocycle} />
+        <IndicationName text='Microciclos' gray {...colors.microcycle} />
+      </View>
+      <View style={Style.containerDates}>
+        <Txt megaSmall gray>{formatDateToString(startDate)}</Txt>
+        <Txt megaSmall gray>{durationInDays} días</Txt>
+        <Txt megaSmall gray>{formatDateToString(endDate)}</Txt>
+      </View>
+      <View style={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'flex-end' }}>
+        <DatesBars days={durationInDays} endDate={endDate} startDate={startDate} />
+      </View>
+      <UnitProgress full={macrocycle} {...colors.macrocycle} />
+      <ListProgress arrayContent={mesocycles} {...colors.mesocycle} />
+      <ListProgress arrayContent={microcycles} {...colors.microcycle} />
     </View>
   )
 }

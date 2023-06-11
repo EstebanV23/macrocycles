@@ -3,7 +3,7 @@ import theme from '../../theme/theme'
 
 const StyleUnitProgress = StyleSheet.create({
   component: {
-    height: 5,
+    height: 9,
     borderRadius: 20
   },
   fullComponent: {

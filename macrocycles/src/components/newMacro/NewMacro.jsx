@@ -10,7 +10,7 @@ import Style from './StyleNewMacro'
 import ProgressBar from '../progressBar/ProgressBar'
 
 export default function NewMacro () {
-  const { roadMap, initRoadMap } = useContext(RoatMapContext)
+  const { roadMap, initRoadMap, previusStage } = useContext(RoatMapContext)
   const { data: { macrocycle, microcycles, mesocycles } } = roadMap
 
   useEffect(() => {
@@ -25,6 +25,7 @@ export default function NewMacro () {
         title='Nuevo macrociclo'
         subtitle={roadMap.currentStage.text}
         iconName={iconsConstants.newDocument}
+        onPress={() => previusStage()}
       />
       <ProgressBar
         macrocycle={macrocycle}

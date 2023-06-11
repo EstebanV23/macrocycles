@@ -24,6 +24,12 @@ export default function Txt ({
   mediumBig,
   lowMedium,
   disabled,
+  orange,
+  yellow,
+  purple,
+  menta,
+  blue,
+  extraSmall,
   ...props
 }) {
   const styleText = [
@@ -47,6 +53,12 @@ export default function Txt ({
     mediumBig && Style.mediumBig,
     red && Style.red,
     disabled && Style.disabled,
+    orange && Style.orange,
+    yellow && Style.yellow,
+    purple && Style.purple,
+    menta && Style.menta,
+    blue && Style.blue,
+    extraSmall && Style.extraSmall,
     style
   ]
   return (

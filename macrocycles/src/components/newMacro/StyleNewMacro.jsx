@@ -3,8 +3,9 @@ import theme from '../../theme/theme'
 
 const StyleNewMacro = StyleSheet.create({
   containerOutlet: {
-    paddingVertical: 40,
-    paddingHorizontal: 20
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    paddingBottom: 48 + 10
   },
   containerScroll: {
     maxHeight: Dimensions.get('screen').height - 320,

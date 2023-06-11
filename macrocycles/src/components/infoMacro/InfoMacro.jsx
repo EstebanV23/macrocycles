@@ -80,7 +80,7 @@ export default function InfoMacro () {
     } else {
       setMessageAmount(null)
     }
-  }, [selectedValue])
+  }, [selectedValue, differentsDays])
 
   return (
     <View>

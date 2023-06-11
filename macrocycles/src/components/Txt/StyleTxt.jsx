@@ -64,6 +64,24 @@ const StyleTxt = StyleSheet.create({
   },
   disabled: {
     color: theme.colors.disbaled
+  },
+  orange: {
+    color: theme.colors.orange.default
+  },
+  yellow: {
+    color: theme.colors.yellow.default
+  },
+  purple: {
+    color: theme.colors.purple.default
+  },
+  menta: {
+    color: theme.colors.menta.default
+  },
+  blue: {
+    color: theme.colors.blue.default
+  },
+  extraSmall: {
+    fontSize: theme.sizes.extraSmall
   }
 })
 

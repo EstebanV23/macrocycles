@@ -12,7 +12,6 @@ export default function HeaderBar ({ title, subtitle, iconName, onPress }) {
         <View style={Style.contentDataHeader}>
           <LinkNavbar
             icon={iconsConstants.arrowLeft}
-            to='/'
             size={26}
             style={Style.iconBack}
             onPress={onPress}

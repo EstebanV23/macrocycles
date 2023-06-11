@@ -14,12 +14,25 @@ const StyleProgressBar = StyleSheet.create({
     flexDirection: 'column',
     gap: 2
   },
+  containerIndications: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '70%',
+    gap: 15,
+    alignItems: 'flex-start'
+  },
   contentUnit: {
     paddingRight: 2
   },
   containerProgress: (width) => ({
     width: `${width}%`
-  })
+  }),
+  containerDates: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between'
+  }
 })
 
 export default StyleProgressBar

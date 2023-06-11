@@ -75,6 +75,10 @@ export default function DateInput ({
               maximumDate={limitDate}
               selected={value}
               onDateChange={handleChange}
+              options={{
+                headerFont: theme.fonts.quicksand.medium,
+                defaultFont: theme.fonts.quicksand.medium
+              }}
             />
             <View>
               <ButtonGeneral onPress={() => setOpen(false)} title='Cerrar' color={theme.colors.red[300]} tintColor={theme.colors.white} />

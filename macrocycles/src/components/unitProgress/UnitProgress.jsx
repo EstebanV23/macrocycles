@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import Style from './StyleUnitProgress'
 
-export default function UnitProgress ({ green, red, orange, blue, yellow, purple, menta }) {
+export default function UnitProgress ({ green, red, orange, blue, yellow, purple, menta, style }) {
   const styles = [
     Style.component,
     Style.transparent,
@@ -12,7 +12,8 @@ export default function UnitProgress ({ green, red, orange, blue, yellow, purple
     blue && Style.blue,
     yellow && Style.yellow,
     purple && Style.purple,
-    menta && Style.menta
+    menta && Style.menta,
+    style
   ]
   return (
     <View style={styles} />

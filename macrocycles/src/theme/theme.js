@@ -104,7 +104,8 @@ const theme = {
     big: 24,
     mediumBig: 28,
     extraBig: 40,
-    lowMedium: 16
+    lowMedium: 16,
+    extraSmall: 10,
   }
 }
 
