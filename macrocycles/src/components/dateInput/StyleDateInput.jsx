@@ -13,6 +13,9 @@ const StyleDateInput = StyleSheet.create({
     color: theme.colors.text,
     fontFamily: theme.fonts.quicksand.regular
   },
+  containerCalendar: {
+    height: Dimensions.get('screen').height * 0.6
+  },
   disabled: {
     backgroundColor: theme.colors.disbaled
   },

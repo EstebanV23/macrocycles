@@ -12,7 +12,8 @@ import DatesBars from '../datesBars/DatesBars'
 export default function ProgressBar ({
   macrocycle,
   microcycles,
-  mesocycles
+  mesocycles,
+  timeFrames
 }) {
   const colors = {
     macrocycle: {
@@ -22,7 +23,10 @@ export default function ProgressBar ({
       blue: mesocycles.length > 0
     },
     microcycle: {
-      yellow: microcycles.length > 0
+      green: microcycles.length > 0
+    },
+    timeFrame: {
+      red: timeFrames.length > 0 && timeFrames[0].startDate
     }
   }
 
@@ -45,6 +49,7 @@ export default function ProgressBar ({
         <DatesBars days={durationInDays} endDate={endDate} startDate={startDate} />
       </View>
       <UnitProgress full={macrocycle} {...colors.macrocycle} />
+      <ListProgress arrayContent={timeFrames} {...colors.timeFrame} />
       <ListProgress arrayContent={mesocycles} {...colors.mesocycle} />
       <ListProgress arrayContent={microcycles} {...colors.microcycle} />
     </View>

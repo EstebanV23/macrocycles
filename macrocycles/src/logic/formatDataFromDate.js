@@ -1,4 +1,4 @@
-const months = [
+export const months = [
   31, // January
   28, // February
   31, // March
@@ -17,7 +17,7 @@ const months = [
   * @param {string} stringDate - String with date format 'YYYY/MM/DD'
   * @param {boolean} globalDate
 */
-export default function formatDataFromDate (stringDate, globalDate, offset = 1) {
+export default function formatDataFromDate (stringDate, globalDate = true, offset = 1) {
   const isString = typeof stringDate === 'string'
   const newDate = isString && stringDate.split('/').join('-')
   const date = stringDate ? new Date(newDate) : new Date()
@@ -27,7 +27,10 @@ export default function formatDataFromDate (stringDate, globalDate, offset = 1) 
 
   const { newDays, newMonth, newYear } = getDataAfterOffset(offset, day, month, year)
 
-  const newDateFormat = globalDate ? `${newYear}-${newMonth}-${newDays}` : `${newYear}/${newMonth}/${newDays}`
+  const newDaysFormated = newDays < 10 ? `0${newDays}` : newDays
+  const newMonthFormated = newMonth < 10 ? `0${newMonth}` : newMonth
+
+  const newDateFormat = globalDate ? `${newYear}-${newMonthFormated}-${newDaysFormated}` : `${newYear}/${newMonthFormated}/${newDaysFormated}`
 
   return newDateFormat
 }

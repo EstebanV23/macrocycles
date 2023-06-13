@@ -3,12 +3,13 @@ import Style from './StyleDateInput'
 import Txt from '../Txt/Txt'
 import { useState } from 'react'
 import formatDataFromDate from '../../logic/formatDataFromDate'
-import DateTimePicker from 'react-native-modern-datepicker'
 import { Icon, Pressable } from '@react-native-material/core'
 import theme from '../../theme/theme'
 import ButtonGeneral from '../buttonGeneral/ButtonGeneral'
 import iconsConstants from '../../constants/iconConstants'
 import { BasicInputNoControl } from '../basicInput/BasicInput'
+import { CalendarList } from 'react-native-calendars'
+import limitMonthsForCalendar from '../../constants/limitMonthsForCalendar'
 
 export default function DateInput ({
   label,
@@ -68,18 +69,18 @@ export default function DateInput ({
           <View
             style={Style.modal}
           >
-            <DateTimePicker
-              mode='calendar'
-              selectorStartingYear={currentYear}
-              minimumDate={minDate}
-              maximumDate={limitDate}
-              selected={value}
-              onDateChange={handleChange}
-              options={{
-                headerFont: theme.fonts.quicksand.medium,
-                defaultFont: theme.fonts.quicksand.medium
-              }}
-            />
+            <View style={Style.containerCalendar}>
+              <CalendarList
+                futureScrollRange={limitMonthsForCalendar.FUTURE_SCROLL_RANGE}
+                pastScrollRange={0}
+                minDate={minDate}
+                current={value}
+                onDayPress={(day) => handleChange(day.dateString)}
+                markedDates={{
+                  [value]: { selected: true, selectedColor: theme.colors.green[400] }
+                }}
+              />
+            </View>
             <View>
               <ButtonGeneral onPress={() => setOpen(false)} title='Cerrar' color={theme.colors.red[300]} tintColor={theme.colors.white} />
             </View>

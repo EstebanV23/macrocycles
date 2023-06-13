@@ -18,51 +18,27 @@ import getAmountMicrosForAmount from '../../logic/getAmountMicrosForAmount'
 import getAmountMicrosFromDay from '../../logic/getAmountMicrosFromDay'
 
 export default function InfoMacro () {
-  const { setCurrentFunction, setAmountMicros, amountMicros, setDataFirstStage, roadMap } = useContext(RoatMapContext)
+  const { setCurrentFunction, setAmountMicros, amountMicros, setDataFirstStage, roadMap, setStartDate: setStartDateTop, setEndDate: setEndDateTop, setNameMacro, setDifferentDays, generateMicros } = useContext(RoatMapContext)
   const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates(roadMap.data.startDate, roadMap.data.endDate, roadMap.data.durationInDays)
   const { newAlert } = useContext(UserContext)
   const [check, setCheck] = useState(false)
   const [macroName, setMacroName] = useState(roadMap.data.macrocycle.name)
   const { errors, handlerError, removeError, resetErrors } = useInternalErros()
-  const [selectedValue, setSelectedValue] = useState(roadMap.data.amountMicros)
+  const [selectedValue, setSelectedValue] = useState(roadMap.data.initialDayMicro)
   const [open, setOpen] = useState(false)
   const [items, setItems] = useState([])
   const [minMicros, maxMicros] = useMinMax(differentsDays)
   const [messageAmount, setMessageAmount] = useState(null)
 
   const handlerFunction = () => {
-    let next = true
-
-    resetErrors()
-
-    /* if (macroName.trim() === '') {
-      handlerError('macroName', 'El nombre de la macrociclo es obligatorio')
-      next = false
+    if (!startDate || !endDate || !macroName || selectedValue < 4 || selectedValue > 14) {
+      newAlert('error', 'Todos los campos son obligatorios')
+      return false
     }
 
-    if (!startDate) {
-      handlerError('startDate', 'La fecha de inicio es obligatoria')
-      next = false
-    }
-
-    if (!endDate) {
-      handlerError('endDate', 'La fecha de fin es obligatoria')
-      next = false
-    }
-
-    if (selectedValue < minMicros || selectedValue > maxMicros) {
-      handlerError('amount', `El número de microciclos debe estar entre ${minMicros} y ${maxMicros}`)
-      next = false
-    }
-
-    if (!next) newAlert('error', 'Hay campos obligatorios sin completar') */
-
-    console.log('🚀 ~ file: InfoMacro.jsx:54 ~ handlerFunction ~ dataGroup', { startDate, endDate, macroName, selectedValue, differentsDays })
-    if (next) {
-      const { daysMicros, lastDaysMicrocycle } = getAmountMicrosForAmount(differentsDays, selectedValue)
-      next = setDataFirstStage(startDate, endDate, macroName, selectedValue, differentsDays, daysMicros, lastDaysMicrocycle)
-    }
-    return next
+    const micros = getAmountMicrosFromDay(differentsDays, selectedValue)
+    const { daysMicros, lastDaysMicrocycle } = getAmountMicrosForAmount(differentsDays, micros)
+    return setDataFirstStage(startDate, endDate, macroName, micros, differentsDays, daysMicros, lastDaysMicrocycle)
   }
 
   useEffect(() => {
@@ -70,20 +46,34 @@ export default function InfoMacro () {
   }, [startDate, endDate, differentsDays, macroName, selectedValue])
 
   useEffect(() => {
+    setStartDateTop(startDate)
+  }, [startDate])
+
+  useEffect(() => {
+    setNameMacro(macroName)
+  }, [macroName])
+
+  useEffect(() => {
+    setEndDateTop(endDate)
+  }, [endDate])
+
+  useEffect(() => {
+    setDifferentDays(differentsDays)
+  }, [differentsDays])
+
+  useEffect(() => {
     setItems(getMicrosEquals(differentsDays))
   }, [check, differentsDays])
 
   useEffect(() => {
-    if (!selectedValue) return
-    const micros = getAmountMicrosFromDay(differentsDays, selectedValue)
-    console.log('🚀 ~ file: InfoMacro.jsx:77 ~ useEffect ~ micros', micros)
-    setAmountMicros(micros)
-    if (micros && micros >= minMicros && micros <= maxMicros) {
-      const information = getAmountMicrosForAmount(differentsDays, micros)
-      setMessageAmount(information.message)
-    } else {
-      setMessageAmount(null)
+    if (!selectedValue || selectedValue < 4 || selectedValue > 14) {
+      return setMessageAmount(null)
     }
+    const micros = getAmountMicrosFromDay(differentsDays, selectedValue)
+    const { daysMicros, lastDaysMicrocycle } = getAmountMicrosForAmount(differentsDays, micros)
+    generateMicros(micros, daysMicros, lastDaysMicrocycle, startDate, endDate)
+    const information = getAmountMicrosForAmount(differentsDays, micros)
+    setMessageAmount(information.message)
   }, [selectedValue, differentsDays])
 
   return (
@@ -112,7 +102,7 @@ export default function InfoMacro () {
           setDateTop={setEndDate}
           label='Fecha de fin'
           disabled={!startDate}
-          minDate={formatDataFromDate(startDate, false, maxMinDaysMicros.maxDays + 1)}
+          minDate={formatDataFromDate(startDate, true, maxMinDaysMicros.maxDays + 10)}
           value={endDate}
           setValue={setEndDate}
           errors={errors}

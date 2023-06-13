@@ -4,19 +4,14 @@ import theme from '../../theme/theme'
 const StyleNewMacro = StyleSheet.create({
   containerOutlet: {
     paddingVertical: 5,
-    paddingHorizontal: 20,
-    paddingBottom: 48 + 10
+    paddingHorizontal: 20
   },
   containerScroll: {
-    maxHeight: Dimensions.get('screen').height - 320,
+    height: Dimensions.get('screen').height - 600,
     width: '100%',
-    borderRadius: 10,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.blue[100],
     padding: 10,
-    elevation: 4,
-    shadowColor: theme.colors.text,
-    shadowRadius: 20,
-    paddingBottom: 60
+    shadowRadius: 20
   }
 })
 

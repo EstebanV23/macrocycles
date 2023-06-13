@@ -1,11 +1,11 @@
 /**
  *
- * @param {string} date - format 'YYYY/MM/DD'
+ * @param {string} date - format 'YYYY-MM-DD'
  * @returns
  */
 export default function formatDateToString (date) {
   if (!date) return ''
-  const [year, month, day] = date.split('/')
+  const [_, month, day] = date.split('-')
   const newMonth = monthsObject[month - 1]
   const monthString = newMonth.name
   return `${monthString.substring(0, 3)} - ${day}`

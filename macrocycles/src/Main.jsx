@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-native'
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute'
 import useAlert from './hooks/useAlert'
 import Home from './components/home/Home'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { LoadingContext } from './store/LoadingStore'
 import Loader from './components/loader/Loader'
 import Register from './components/register/Register'
@@ -13,11 +13,17 @@ import NewMacro from './components/newMacro/NewMacro'
 import InfoMacro from './components/infoMacro/InfoMacro'
 import MesoInfo from './components/mesoInfo/MesoInfo'
 import FrameAndStage from './components/frameAndStage/FrameAndStage'
+import { RoatMapContext } from './store/RoadMapStore'
 
 export default function Main () {
   useAlert()
   const allFonts = useLoadFonts()
-  const { loading } = useContext(LoadingContext)
+  const { loading, setLoading } = useContext(LoadingContext)
+  const { loading: loadingRoadMap } = useContext(RoatMapContext)
+
+  useEffect(() => {
+    setLoading(loadingRoadMap)
+  }, [loadingRoadMap])
 
   if (allFonts.some(font => Boolean(font) === false)) return null
 

@@ -63,7 +63,8 @@
       "react/react-in-jsx-scope": "off",
       "camelcase": "warn",
       "prefer-regex-literals": "off",
-      "react-hooks/exhaustive-deps": "off"
+      "react-hooks/exhaustive-deps": "off",
+      "no-unused-vars": "warn"
     }
   }
 }

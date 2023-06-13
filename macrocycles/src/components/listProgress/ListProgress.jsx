@@ -16,7 +16,7 @@ export default function ListProgress ({ arrayContent, ...props }) {
   const unitsProgress = arrayContent.map((item, index) => (
     <View
       key={item.identity}
-      style={[index !== lastElement && Style.contentUnit, Style.containerProgress(widthComponent)]}
+      style={[index !== lastElement && Style.contentUnit, Style.containerProgress(item.defaultPercent ?? widthComponent)]}
     >
       <View style={Style.containerF}>
         <Txt quick extraSmall primary>{getDay(item.startDate)}</Txt>
