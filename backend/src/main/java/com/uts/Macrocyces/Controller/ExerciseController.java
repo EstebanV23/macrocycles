@@ -22,37 +22,20 @@ public class ExerciseController {
     private SessionStageRepository sessionStageRepository;
 
     @GetMapping("/")
-    public ResponseEntity<Object> getAllExercises() {
+    public ResponseEntity<Object> getExercises() {
         try {
             List<Exercise> exercises = exerciseRepository.findAll();
-
-            List<Map<String, Object>> exerciseData = new ArrayList<>();
-            for (Exercise exercise : exercises) {
-                Map<String, Object> exerciseInfo = new LinkedHashMap<>();
-                exerciseInfo.put("id", exercise.getId());
-                exerciseInfo.put("name", exercise.getName());
-                exerciseInfo.put("description", exercise.getDescription());
-                exerciseInfo.put("duration", exercise.getDuration());
-
-                // Obtener el objeto SessionStage asociado a cada ejercicio
-                SessionStage sessionStage = sessionStageRepository.findById(exercise.getSessionStage().getId()).orElse(null);
-
-                exerciseInfo.put("sessionStage", sessionStage);
-
-                exerciseData.add(exerciseInfo);
-            }
-
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("data", exerciseData);
             response.put("type", "success");
-            response.put("message", "Lista de ejercicios encontrada");
+            response.put("message", "Ejercicios obtenidos exitosamente");
             response.put("status", HttpStatus.OK.value());
+            response.put("exercises", exercises);
 
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al buscar la lista de ejercicios");
+            response.put("message", "Error al obtener los ejercicios");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -148,6 +131,58 @@ public class ExerciseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> patchUpdateExercise(@PathVariable String id, @RequestBody Exercise updatedExercise) {
+        try {
+            Optional<Exercise> optionalExercise = exerciseRepository.findById(id);
+            if (optionalExercise.isPresent()) {
+                Exercise exercise = optionalExercise.get();
+
+                // Verificar si se proporciona un nombre actualizado en el cuerpo de la solicitud
+                if (updatedExercise.getName() != null) {
+                    exercise.setName(updatedExercise.getName());
+                }
+
+                // Verificar si se proporciona una descripción actualizada en el cuerpo de la solicitud
+                if (updatedExercise.getDescription() != null) {
+                    exercise.setDescription(updatedExercise.getDescription());
+                }
+
+                // Verificar si se proporciona una duración actualizada en el cuerpo de la solicitud
+                if (updatedExercise.getDuration() != 0) {
+                    exercise.setDuration(updatedExercise.getDuration());
+                }
+
+                Exercise savedExercise = exerciseRepository.save(exercise);
+
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("data", savedExercise);
+                response.put("type", "success");
+                response.put("message", "Ejercicio actualizado exitosamente");
+                response.put("status", HttpStatus.OK.value());
+
+                return ResponseEntity.ok(response);
+            } else {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Ejercicio no encontrado");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al actualizar el Ejercicio");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteExercise(@PathVariable String id) {

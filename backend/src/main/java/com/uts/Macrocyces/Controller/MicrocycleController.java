@@ -135,6 +135,71 @@ public class MicrocycleController {
         }
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> patchUpdateMicrocycle(@PathVariable String id, @RequestBody Microcycle updatedMicrocycle) {
+        try {
+            Optional<Microcycle> optionalMicrocycle = microcycleRepository.findById(id);
+            if (optionalMicrocycle.isPresent()) {
+                Microcycle microcycle = optionalMicrocycle.get();
+
+                // Verificar si se proporciona un tipo actualizado en el cuerpo de la solicitud
+                if (updatedMicrocycle.getType() != null) {
+                    microcycle.setType(updatedMicrocycle.getType());
+                }
+
+                // Verificar si se proporciona una fecha de inicio actualizada en el cuerpo de la solicitud
+                if (updatedMicrocycle.getStartDate() != null) {
+                    microcycle.setStartDate(updatedMicrocycle.getStartDate());
+                }
+
+                // Verificar si se proporciona una fecha de finalización actualizada en el cuerpo de la solicitud
+                if (updatedMicrocycle.getEndDate() != null) {
+                    microcycle.setEndDate(updatedMicrocycle.getEndDate());
+                }
+
+                // Verificar si se proporciona una frecuencia actualizada en el cuerpo de la solicitud
+                if (updatedMicrocycle.getFrequency() != 0) {
+                    microcycle.setFrequency(updatedMicrocycle.getFrequency());
+                }
+
+                // Verificar si se proporciona una prueba actualizada en el cuerpo de la solicitud
+                if (updatedMicrocycle.getTest() != null) {
+                    microcycle.setTest(updatedMicrocycle.getTest());
+                }
+
+                // Verificar si se proporciona una lista de sesiones actualizada en el cuerpo de la solicitud
+                if (updatedMicrocycle.getSessions() != null) {
+                    microcycle.setSessions(updatedMicrocycle.getSessions());
+                }
+
+                Microcycle savedMicrocycle = microcycleRepository.save(microcycle);
+
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("data", savedMicrocycle);
+                response.put("type", "success");
+                response.put("message", "Microciclo actualizado exitosamente");
+                response.put("status", HttpStatus.OK.value());
+
+                return ResponseEntity.ok(response);
+            } else {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Microciclo no encontrado");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al actualizar el Microciclo");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteMicrocycle(@PathVariable String id) {
         try {

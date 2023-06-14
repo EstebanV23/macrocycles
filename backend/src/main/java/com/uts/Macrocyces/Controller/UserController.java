@@ -48,6 +48,8 @@ public class UserController {
         }
     }
 
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
         try {
@@ -232,6 +234,66 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> patchUpdateUser(@PathVariable String id, @RequestBody User updatedUser) {
+        try {
+            Optional<User> optionalUser = userRepository.findById(id);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+
+                // Verificar si se proporciona un nombre actualizado en el cuerpo de la solicitud
+                if (updatedUser.getName() != null) {
+                    user.setName(updatedUser.getName());
+                }
+
+                // Verificar si se proporciona un apellido actualizado en el cuerpo de la solicitud
+                if (updatedUser.getSurname() != null) {
+                    user.setSurname(updatedUser.getSurname());
+                }
+
+                // Verificar si se proporciona un correo electrónico actualizado en el cuerpo de la solicitud
+                if (updatedUser.getEmail() != null) {
+                    user.setEmail(updatedUser.getEmail());
+                }
+
+                // Verificar si se proporciona una contraseña actualizada en el cuerpo de la solicitud
+                if (updatedUser.getPassword() != null) {
+                    user.setPassword(AESCryptoUtil.encrypt(updatedUser.getPassword()));
+                }
+
+                // Verificar si se proporciona una lista de macrociclos actualizada en el cuerpo de la solicitud
+                if (updatedUser.getMacrocycles() != null) {
+                    user.setMacrocycles(updatedUser.getMacrocycles());
+                }
+
+                User savedUser = userRepository.save(user);
+
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("data", savedUser);
+                response.put("type", "success");
+                response.put("message", "Usuario actualizado exitosamente");
+                response.put("status", HttpStatus.OK.value());
+
+                return ResponseEntity.ok(response);
+            } else {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Usuario no encontrado");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al actualizar el Usuario");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable("id") String id) {

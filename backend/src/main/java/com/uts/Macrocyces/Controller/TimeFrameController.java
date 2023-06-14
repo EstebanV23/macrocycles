@@ -144,6 +144,56 @@ public class TimeFrameController {
         }
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> patchUpdateTimeFrame(@PathVariable String id, @RequestBody TimeFrame updatedTimeFrame) {
+        try {
+            Optional<TimeFrame> optionalTimeFrame = timeFrameRepository.findById(id);
+            if (optionalTimeFrame.isPresent()) {
+                TimeFrame timeFrame = optionalTimeFrame.get();
+
+                // Verificar si se proporciona un tipo actualizado en el cuerpo de la solicitud
+                if (updatedTimeFrame.getType() != null) {
+                    timeFrame.setType(updatedTimeFrame.getType());
+                }
+
+                // Verificar si se proporciona una fecha de inicio actualizada en el cuerpo de la solicitud
+                if (updatedTimeFrame.getStart_date() != null) {
+                    timeFrame.setStart_date(updatedTimeFrame.getStart_date());
+                }
+
+                // Verificar si se proporciona una fecha de finalización actualizada en el cuerpo de la solicitud
+                if (updatedTimeFrame.getEnd_date() != null) {
+                    timeFrame.setEnd_date(updatedTimeFrame.getEnd_date());
+                }
+
+                TimeFrame savedTimeFrame = timeFrameRepository.save(timeFrame);
+
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("data", savedTimeFrame);
+                response.put("type", "success");
+                response.put("message", "Periodo actualizado exitosamente");
+                response.put("status", HttpStatus.OK.value());
+
+                return ResponseEntity.ok(response);
+            } else {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Periodo no encontrado");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al actualizar el periodo");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteTimeFrame(@PathVariable String id) {
         try {

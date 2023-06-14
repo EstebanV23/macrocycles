@@ -113,14 +113,14 @@ public class SessionStageController {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("data", savedSessionStage);
                 response.put("type", "success");
-                response.put("message", "SessionStage actualizado exitosamente");
+                response.put("message", "Etapa de la sesión actualizado exitosamente");
                 response.put("status", HttpStatus.OK.value());
 
                 return ResponseEntity.ok(response);
             } else {
                 Map<String, Object> response = new LinkedHashMap<>();
                 response.put("type", "error");
-                response.put("message", "SessionStage no encontrado");
+                response.put("message", "Etapa de la sesión no encontrado");
                 response.put("status", HttpStatus.NOT_FOUND.value());
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -128,12 +128,57 @@ public class SessionStageController {
         } catch (Exception ex) {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("type", "error");
-            response.put("message", "Error al actualizar el SessionStage");
+            response.put("message", "Error al actualizar la Etapa de la sesión");
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> patchUpdateSessionStage(@PathVariable String id, @RequestBody SessionStage updatedSessionStage) {
+        try {
+            Optional<SessionStage> optionalSessionStage = sessionStageRepository.findById(id);
+            if (optionalSessionStage.isPresent()) {
+                SessionStage sessionStage = optionalSessionStage.get();
+
+                // Verificar si se proporciona un nombre actualizado en el cuerpo de la solicitud
+                if (updatedSessionStage.getName() != null) {
+                    sessionStage.setName(updatedSessionStage.getName());
+                }
+
+                // Verificar si se proporciona una lista de ejercicios actualizada en el cuerpo de la solicitud
+                if (updatedSessionStage.getExercises() != null) {
+                    sessionStage.setExercises(updatedSessionStage.getExercises());
+                }
+
+                SessionStage savedSessionStage = sessionStageRepository.save(sessionStage);
+
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("data", savedSessionStage);
+                response.put("type", "success");
+                response.put("message", "Etapa de sesión actualizada exitosamente");
+                response.put("status", HttpStatus.OK.value());
+
+                return ResponseEntity.ok(response);
+            } else {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Etapa de sesión no encontrada");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al actualizar la Etapa de sesión");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteSessionStage(@PathVariable String id) {

@@ -134,7 +134,57 @@ public class StageController {
             }
         }
 
-        @DeleteMapping("/{id}")
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> patchUpdateStage(@PathVariable String id, @RequestBody Stage updatedStage) {
+        try {
+            Optional<Stage> optionalStage = stageRepository.findById(id);
+            if (optionalStage.isPresent()) {
+                Stage stage = optionalStage.get();
+
+                // Verificar si se proporciona un tipo actualizado en el cuerpo de la solicitud
+                if (updatedStage.getType() != null) {
+                    stage.setType(updatedStage.getType());
+                }
+
+                // Verificar si se proporciona una fecha de inicio actualizada en el cuerpo de la solicitud
+                if (updatedStage.getStart_date()!= null) {
+                    stage.setStart_date(updatedStage.getStart_date());
+                }
+
+                // Verificar si se proporciona una fecha de finalización actualizada en el cuerpo de la solicitud
+                if (updatedStage.getEnd_date()!= null) {
+                    stage.setEnd_date(updatedStage.getEnd_date());
+                }
+
+                Stage savedStage = stageRepository.save(stage);
+
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("data", savedStage);
+                response.put("type", "success");
+                response.put("message", "Etapa actualizada exitosamente");
+                response.put("status", HttpStatus.OK.value());
+
+                return ResponseEntity.ok(response);
+            } else {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Etapa no encontrada");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al actualizar la Etapa");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
         public ResponseEntity<Object> deleteStage(@PathVariable String id) {
             try {
                 Optional<Stage> optionalStage = stageRepository.findById(id);
