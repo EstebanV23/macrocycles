@@ -134,6 +134,61 @@ public class MesocycleController {
         }
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> patchUpdateMesocycle(@PathVariable String id, @RequestBody Mesocycle updatedMesocycle) {
+        try {
+            Optional<Mesocycle> optionalMesocycle = mesocycleRepository.findById(id);
+            if (optionalMesocycle.isPresent()) {
+                Mesocycle mesocycle = optionalMesocycle.get();
+
+                // Verificar si se proporciona un tipo actualizado en el cuerpo de la solicitud
+                if (updatedMesocycle.getType() != null) {
+                    mesocycle.setType(updatedMesocycle.getType());
+                }
+
+                // Verificar si se proporciona una fecha de inicio actualizada en el cuerpo de la solicitud
+                if (updatedMesocycle.getStartDate() != null) {
+                    mesocycle.setStartDate(updatedMesocycle.getStartDate());
+                }
+
+                // Verificar si se proporciona una fecha de finalización actualizada en el cuerpo de la solicitud
+                if (updatedMesocycle.getEndDate() != null) {
+                    mesocycle.setEndDate(updatedMesocycle.getEndDate());
+                }
+
+                // Verificar si se proporciona una lista de microciclos actualizada en el cuerpo de la solicitud
+                if (updatedMesocycle.getMicrocycles() != null) {
+                    mesocycle.setMicrocycles(updatedMesocycle.getMicrocycles());
+                }
+
+                Mesocycle savedMesocycle = mesocycleRepository.save(mesocycle);
+
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("data", savedMesocycle);
+                response.put("type", "success");
+                response.put("message", "Mesociclo actualizado exitosamente");
+                response.put("status", HttpStatus.OK.value());
+
+                return ResponseEntity.ok(response);
+            } else {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Mesociclo no encontrado");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al actualizar el Mesociclo");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteMesocycle(@PathVariable("id") String id) {
         try {

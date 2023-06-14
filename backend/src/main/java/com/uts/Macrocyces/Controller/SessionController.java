@@ -150,6 +150,96 @@ public class SessionController {
         }
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> patchUpdateSession(@PathVariable String id, @RequestBody Session updatedSession) {
+        try {
+            Optional<Session> optionalSession = sessionRepository.findById(id);
+            if (optionalSession.isPresent()) {
+                Session session = optionalSession.get();
+
+                // Verificar si se proporciona una fecha actualizada en el cuerpo de la solicitud
+                if (updatedSession.getDate() != null) {
+                    session.setDate(updatedSession.getDate());
+                }
+
+                // Verificar si se proporciona un número de sesión actualizado en el cuerpo de la solicitud
+                if (updatedSession.getSessionNumber() != 0) {
+                    session.setSessionNumber(updatedSession.getSessionNumber());
+                }
+
+                // Verificar si se proporciona una cantidad de deportistas actualizada en el cuerpo de la solicitud
+                if (updatedSession.getAmountSportsmans() != 0) {
+                    session.setAmountSportsmans(updatedSession.getAmountSportsmans());
+                }
+
+                // Verificar si se proporciona una categoría actualizada en el cuerpo de la solicitud
+                if (updatedSession.getCategory() != null) {
+                    session.setCategory(updatedSession.getCategory());
+                }
+
+                // Verificar si se proporciona un lugar actualizado en el cuerpo de la solicitud
+                if (updatedSession.getPlace() != null) {
+                    session.setPlace(updatedSession.getPlace());
+                }
+
+                // Verificar si se proporciona un entrenador actualizado en el cuerpo de la solicitud
+                if (updatedSession.getTrainner() != null) {
+                    session.setTrainner(updatedSession.getTrainner());
+                }
+
+                // Verificar si se proporciona una lista de materiales actualizada en el cuerpo de la solicitud
+                if (updatedSession.getMaterial() != null) {
+                    session.setMaterial(updatedSession.getMaterial());
+                }
+
+                // Verificar si se proporciona un objetivo técnico actualizado en el cuerpo de la solicitud
+                if (updatedSession.getObjectiveTec() != null) {
+                    session.setObjectiveTec(updatedSession.getObjectiveTec());
+                }
+
+                // Verificar si se proporciona un objetivo físico actualizado en el cuerpo de la solicitud
+                if (updatedSession.getObjectivePhysical() != null) {
+                    session.setObjectivePhysical(updatedSession.getObjectivePhysical());
+                }
+
+                // Verificar si se proporciona un objetivo educacional actualizado en el cuerpo de la solicitud
+                if (updatedSession.getObjectiveEducational() != null) {
+                    session.setObjectiveEducational(updatedSession.getObjectiveEducational());
+                }
+
+                // Verificar si se proporciona una lista de etapas de sesión actualizada en el cuerpo de la solicitud
+                if (updatedSession.getStages() != null) {
+                    session.setStages(updatedSession.getStages());
+                }
+
+                Session savedSession = sessionRepository.save(session);
+
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("data", savedSession);
+                response.put("type", "success");
+                response.put("message", "Sesión actualizada exitosamente");
+                response.put("status", HttpStatus.OK.value());
+
+                return ResponseEntity.ok(response);
+            } else {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Sesión no encontrada");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al actualizar la Sesión");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteSession(@PathVariable String id) {
         try {
