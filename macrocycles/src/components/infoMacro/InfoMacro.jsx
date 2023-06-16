@@ -35,10 +35,7 @@ export default function InfoMacro () {
       newAlert('error', 'Todos los campos son obligatorios')
       return false
     }
-
-    const micros = getAmountMicrosFromDay(differentsDays, selectedValue)
-    const { daysMicros, lastDaysMicrocycle } = getAmountMicrosForAmount(differentsDays, micros)
-    return setDataFirstStage(startDate, endDate, macroName, micros, differentsDays, daysMicros, lastDaysMicrocycle)
+    return true
   }
 
   useEffect(() => {

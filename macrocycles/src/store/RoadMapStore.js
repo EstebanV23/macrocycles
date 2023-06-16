@@ -123,22 +123,6 @@ export default function RoadMapStore ({ children }) {
     setRoadMap(newRoapMap)
   }
 
-  const setDataFirstStage = async (startDate, endDate, name, amountMicro, differentsDays, initialDayMicro, initialLastDayMicro) => {
-    setLoading(true)
-    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
-    newRoapMap.data.startDate = startDate
-    newRoapMap.data.endDate = endDate
-    newRoapMap.data.macrocycle.name = name
-    newRoapMap.data.amountMicros = amountMicro
-    newRoapMap.data.durationInDays = differentsDays
-    newRoapMap.data.initialDayMicro = initialDayMicro
-    newRoapMap.data.initialLastDayMicro = initialLastDayMicro
-    const micros = generateMicrosWithData(amountMicro, initialDayMicro, startDate, endDate)
-    newRoapMap.data.microcycles = micros
-    setRoadMap(newRoapMap)
-    return newRoapMap
-  }
-
   const generateMicros = (amountMicro, initialDayMicro, initialLastDayMicro, startDate, endDate) => {
     setLoading(true)
     const newRoapMap = JSON.parse(JSON.stringify(roadMap))
@@ -170,7 +154,7 @@ export default function RoadMapStore ({ children }) {
     return newRoapMap
   }
 
-  const nextStage = async (roadMap) => {
+  const nextStage = async () => {
     setLoading(true)
     const currentRoapMap = JSON.parse(JSON.stringify(roadMap))
     const { currentStage } = currentRoapMap
@@ -230,7 +214,6 @@ export default function RoadMapStore ({ children }) {
     currentFunction,
     amountMicros,
     setAmountMicros,
-    setDataFirstStage,
     setStartDate,
     setEndDate,
     setNameMacro,

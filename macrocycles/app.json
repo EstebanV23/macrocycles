@@ -2,39 +2,15 @@
   "expo": {
     "name": "macrocycles",
     "slug": "macrocycles",
-    "plugins": [
-      "@react-native-google-signin/google-signin"
-    ],
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "expo": {
-      "scheme": "mycoolredirect"
-    },
-    "assetBundlePatterns": [
-      "**/*"
+    "sdkVersion": "48.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
     ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.mymacroapp.macrocycles",
-      "googleServicesFile": "./GoogleService-Info.plist"
-    },
     "android": {
-      "package": "com.mymacroapp.macrocycles",
-      "googleServicesFile": "./google-services.json",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "package": "com.brayanbevf.macrocycles"
     },
     "extra": {
       "eas": {

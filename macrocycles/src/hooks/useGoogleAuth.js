@@ -1,74 +1,52 @@
 // clientId: 595835428562-bsv74aucn08lt0k56o6ivh5ltvs960rd.apps.googleusercontent.com
-// Web: 938380144821-e4lbolkhjcskac0fuvk48gmgm3ef8m7o.apps.googleusercontent.com
+// Web: 501570667267-hlm8hto7qprh3thn62o297e3mgr9s56j.apps.googleusercontent.com
 // IOs: 938380144821-lvgs17852kh1k59bfuur6pejrt76tmnl.apps.googleusercontent.com
-// android: 938380144821-mfcq5iegq76hnebsosl557bgimbfhjst.apps.googleusercontent.com
+// android: 501570667267-h3mc48c6l9l643no9b5pdcsikp363kc4.apps.googleusercontent.com
+import * as WebBrowser from 'expo-web-browser'
+import * as Google from 'expo-auth-session/providers/google'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useEffect, useState } from 'react'
 
-// import statusCodes along with GoogleSignin
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin'
-import { useState } from 'react'
+WebBrowser.maybeCompleteAuthSession()
 
-GoogleSignin.configure({
-  webClientId: '595835428562-hdr7kbvilear7eakgg0k3qkk21tl8tsn.apps.googleusercontent.com'
-})
-
-export default function useGoogleAuth () {
+export default function useGoogleLogin () {
   const [userInfo, setUserInfo] = useState(null)
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    webClientId: '501570667267-hlm8hto7qprh3thn62o297e3mgr9s56j.apps.googleusercontent.com',
+    androidClientId: '501570667267-h3mc48c6l9l643no9b5pdcsikp363kc4.apps.googleusercontent.com'
+  })
 
-  // Somewhere in your code
-  const signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices()
-      const userInfo = await GoogleSignin.signIn()
-      setUserInfo(userInfo)
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-        console.log('Cancelado')
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-        console.log('Progress')
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-        console.log('Servicio no valido')
-      } else {
-        // some other error happened
-        console.log('otro error')
+  useEffect(() => {
+    handleSignInWithGoogle()
+  }, [])
+
+  async function handleSignInWithGoogle () {
+    const user = await AsyncStorage.getItem('user')
+    if (!user) {
+      if (response?.type === 'success') {
+        await getUserInfo(response.authentication.accessToken)
       }
+    } else {
+      setUserInfo(JSON.parse(user))
     }
   }
-  return [userInfo, signIn]
-}
 
-
-/*
-import { useContext, useState } from 'react'
-import auth from '@react-native-firebase/auth'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
-import { UserContext } from '../store/UserStore'
-
-export default function useGoogleAuth () {
-  GoogleSignin.configure({
-    webClientId: '595835428562-bsv74aucn08lt0k56o6ivh5ltvs960rd.apps.googleusercontent.com'
-  })
-  const [user, setUser] = useState(null)
-  const { newAlert } = useContext(UserContext)
-
-  async function onGoogleButtonPress () {
-    // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn()
-
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken)
-
-    // Sign-in the user with the credential
-    const user = auth().signInWithCredential(googleCredential)
-    user()
-      .then(user => setUser(user))
-      .catch(error => newAlert('error', error.message))
+  async function getUserInfo (token) {
+    if (!token) return
+    try {
+      const userInfoResponse = await fetch(
+        'https://www.googleapis.com/oauth2/v1/userinfo',
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+      const user = await userInfoResponse.json()
+      await AsyncStorage.setItem('user', JSON.stringify(user))
+      setUserInfo(user)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
-  return [user, onGoogleButtonPress]
+  return { userInfo, promptAsync }
 }
-*/
