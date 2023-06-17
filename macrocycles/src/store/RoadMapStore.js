@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import useCount from '../hooks/useCount'
 import { useNavigate } from 'react-router-native'
 import { Alert } from 'react-native'
@@ -6,9 +6,10 @@ import formatDataFromDate from '../logic/formatDataFromDate'
 import getAllDatesBetween from '../logic/getAllDatesBetween'
 import colorsSelector, { MICROCYCLE } from '../constants/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { LoadingContext } from './LoadingStore'
 import frames from '../constants/frames'
-import getMicrosPercent from '../logic/getMicrosPercent'
+import getTimeFramesPercent from '../logic/getTimeFramesPercent'
+import * as stagesMacro from '../constants/stages'
+import getStages from '../logic/getStages'
 
 export const RoatMapContext = createContext()
 
@@ -39,7 +40,7 @@ const stages = [
 const ALL_STAGES = stages.length
 const MIN_STAGE = 1
 
-const generateMicro = (startDate, endDate, identity) => {
+const generateMicro = (startDate, endDate, identity, mesos) => {
   const micro = {
     startDate,
     endDate,
@@ -53,7 +54,7 @@ const generateMicro = (startDate, endDate, identity) => {
   return micro
 }
 
-const generateMicrosWithData = (quantity, daysMicros, startDate, endDate) => {
+const generateMicrosWithData = (quantity, daysMicros, startDate, endDate, mesos) => {
   const micros = []
   const lastMicrocycle = quantity - 1
   let lastEndDate = startDate
@@ -61,7 +62,7 @@ const generateMicrosWithData = (quantity, daysMicros, startDate, endDate) => {
     const startDateMicro = lastEndDate === startDate ? lastEndDate : formatDataFromDate(lastEndDate, true, 2)
     const endDateMicro = i === lastMicrocycle ? endDate : formatDataFromDate(startDate, true, (i + 1) * daysMicros)
     lastEndDate = endDateMicro
-    micros.push(generateMicro(startDateMicro, endDateMicro, i))
+    micros.push(generateMicro(startDateMicro, endDateMicro, i, mesos))
   }
   return micros
 }
@@ -80,7 +81,8 @@ const initialRoatMap = {
     microcycles: [],
     macrocycle: {},
     mesocycles: [],
-    timeFrames: frames
+    timeFrames: frames,
+    stages: stagesMacro.stages
   }
 }
 
@@ -91,9 +93,6 @@ export default function RoadMapStore ({ children }) {
   const [amountMicros, setAmountMicros] = useState(0)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
-
-  // console.log('🚀 ~ file: RoadMapStore.js:66 ~ initialRoatMap:', initialRoatMap)
-  // console.log('🚀 ~ file: RoadMapStore.js:66 ~ roadMap:', roadMap)
 
   useEffect(() => {
     roadMap.currentStage && navigate(roadMap.currentStage.path)
@@ -128,10 +127,12 @@ export default function RoadMapStore ({ children }) {
     const newRoapMap = JSON.parse(JSON.stringify(roadMap))
     newRoapMap.data.initialDayMicro = initialDayMicro
     newRoapMap.data.initialLastDayMicro = initialLastDayMicro
-    const micros = generateMicrosWithData(amountMicro, initialDayMicro, startDate, endDate)
+    const micros = generateMicrosWithData(amountMicro, initialDayMicro, startDate, endDate, newRoapMap.data.mesocycles)
     newRoapMap.data.microcycles = micros
-    const newTimeFrames = getMicrosPercent(micros, newRoapMap.data.timeFrames)
+    const newTimeFrames = getTimeFramesPercent(micros, newRoapMap.data.timeFrames)
+    const newStages = getStages(newTimeFrames, micros, newRoapMap.data.stages)
     newRoapMap.data.timeFrames = newTimeFrames
+    newRoapMap.data.stages = newStages
     setRoadMap(newRoapMap)
     setLoading(false)
   }

@@ -8,7 +8,8 @@ const StyleButtonsBottom = StyleSheet.create({
     alignItems: 'center',
     width: Dimensions.get('window').width,
     gap: 10,
-    borderRadius: 20
+    borderRadius: 20,
+    paddingBottom: 20
   }
 })
 

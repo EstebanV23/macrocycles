@@ -84,7 +84,14 @@ const theme = {
     buttons: {
       green: '#476B4180',
       backGreen: '#A7FFBAA6'
-    }
+    },
+    mesocycle: {
+      1: '#FFA500',
+      2: '#FFD700',
+      3: '#00FFC4',
+      4: '#800080'
+    },
+    timeFrames: '#008080'
   },
   fonts: {
     quicksand: {
@@ -105,7 +112,7 @@ const theme = {
     mediumBig: 28,
     extraBig: 40,
     lowMedium: 16,
-    extraSmall: 10,
+    extraSmall: 10
   }
 }
 

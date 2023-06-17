@@ -10,6 +10,7 @@ import iconsConstants from '../../constants/iconConstants'
 import { BasicInputNoControl } from '../basicInput/BasicInput'
 import { CalendarList } from 'react-native-calendars'
 import limitMonthsForCalendar from '../../constants/limitMonthsForCalendar'
+import CalendarGeneral from '../calendarGeneral/CalendarGeneral'
 
 export default function DateInput ({
   label,
@@ -22,7 +23,6 @@ export default function DateInput ({
   name
 }) {
   const [open, setOpen] = useState(false)
-  const currentYear = new Date().getFullYear()
 
   const handleChange = (date) => {
     setValue(date)
@@ -69,16 +69,15 @@ export default function DateInput ({
           <View
             style={Style.modal}
           >
+
             <View style={Style.containerCalendar}>
-              <CalendarList
-                futureScrollRange={limitMonthsForCalendar.FUTURE_SCROLL_RANGE}
-                pastScrollRange={0}
-                minDate={minDate}
-                current={value}
+              <CalendarGeneral
                 onDayPress={(day) => handleChange(day.dateString)}
                 markedDates={{
-                  [value]: { selected: true, selectedColor: theme.colors.green[400] }
+                  [value]: { selected: true, selectedColor: theme.colors.green[400], color: theme.colors.green[400] }
                 }}
+                horizontal={false}
+                limitDate={minDate}
               />
             </View>
             <View>

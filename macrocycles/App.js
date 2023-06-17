@@ -6,9 +6,6 @@ import { UserStore } from './src/store/UserStore'
 import Toast from 'react-native-toast-message'
 import LoadingStore from './src/store/LoadingStore'
 import RoadMapStore from './src/store/RoadMapStore'
-// import * as WebBrowser from 'expo-web-browser'
-
-// WebBrowser.maybeCompleteAuthSession()
 
 export default function App () {
   return (

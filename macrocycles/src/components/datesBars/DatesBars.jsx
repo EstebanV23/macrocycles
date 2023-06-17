@@ -7,7 +7,6 @@ import Txt from '../Txt/Txt'
 export default function DatesBars ({ startDate, endDate, days }) {
   if (!startDate || !endDate || !days) return null
   const months = getDifferentsMonths(startDate, endDate, days)
-  console.log('🚀 ~ file: DatesBars.jsx:10 ~ DatesBars ~ months:', months)
   const lastMonth = months.length - 1
   return months.map((month, index) => (
     <View style={[index !== lastMonth && Styles.contentBar, Styles.containerWidth(month.percent)]} key={month.name}>

@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-native'
 import ButtonForm from '../buttonForm/ButtonForm'
 import { LoadingContext } from '../../store/LoadingStore'
 import LinkForm from '../linkForm/LinkForm'
-import ButtonGoogle from '../buttonGoogle/ButtonGoogle'
 import Visible from '../visible/Visible'
 import setDataSend from '../../logic/setDataSend'
 
@@ -73,11 +72,7 @@ export default function FormLogin () {
         <LinkForm to='/register'>
           Aún no tienes cuenta?
         </LinkForm>
-        <LinkForm to=''>
-          Olvidé contraseña
-        </LinkForm>
       </View>
-      <ButtonGoogle />
       <ButtonForm
         onPress={handleSubmit(onSubmit, dataInvalid)}
         title='Iniciar sesión >'

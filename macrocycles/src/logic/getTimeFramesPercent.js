@@ -1,4 +1,3 @@
-import colorsSelector, { TIME_FRAMES } from '../constants/colors'
 import theme from '../theme/theme'
 
 /**
@@ -6,7 +5,7 @@ import theme from '../theme/theme'
  * @param {Array} micros
  * @param {Array} timeFrames
  */
-export default function getMcrosPercent (micros, timeFrames) {
+export default function getTimeFramesPercent (micros, timeFrames) {
   const amountMicros = micros.length
 
   let lastAmount = 0
@@ -18,8 +17,8 @@ export default function getMcrosPercent (micros, timeFrames) {
     frame.startDate = microsSelf[0].startDate
     frame.endDate = microsSelf[microsSelf.length - 1].endDate
     frame.printer = {
-      [frame.startDate]: { selected: true, startingDay: true, color: theme.colors.blue.default },
-      [frame.endDate]: { selected: true, endingDay: true, color: theme.colors.blue.default }
+      [frame.startDate]: { selected: true, startingDay: true, color: theme.colors.timeFrames },
+      [frame.endDate]: { selected: true, endingDay: true, color: theme.colors.timeFrames }
     }
     lastAmount = lastAmount + getAmountMicros
     return frame
