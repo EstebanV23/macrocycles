@@ -91,7 +91,9 @@ const theme = {
       3: '#00FFC4',
       4: '#800080'
     },
-    timeFrames: '#008080'
+    timeFrames: '#008080',
+    stages: '#59FFDF',
+    micros: '#C072C0'
   },
   fonts: {
     quicksand: {

@@ -13,7 +13,8 @@ import CalendarGeneral from '../calendarGeneral/CalendarGeneral'
 
 export default function NewMacro () {
   const { roadMap, initRoadMap, previusStage } = useContext(RoatMapContext)
-  const { data: { macrocycle, microcycles, mesocycles, timeFrames } } = roadMap
+  const data = roadMap.data
+  const { macrocycle, microcycles, mesocycles, timeFrames, stages } = data
 
   useEffect(() => {
     AsyncStorage.getItem('roadMap')
@@ -34,6 +35,7 @@ export default function NewMacro () {
         microcycles={microcycles}
         mesocycles={mesocycles}
         timeFrames={timeFrames}
+        stages={stages}
       />
       <CalendarGeneral />
       <ScrollView style={Style.containerScroll}>

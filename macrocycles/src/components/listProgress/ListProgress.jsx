@@ -5,7 +5,7 @@ import Txt from '../Txt/Txt'
 
 function getDay (date) {
   if (!date) return null
-  const day = date.split('/')[2]
+  const [year, month, day] = date.split('-')
   return day
 }
 

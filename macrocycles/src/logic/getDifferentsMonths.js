@@ -1,12 +1,12 @@
 import { monthsObject } from './formatDateToString'
 
 export default function getDifferentsMonths (strartDate, endDate, days) {
-  const initMonth = Number(strartDate.split('/')[1]) - 1
-  const initDay = Number(strartDate.split('/')[2]) - 1
-  const endMonth = Number(endDate.split('/')[1]) - 1
-  const endDay = Number(endDate.split('/')[2])
-  const initYear = Number(strartDate.split('/')[0]) - 1
-  const endYear = Number(endDate.split('/')[0]) - 1
+  const initMonth = Number(strartDate.split('-')[1]) - 1
+  const initDay = Number(strartDate.split('-')[2]) - 1
+  const endMonth = Number(endDate.split('-')[1]) - 1
+  const endDay = Number(endDate.split('-')[2])
+  const initYear = Number(strartDate.split('-')[0]) - 1
+  const endYear = Number(endDate.split('-')[0]) - 1
 
   const condition = (index) => {
     return endYear > initYear ? (index >= initMonth || index <= endMonth) : (index >= initMonth && index <= endMonth)

@@ -10,6 +10,7 @@ import frames from '../constants/frames'
 import getTimeFramesPercent from '../logic/getTimeFramesPercent'
 import * as stagesMacro from '../constants/stages'
 import getStages from '../logic/getStages'
+import theme from '../theme/theme'
 
 export const RoatMapContext = createContext()
 
@@ -46,9 +47,9 @@ const generateMicro = (startDate, endDate, identity, mesos) => {
     endDate,
     identity,
     printer: {
-      [startDate]: { startingDay: true, selected: true, color: colorsSelector(MICROCYCLE, true), textColor: '#ffffff' },
-      [endDate]: { endingDay: true, selected: true, color: colorsSelector(MICROCYCLE, true), textColor: '#ffffff' },
-      ...getAllDatesBetween(startDate, endDate, 'green')
+      [startDate]: { startingDay: true, selected: true, color: theme.colors.micros, textColor: '#ffffff' },
+      [endDate]: { endingDay: true, selected: true, color: theme.colors.micros, textColor: '#ffffff' },
+      ...getAllDatesBetween(startDate, endDate, 'purple')
     }
   }
   return micro

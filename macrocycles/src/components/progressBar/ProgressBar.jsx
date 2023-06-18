@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import Style from './StyleProgressBar'
 import UnitProgress from '../unitProgress/UnitProgress'
 import IndicationName from '../indicationName/IndicationName'
@@ -13,7 +13,8 @@ export default function ProgressBar ({
   macrocycle,
   microcycles,
   mesocycles,
-  timeFrames
+  timeFrames,
+  stages
 }) {
   const colors = {
     macrocycle: {
@@ -23,10 +24,13 @@ export default function ProgressBar ({
       blue: mesocycles.length > 0
     },
     microcycle: {
-      green: microcycles.length > 0
+      purple: microcycles.length > 0
     },
     timeFrame: {
-      red: timeFrames.length > 0 && timeFrames[0].startDate
+      blue: timeFrames.length > 0 && timeFrames[0].startDate
+    },
+    stage: {
+      menta: stages.length > 0 && stages[0].startDate
     }
   }
 
@@ -37,21 +41,32 @@ export default function ProgressBar ({
     <View style={Style.containerUnits}>
       <View style={Style.containerIndications}>
         <IndicationName text='Macrociclos' gray {...colors.macrocycle} />
-        <IndicationName text='Periodo' gray {...colors.mesocycle} />
+        <IndicationName text='Periodo' gray {...colors.timeFrame} />
+        <IndicationName text='Etapa' gray {...colors.stage} />
         <IndicationName text='Microciclos' gray {...colors.microcycle} />
       </View>
-      <View style={Style.containerDates}>
-        <Txt megaSmall gray>{formatDateToString(startDate)}</Txt>
-        <Txt megaSmall gray>{durationInDays} días</Txt>
-        <Txt megaSmall gray>{formatDateToString(endDate)}</Txt>
-      </View>
-      <View style={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'flex-end' }}>
-        <DatesBars days={durationInDays} endDate={endDate} startDate={startDate} />
-      </View>
-      <UnitProgress full={macrocycle} {...colors.macrocycle} />
-      <ListProgress arrayContent={timeFrames} {...colors.timeFrame} />
-      <ListProgress arrayContent={mesocycles} {...colors.mesocycle} />
-      <ListProgress arrayContent={microcycles} {...colors.microcycle} />
+      <ScrollView
+        horizontal
+        style={Style.containerScroll}
+      >
+        <View
+          style={Style.contentUnits}
+        >
+          <View style={Style.containerDates}>
+            <Txt megaSmall gray>{formatDateToString(startDate)}</Txt>
+            <Txt megaSmall gray>{durationInDays} días</Txt>
+            <Txt megaSmall gray>{formatDateToString(endDate)}</Txt>
+          </View>
+          <View style={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'flex-end' }}>
+            <DatesBars days={durationInDays} endDate={endDate} startDate={startDate} />
+          </View>
+          <UnitProgress full={macrocycle} {...colors.macrocycle} />
+          <ListProgress arrayContent={timeFrames} {...colors.timeFrame} />
+          <ListProgress arrayContent={stages} {...colors.stage} />
+          <ListProgress arrayContent={mesocycles} {...colors.mesocycle} />
+          <ListProgress arrayContent={microcycles} {...colors.microcycle} />
+        </View>
+      </ScrollView>
     </View>
   )
 }
