@@ -57,8 +57,8 @@ const generateMicro = (startDate, endDate, id) => {
 }
 
 export const generatePrinter = (itemSelected, color, dot, micros, frames) => {
-  const objectDotStart = dot && micros && frames ? { ...getDataBetweenDates(micros, itemSelected.startDate).printer[itemSelected.startDate], ...getDataBetweenDates(frames, itemSelected.startDate).printer[itemSelected.startDate], marked: dot, dotColor: color } : { startingDay: true, selected: true, color, textColor: '#ffffff' }
-  const objectDotEnd = dot && micros && frames ? { ...getDataBetweenDates(micros, itemSelected.endDate).printer[itemSelected.endDate], ...getDataBetweenDates(frames, itemSelected.endDate).printer[itemSelected.endDate], marked: dot, dotColor: color } : { endingDay: true, selected: true, color, textColor: '#ffffff' }
+  const objectDotStart = dot && micros && frames ? { ...getDataBetweenDates(micros, itemSelected.startDate).printer[itemSelected.startDate], ...getDataBetweenDates(frames, itemSelected.startDate).printer[itemSelected.startDate], startingDay: true, selected: true, marked: true, dotColor: color } : { startingDay: true, selected: true, color, textColor: '#ffffff' }
+  const objectDotEnd = dot && micros && frames ? { ...getDataBetweenDates(micros, itemSelected.endDate).printer[itemSelected.endDate], ...getDataBetweenDates(frames, itemSelected.endDate).printer[itemSelected.endDate], endingDay: true, selected: true, marked: true, dotColor: color } : { endingDay: true, selected: true, color, textColor: '#ffffff' }
   console.log({ objectDotStart, objectDotEnd })
   const item = {
     printer: {

@@ -10,7 +10,7 @@ const listNavbar = {
   photoSession: {
     id: 2,
     iconName: iconsConstants.camera,
-    title: 'Agregar fotos de sesión',
+    title: 'Registrar Ejercicios',
     path: '/'
   },
   newMacro: {

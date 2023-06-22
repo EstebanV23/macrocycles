@@ -2,7 +2,7 @@ const iconsConstants = {
   newDocument: 'text-box-plus-outline',
   list: 'format-list-bulleted',
   run: 'run',
-  camera: 'camera-plus-outline',
+  camera: 'arm-flex',
   account: 'account-circle-outline',
   arrowLeft: 'arrow-left',
   calendar: 'calendar-month-outline',

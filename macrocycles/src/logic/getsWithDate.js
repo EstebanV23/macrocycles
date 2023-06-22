@@ -9,6 +9,6 @@ export function getFrameWithDate (frames, date) {
 }
 
 export function getDataBetweenDates (array, date) {
-  const item = array.find(element => new Date(element.startDate) >= new Date(date) && new Date(date) <= new Date(element.endDate))
+  const item = array.find(element => new Date(date) >= new Date(element.startDate) && new Date(date) <= new Date(element.endDate))
   return item
 }

@@ -22,7 +22,7 @@ export default function Home () {
           <PressableLink to='/new-macro' icon={iconsConstants.newDocument}>Crear un nuevo <Txt quick primary>macrociclo</Txt></PressableLink>
           <PressableLink to='/' icon={iconsConstants.list}>Ver tus registros de <Txt quick primary>macrociclos</Txt>.</PressableLink>
           <PressableLink to='/' icon={iconsConstants.run}>Crear una nueva <Txt quick primary>sesión</Txt> para un microciclo</PressableLink>
-          <PressableLink to='/' icon={iconsConstants.camera}>Agregar imágenes a una <Txt quick primary>sesión</Txt>.</PressableLink>
+          <PressableLink to='/' icon={iconsConstants.camera}>Agregar nuevos <Txt quick primary>ejercicios</Txt>.</PressableLink>
           <PressableLink to='/' icon={iconsConstants.account}>Ver o editar tu <Txt quick primary>perfíl</Txt>.</PressableLink>
           <Button onPress={logout} style={Style.buttonLogout} title='Cerrar sesión' color={theme.colors.blue.default} icon={iconsConstants.logout} />
         </View>

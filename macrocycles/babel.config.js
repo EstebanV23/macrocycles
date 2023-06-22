@@ -4,3 +4,4 @@ module.exports = function (api) {
     presets: ['babel-preset-expo']
   }
 }
+// Este codigo funciona para que el enrutar con react-router-native, en web, funcione correctamente
