@@ -11,6 +11,7 @@ import * as stagesMacro from '../constants/stages'
 import getStages from '../logic/getStages'
 import theme from '../theme/theme'
 import getDiferenceHours from '../logic/getDiferenceHours'
+import { getDataBetweenDates } from '../logic/getsWithDate'
 
 export const RoatMapContext = createContext()
 
@@ -41,7 +42,7 @@ const stages = [
 const ALL_STAGES = stages.length
 const MIN_STAGE = 1
 
-const generateMicro = (startDate, endDate, id, mesos) => {
+const generateMicro = (startDate, endDate, id) => {
   const micro = {
     startDate,
     endDate,
@@ -53,6 +54,19 @@ const generateMicro = (startDate, endDate, id, mesos) => {
     }
   }
   return micro
+}
+
+export const generatePrinter = (itemSelected, color, dot, micros, frames) => {
+  const objectDotStart = dot && micros && frames ? { ...getDataBetweenDates(micros, itemSelected.startDate).printer[itemSelected.startDate], ...getDataBetweenDates(frames, itemSelected.startDate).printer[itemSelected.startDate], marked: dot, dotColor: color } : { startingDay: true, selected: true, color, textColor: '#ffffff' }
+  const objectDotEnd = dot && micros && frames ? { ...getDataBetweenDates(micros, itemSelected.endDate).printer[itemSelected.endDate], ...getDataBetweenDates(frames, itemSelected.endDate).printer[itemSelected.endDate], marked: dot, dotColor: color } : { endingDay: true, selected: true, color, textColor: '#ffffff' }
+  console.log({ objectDotStart, objectDotEnd })
+  const item = {
+    printer: {
+      [itemSelected.startDate]: objectDotStart,
+      [itemSelected.endDate]: objectDotEnd
+    }
+  }
+  return item
 }
 
 const generateMicrosWithData = (quantity, daysMicros, startDate, endDate, mesos) => {
@@ -98,6 +112,16 @@ export default function RoadMapStore ({ children }) {
   useEffect(() => {
     roadMap.currentStage && navigate(roadMap.currentStage.path)
   }, [count])
+
+  const updateAll = ({ macrocycle, timeFrames, stages, mesocycles, microcycles }) => {
+    const newRoadMap = JSON.parse(JSON.stringify(roadMap))
+    newRoadMap.data.macrocycle = macrocycle ?? newRoadMap.data.macrocycle
+    newRoadMap.data.timeFrames = timeFrames ?? newRoadMap.data.timeFrames
+    newRoadMap.data.stages = stages ?? newRoadMap.data.stages
+    newRoadMap.data.mesocycles = mesocycles ?? newRoadMap.data.mesocycles
+    newRoadMap.data.microcycles = microcycles ?? newRoadMap.data.microcycles
+    setRoadMap(newRoadMap)
+  }
 
   const setStartDate = (date) => {
     const newRoapMap = JSON.parse(JSON.stringify(roadMap))
@@ -222,7 +246,8 @@ export default function RoadMapStore ({ children }) {
     setEndDate,
     setNameMacro,
     generateMicros,
-    loading
+    loading,
+    updateAll
   }
 
   return (

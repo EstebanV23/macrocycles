@@ -1,25 +1,26 @@
+import theme from '../theme/theme'
 import modifyDates from './modifyDates'
 
-export default function modifyStages (date, frames, stages, newStartDate, newEndDate) {
+export default function modifyFrames (date, frames, stages, newStartDate, newEndDate, micros) {
   const indexFrameSelected = getIndex(frames, date)
   const indexStageSelected = getIndex(stages, date)
 
   const frameSelected = frames[indexFrameSelected]
   const stageSelected = stages[indexStageSelected]
 
-  const newStages = replaceDatesWithMicros(stages, stageSelected, indexStageSelected, frameSelected, newStartDate, newEndDate)
-  const newFrames = modifyDates(frames, newStartDate, newEndDate, indexFrameSelected)
+  const newStages = replaceDatesWithMicros(stages, stageSelected, indexStageSelected, frameSelected, newStartDate, newEndDate, micros, frames)
+  const newFrames = modifyDates(frames, newStartDate, newEndDate, indexFrameSelected, theme.colors.timeFrames)
 
   return [newFrames, newStages]
 }
 
-function replaceDatesWithMicros (arrayEdit, selectedValue, indexValue, microRef, newStartDate, newEndDate) {
-  if (selectedValue.startDate === microRef.startDate) {
-    arrayEdit = modifyDates(arrayEdit, newStartDate, null, indexValue)
+function replaceDatesWithMicros (arrayEdit, selectedValue, indexValue, microRef, newStartDate, newEndDate, micros, frames) {
+  if (newStartDate && selectedValue.startDate === microRef.startDate) {
+    arrayEdit = modifyDates(arrayEdit, newStartDate, null, indexValue, theme.colors.stages, true, micros, frames)
   }
 
-  if (selectedValue.endDate === microRef.endDate) {
-    arrayEdit = modifyDates(arrayEdit, null, newEndDate, indexValue)
+  if (newEndDate && selectedValue.endDate === microRef.endDate) {
+    arrayEdit = modifyDates(arrayEdit, null, newEndDate, indexValue, theme.colors.stages, true, micros, frames)
   }
 
   return arrayEdit

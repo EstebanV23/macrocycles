@@ -12,6 +12,7 @@ export default function ItemInputDataRoadMap ({ handleCondition, limitDate, minD
       value={date}
       setValue={setDate}
       minDate={minDate}
+      errors={{}}
     />
   )
 }

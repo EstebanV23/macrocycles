@@ -28,6 +28,10 @@ const StyleDateInput = StyleSheet.create({
     position: 'relative',
     width: '100%'
   },
+  conatinerMedium: {
+    position: 'relative',
+    width: '50%'
+  },
   modal: {
     padding: 20,
     width: '95%',

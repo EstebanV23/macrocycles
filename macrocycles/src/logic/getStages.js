@@ -1,5 +1,6 @@
 import theme from '../theme/theme'
 import getAmountMicrosForAmount from './getAmountMicrosForAmount'
+import { getMicroWithDate } from './getsWithDate'
 
 export const numberStages = {
   1: 2,
@@ -27,7 +28,6 @@ export default function getStages (frames, micros, stages) {
     lastStage = lastStageNumber
     return stageContructor
   })
-  console.log({ newStages: newStages.flat(1) })
   return newStages.flat(1)
 }
 
@@ -43,13 +43,6 @@ function getMicrosFromStage (stage, micros, i, amount, frame, allMicros, allEnds
     [stage.endDate]: { ...getMicroWithDate(microsStage, stage.endDate).printer[stage.endDate], ...frame.printer[stage.endDate], selected: true, endingDay: true, dotColor: theme.colors.stages, marked: true }
   }
   const defaultPercent = allEnds ? percent * lastMicros : percent * amount
-  console.log('🚀 ~ file: getStages.js:45 ~ getMicrosFromStage ~ percent:', percent)
-  console.log('🚀 ~ file: getStages.js:45 ~ getMicrosFromStage ~ defaultPercent:', defaultPercent)
   stage.defaultPercent = defaultPercent
   return stage
-}
-
-function getMicroWithDate (micros, date) {
-  const micro = micros.find(micro => micro.startDate === date || micro.endDate === date)
-  return micro
 }

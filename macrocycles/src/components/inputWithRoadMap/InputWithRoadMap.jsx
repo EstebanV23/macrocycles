@@ -1,19 +1,22 @@
 import { View } from 'react-native'
 import availablesDates from '../../logic/availablesDates'
 import ItemInputDataRoadMap from '../itemInputDataRoadMap/ItemInputDataRoadMap'
+import Style from './StyleInputWithRoadMap'
+import Txt from '../Txt/Txt'
 
-export default function InputWithRoadMap ({ microcyles, arrayEdit, limitDate, minDate, functionModify }) {
-  const handleConditionStartDate = (date) => {
-    const available = availablesDates(microcyles, date)
+export default function InputWithRoadMap ({ microcycles, arrayEdit, limitDate, minDate, functionModify }) {
+  const handleConditionStartDate = (selectDay, newDate) => {
+    const available = availablesDates(microcycles, newDate)
+    console.log({ available, microcycles })
     if (!available) return false
-    functionModify(date)
+    functionModify(selectDay, newDate, null)
     return true
   }
 
-  const handleConditionEndDate = (date) => {
-    const available = availablesDates(microcyles, date)
+  const handleConditionEndDate = (selectDay, newDate) => {
+    const available = availablesDates(microcycles, newDate)
     if (!available) return false
-    functionModify(date)
+    functionModify(selectDay, null, newDate)
     return true
   }
   return arrayEdit.map(item => {
@@ -21,22 +24,25 @@ export default function InputWithRoadMap ({ microcyles, arrayEdit, limitDate, mi
       <View
         key={item.id}
       >
-        <ItemInputDataRoadMap
-          defaultValue={item.startDate}
-          label='Fecha de inicio'
-          handleCondition={handleConditionStartDate}
-          limitDate={limitDate}
-          minDate={minDate}
-          name={`startDate${item.id}`}
-        />
-        <ItemInputDataRoadMap
-          defaultValue={item.endDate}
-          label='Fecha de inicio'
-          handleCondition={handleConditionEndDate}
-          limitDate={limitDate}
-          minDate={minDate}
-          name={`startDate${item.id}`}
-        />
+        <Txt quick medium style={Style.textCenter}>{item.type}</Txt>
+        <View style={Style.container}>
+          <ItemInputDataRoadMap
+            defaultValue={item.startDate}
+            label='Fecha de inicio'
+            handleCondition={(date) => handleConditionStartDate(item.startDate, date)}
+            limitDate={limitDate}
+            minDate={minDate}
+            name={`startDate${item.id}`}
+          />
+          <ItemInputDataRoadMap
+            defaultValue={item.endDate}
+            label='Fecha de fin'
+            handleCondition={(date) => handleConditionEndDate(item.endDate, date)}
+            limitDate={limitDate}
+            minDate={minDate}
+            name={`startDate${item.id}`}
+          />
+        </View>
       </View>
     )
   })

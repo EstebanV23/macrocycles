@@ -1,6 +1,7 @@
+import theme from '../theme/theme'
 import modifyDates from './modifyDates'
 
-export default function modifyStages (date, frames, stages, newStartDate, newEndDate) {
+export default function modifyStages (date, frames, stages, newStartDate, newEndDate, micros) {
   const indexFrameSelected = getIndex(frames, date)
   const indexStageSelected = getIndex(stages, date)
 
@@ -8,18 +9,18 @@ export default function modifyStages (date, frames, stages, newStartDate, newEnd
   const stageSelected = stages[indexStageSelected]
 
   const newFrames = replaceDatesWithMicros(frames, frameSelected, indexFrameSelected, stageSelected, newStartDate, newEndDate)
-  const newStages = modifyDates(stages, newStartDate, newEndDate, indexStageSelected)
+  const newStages = modifyDates(stages, newStartDate, newEndDate, indexStageSelected, theme.colors.stages, true, micros, frames)
 
   return [newFrames, newStages]
 }
 
 function replaceDatesWithMicros (arrayEdit, selectedValue, indexValue, microRef, newStartDate, newEndDate) {
   if (selectedValue.startDate === microRef.startDate) {
-    arrayEdit = modifyDates(arrayEdit, newStartDate, null, indexValue)
+    arrayEdit = modifyDates(arrayEdit, newStartDate, null, indexValue, theme.colors.timeFrames)
   }
 
   if (selectedValue.endDate === microRef.endDate) {
-    arrayEdit = modifyDates(arrayEdit, null, newEndDate, indexValue)
+    arrayEdit = modifyDates(arrayEdit, null, newEndDate, indexValue, theme.colors.timeFrames)
   }
 
   return arrayEdit

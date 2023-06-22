@@ -8,8 +8,6 @@ import theme from '../../theme/theme'
 import ButtonGeneral from '../buttonGeneral/ButtonGeneral'
 import iconsConstants from '../../constants/iconConstants'
 import { BasicInputNoControl } from '../basicInput/BasicInput'
-import { CalendarList } from 'react-native-calendars'
-import limitMonthsForCalendar from '../../constants/limitMonthsForCalendar'
 import CalendarGeneral from '../calendarGeneral/CalendarGeneral'
 
 export default function DateInput ({
@@ -26,6 +24,7 @@ export default function DateInput ({
   const [open, setOpen] = useState(false)
 
   const handleChange = (date) => {
+    console.log({ date })
     if (conditionFunction) {
       const permit = conditionFunction(date)
       if (!permit) return
@@ -41,7 +40,7 @@ export default function DateInput ({
   const error = errors[name]?.message
 
   return (
-    <View>
+    <View style={conditionFunction && Style.conatinerMedium}>
       <View>
         <Txt quick gray={!error} error={Boolean(error)}>{label}</Txt>
         <Pressable
@@ -49,7 +48,7 @@ export default function DateInput ({
           style={Style.containerDateInput}
         >
           <BasicInputNoControl
-            style={{ borderColor: error ? theme.colors.red[300] : theme.colors.gray }}
+            style={[{ borderColor: error ? theme.colors.red[300] : theme.colors.gray }]}
             editable={false}
             placeholder='YYYY/MM/DD'
             value={value}
