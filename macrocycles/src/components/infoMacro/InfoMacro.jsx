@@ -16,12 +16,14 @@ import useMinMax from '../../hooks/useMinMax'
 import useInternalErros from '../../hooks/useInternalErros'
 import getAmountMicrosForAmount from '../../logic/getAmountMicrosForAmount'
 import getAmountMicrosFromDay from '../../logic/getAmountMicrosFromDay'
+import typesMacros from '../../constants/typesMacros'
 
 export default function InfoMacro () {
-  const { setCurrentFunction, setAmountMicros, roadMap, setStartDate: setStartDateTop, setEndDate: setEndDateTop, setNameMacro, generateMicros } = useContext(RoatMapContext)
+  const { setCurrentFunction, setAmountMicros, roadMap, setStartDate: setStartDateTop, setEndDate: setEndDateTop, setNameMacro, generateMicros, setTypeMacrocycle } = useContext(RoatMapContext)
   const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates(roadMap.data.startDate, roadMap.data.endDate, roadMap.data.durationInDays)
   const { newAlert } = useContext(UserContext)
   const [check, setCheck] = useState(false)
+  const [typeMacro, setTypeMacro] = useState(roadMap.data.macrocycle.typeMacrocycle)
   const [macroName, setMacroName] = useState(roadMap.data.macrocycle.name)
   const { errors, handlerError, removeError, resetErrors } = useInternalErros()
   const [selectedValue, setSelectedValue] = useState(roadMap.data.initialDayMicro)
@@ -29,6 +31,7 @@ export default function InfoMacro () {
   const [items, setItems] = useState([])
   const [minMicros, maxMicros] = useMinMax(differentsDays)
   const [messageAmount, setMessageAmount] = useState(null)
+  const [openType, setOpenType] = useState(false)
 
   const handlerFunction = () => {
     if (!startDate || !endDate || !macroName || selectedValue < 4 || selectedValue > 14) {
@@ -42,6 +45,10 @@ export default function InfoMacro () {
     setCurrentFunction(() => handlerFunction)
   }, [startDate, endDate, differentsDays, macroName, selectedValue])
 
+  useEffect(() => {
+    setTypeMacrocycle(typeMacro)
+  }, [typeMacro])
+ 
   useEffect(() => {
     setStartDateTop(startDate)
     setStartDate(startDate)
@@ -85,6 +92,14 @@ export default function InfoMacro () {
           placeholder='Nombre de la macrociclo'
           required
           errors={errors}
+        />
+        <Select
+          items={typesMacros}
+          text='Tipo de macrociclo'
+          selectedValue={typeMacro}
+          setSelectedValue={setTypeMacro}
+          open={openType}
+          setOpen={setOpenType}
         />
         <DateInput
           setValue={setStartDate}

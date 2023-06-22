@@ -97,7 +97,8 @@ const initialRoatMap = {
     macrocycle: {},
     mesocycles: [],
     timeFrames: frames,
-    stages: stagesMacro.stages
+    stages: stagesMacro.stages,
+    typeMacrocycle: null
   }
 }
 
@@ -120,6 +121,12 @@ export default function RoadMapStore ({ children }) {
     newRoadMap.data.stages = stages ?? newRoadMap.data.stages
     newRoadMap.data.mesocycles = mesocycles ?? newRoadMap.data.mesocycles
     newRoadMap.data.microcycles = microcycles ?? newRoadMap.data.microcycles
+    setRoadMap(newRoadMap)
+  }
+
+  const setTypeMacrocycle = (type) => {
+    const newRoadMap = JSON.parse(JSON.stringify(roadMap))
+    newRoadMap.data.typeMacrocycle = type
     setRoadMap(newRoadMap)
   }
 
@@ -247,7 +254,8 @@ export default function RoadMapStore ({ children }) {
     setNameMacro,
     generateMicros,
     loading,
-    updateAll
+    updateAll,
+    setTypeMacrocycle
   }
 
   return (
