@@ -18,7 +18,7 @@ import getAmountMicrosForAmount from '../../logic/getAmountMicrosForAmount'
 import getAmountMicrosFromDay from '../../logic/getAmountMicrosFromDay'
 
 export default function InfoMacro () {
-  const { setCurrentFunction, setAmountMicros, roadMap, setStartDate: setStartDateTop, setEndDate: setEndDateTop, setNameMacro, setDifferentDays, generateMicros } = useContext(RoatMapContext)
+  const { setCurrentFunction, setAmountMicros, roadMap, setStartDate: setStartDateTop, setEndDate: setEndDateTop, setNameMacro, generateMicros } = useContext(RoatMapContext)
   const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates(roadMap.data.startDate, roadMap.data.endDate, roadMap.data.durationInDays)
   const { newAlert } = useContext(UserContext)
   const [check, setCheck] = useState(false)
@@ -55,10 +55,6 @@ export default function InfoMacro () {
     setEndDateTop(endDate)
     setEndDate(endDate)
   }, [endDate])
-
-  useEffect(() => {
-    setDifferentDays(differentsDays)
-  }, [differentsDays])
 
   useEffect(() => {
     setItems(getMicrosEquals(differentsDays))

@@ -6,25 +6,25 @@ export const namesFrames = {
 
 const frames = [
   {
-    name: 'Preparatório',
+    type: 'Preparatório',
     startDate: null,
     endDate: null,
     defaultPercent: 60,
-    identity: '03121'
+    id: '03121'
   },
   {
-    name: 'Competitivo',
+    type: 'Competitivo',
     startDate: null,
     endDate: null,
     defaultPercent: 30,
-    identity: '03122'
+    id: '03122'
   },
   {
-    name: 'Transitório',
+    type: 'Transitório',
     startDate: null,
     endDate: null,
     defaultPercent: 10,
-    identity: '03123'
+    id: '03123'
   }
 ]
 

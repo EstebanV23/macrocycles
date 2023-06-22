@@ -6,8 +6,9 @@
  */
 
 export default function getDiferenceHours (initDate, endDate) {
-  const newInitDate = initDate.split('/').join('-')
-  const newEndDate = endDate.split('/').join('-')
+  if (!initDate || !endDate) return { hours: 0, minutes: 0, seconds: 0, days: 0, ms: 0, years: 0 }
+  const newInitDate = initDate.split('-').join('-')
+  const newEndDate = endDate.split('-').join('-')
 
   const init = new Date(newInitDate)
   const end = new Date(newEndDate)

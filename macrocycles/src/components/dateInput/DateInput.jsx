@@ -20,11 +20,16 @@ export default function DateInput ({
   setValue,
   value,
   errors,
-  name
+  name,
+  conditionFunction
 }) {
   const [open, setOpen] = useState(false)
 
   const handleChange = (date) => {
+    if (conditionFunction) {
+      const permit = conditionFunction(date)
+      if (!permit) return
+    }
     setValue(date)
     setOpen(false)
   }

@@ -9,9 +9,11 @@ const StyleProgressBar = StyleSheet.create({
   contentUnits: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 5,
-    width: 900
+    gap: 5
   },
+  widthUnits: (width) => ({
+    width: width * 50
+  }),
   containerUnits: {
     marginVertical: 10,
     width: Dimensions.get('window').width - 40,

@@ -2,6 +2,9 @@ import { View } from 'react-native'
 import UnitProgress from '../unitProgress/UnitProgress'
 import Style from './StyleListProgress'
 import Txt from '../Txt/Txt'
+import { useContext } from 'react'
+import { RoatMapContext } from '../../store/RoadMapStore'
+import getDiferenceHours from '../../logic/getDiferenceHours'
 
 function getDay (date) {
   if (!date) return null
@@ -10,24 +13,31 @@ function getDay (date) {
 }
 
 export default function ListProgress ({ arrayContent, ...props }) {
-  const widthComponent = 100 / arrayContent.length
+  const { roadMap } = useContext(RoatMapContext)
+  const { durationInDays } = roadMap.data
+  const widthUnit = 100 / arrayContent.length
   const lastElement = arrayContent.length - 1
   if (arrayContent.length === 0) return (<UnitProgress />)
-  const unitsProgress = arrayContent.map((item, index) => (
-    <View
-      key={item.identity}
-      style={[index !== lastElement && Style.contentUnit, Style.containerProgress(item.defaultPercent ?? widthComponent)]}
-    >
-      <View style={Style.containerF}>
-        <Txt quick extraSmall primary>{getDay(item.startDate)}</Txt>
-        <Txt quick extraSmall primary>{getDay(item.endDate)}</Txt>
+  const unitsProgress = arrayContent.map((item, index) => {
+    const { days } = getDiferenceHours(item.startDate, item.endDate)
+    const widthComponent = ((days + 1) * 100) / durationInDays
+    return (
+      <View
+        key={item.id}
+        style={[index !== lastElement && Style.contentUnit, Style.containerProgress(widthComponent || item.defaultPercent || widthUnit)]}
+      >
+        <View style={Style.containerF}>
+          <Txt quick extraSmall primary>{getDay(item.startDate)}</Txt>
+          <Txt quick extraSmall primary>{item.startDate && item.type}</Txt>
+          <Txt quick extraSmall primary>{getDay(item.endDate)}</Txt>
+        </View>
+        <UnitProgress
+          widthComponent={widthComponent}
+          {...props}
+        />
       </View>
-      <UnitProgress
-        widthComponent={widthComponent}
-        {...props}
-      />
-    </View>
-  ))
+    )
+  })
 
   return (
     <View style={Style.containerFlex}>

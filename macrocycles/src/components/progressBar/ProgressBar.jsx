@@ -50,7 +50,7 @@ export default function ProgressBar ({
         style={Style.containerScroll}
       >
         <View
-          style={Style.contentUnits}
+          style={[Style.contentUnits, Style.widthUnits(microcycles.length > 22 ? microcycles.length : 22)]}
         >
           <View style={Style.containerDates}>
             <Txt megaSmall gray>{formatDateToString(startDate)}</Txt>

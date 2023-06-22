@@ -1,37 +1,37 @@
 export const stages = [
   {
-    identity: '000123',
+    id: '000123',
     startDate: null,
     endDate: null,
-    name: 'general',
+    type: 'general',
     printer: null
   },
   {
-    identity: '000124',
+    id: '000124',
     startDate: null,
     endDate: null,
-    name: 'especial',
+    type: 'especial',
     printer: null
   },
   {
-    identity: '000125',
+    id: '000125',
     startDate: null,
     endDate: null,
-    name: 'precompetitivo',
+    type: 'precompetitivo',
     printer: null
   },
   {
-    identity: '000126',
+    id: '000126',
     startDate: null,
     endDate: null,
-    name: 'competitivo',
+    type: 'competitivo',
     printer: null
   },
   {
-    identity: '000127',
+    id: '000127',
     startDate: null,
     endDate: null,
-    name: 'transitorio',
+    type: 'transitorio',
     printer: null
   }
 ]

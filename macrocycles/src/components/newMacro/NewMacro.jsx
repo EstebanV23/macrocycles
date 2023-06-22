@@ -37,8 +37,8 @@ export default function NewMacro () {
         timeFrames={timeFrames}
         stages={stages}
       />
-      <CalendarGeneral />
       <ScrollView style={Style.containerScroll}>
+        <CalendarGeneral />
         <View style={Style.contentGeneral}>
           <View style={Style.containerOutlet}>
             <Outlet />

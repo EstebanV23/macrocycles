@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-native'
 import { Alert } from 'react-native'
 import formatDataFromDate from '../logic/formatDataFromDate'
 import getAllDatesBetween from '../logic/getAllDatesBetween'
-import colorsSelector, { MICROCYCLE } from '../constants/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import frames from '../constants/frames'
 import getTimeFramesPercent from '../logic/getTimeFramesPercent'
 import * as stagesMacro from '../constants/stages'
 import getStages from '../logic/getStages'
 import theme from '../theme/theme'
+import getDiferenceHours from '../logic/getDiferenceHours'
 
 export const RoatMapContext = createContext()
 
@@ -41,11 +41,11 @@ const stages = [
 const ALL_STAGES = stages.length
 const MIN_STAGE = 1
 
-const generateMicro = (startDate, endDate, identity, mesos) => {
+const generateMicro = (startDate, endDate, id, mesos) => {
   const micro = {
     startDate,
     endDate,
-    identity,
+    id,
     printer: {
       [startDate]: { startingDay: true, selected: true, color: theme.colors.micros, textColor: '#ffffff' },
       [endDate]: { endingDay: true, selected: true, color: theme.colors.micros, textColor: '#ffffff' },
@@ -102,12 +102,10 @@ export default function RoadMapStore ({ children }) {
   const setStartDate = (date) => {
     const newRoapMap = JSON.parse(JSON.stringify(roadMap))
     newRoapMap.data.startDate = date
-    setRoadMap(newRoapMap)
-  }
-
-  const setDifferentDays = (days) => {
-    const newRoapMap = JSON.parse(JSON.stringify(roadMap))
-    newRoapMap.data.durationInDays = days
+    if (newRoapMap.data.endDate) {
+      const { days } = getDiferenceHours(date, newRoapMap.data.endDate)
+      newRoapMap.data.durationInDays = days + 1
+    }
     setRoadMap(newRoapMap)
   }
 
@@ -120,6 +118,10 @@ export default function RoadMapStore ({ children }) {
   const setEndDate = (date) => {
     const newRoapMap = JSON.parse(JSON.stringify(roadMap))
     newRoapMap.data.endDate = date
+    if (newRoapMap.data.startDate) {
+      const { days } = getDiferenceHours(newRoapMap.data.startDate, date)
+      newRoapMap.data.durationInDays = days + 1
+    }
     setRoadMap(newRoapMap)
   }
 
@@ -219,7 +221,6 @@ export default function RoadMapStore ({ children }) {
     setStartDate,
     setEndDate,
     setNameMacro,
-    setDifferentDays,
     generateMicros,
     loading
   }
