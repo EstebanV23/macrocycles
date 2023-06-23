@@ -5,11 +5,14 @@ export default function modifyFrames (date, frames, stages, newStartDate, newEnd
   const indexFrameSelected = getIndex(frames, date)
   const indexStageSelected = getIndex(stages, date)
 
-  const frameSelected = frames[indexFrameSelected]
+  const frameCopy = frames.map(item => item)
+
+  const frameSelected = frameCopy[indexFrameSelected]
   const stageSelected = stages[indexStageSelected]
 
-  const newStages = replaceDatesWithMicros(stages, stageSelected, indexStageSelected, frameSelected, newStartDate, newEndDate, micros, frames)
+  replaceDatesWithMicros(stages, stageSelected, indexStageSelected, frameSelected, newStartDate, newEndDate, micros, frames)
   const newFrames = modifyDates(frames, newStartDate, newEndDate, indexFrameSelected, theme.colors.timeFrames)
+  const newStages = replaceDatesWithMicros(stages, stageSelected, indexStageSelected, frameSelected, newStartDate, newEndDate, micros, frames)
 
   return [newFrames, newStages]
 }

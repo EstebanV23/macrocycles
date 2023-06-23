@@ -114,6 +114,18 @@ export default function RoadMapStore ({ children }) {
     roadMap.currentStage && navigate(roadMap.currentStage.path)
   }, [count])
 
+  const previewMeso = (meso, currentPosition) => {
+    const newRoadMap = JSON.parse(JSON.stringify(roadMap))
+    newRoadMap.data.mesocycles[currentPosition] = meso
+    setRoadMap(newRoadMap)
+  }
+
+  const addMesos = (meso) => {
+    const newRoadMap = JSON.parse(JSON.stringify(roadMap))
+    newRoadMap.data.mesocycles.push(meso)
+    setRoadMap(newRoadMap)
+  }
+
   const updateAll = ({ macrocycle, timeFrames, stages, mesocycles, microcycles }) => {
     const newRoadMap = JSON.parse(JSON.stringify(roadMap))
     newRoadMap.data.macrocycle = macrocycle ?? newRoadMap.data.macrocycle
@@ -255,7 +267,9 @@ export default function RoadMapStore ({ children }) {
     generateMicros,
     loading,
     updateAll,
-    setTypeMacrocycle
+    setTypeMacrocycle,
+    addMesos,
+    previewMeso
   }
 
   return (

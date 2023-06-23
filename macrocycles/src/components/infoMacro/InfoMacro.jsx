@@ -19,13 +19,13 @@ import getAmountMicrosFromDay from '../../logic/getAmountMicrosFromDay'
 import typesMacros from '../../constants/typesMacros'
 
 export default function InfoMacro () {
-  const { setCurrentFunction, setAmountMicros, roadMap, setStartDate: setStartDateTop, setEndDate: setEndDateTop, setNameMacro, generateMicros, setTypeMacrocycle } = useContext(RoatMapContext)
+  const { setCurrentFunction, roadMap, setStartDate: setStartDateTop, setEndDate: setEndDateTop, setNameMacro, generateMicros, setTypeMacrocycle } = useContext(RoatMapContext)
   const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates(roadMap.data.startDate, roadMap.data.endDate, roadMap.data.durationInDays)
   const { newAlert } = useContext(UserContext)
   const [check, setCheck] = useState(false)
   const [typeMacro, setTypeMacro] = useState(roadMap.data.macrocycle.typeMacrocycle)
   const [macroName, setMacroName] = useState(roadMap.data.macrocycle.name)
-  const { errors, handlerError, removeError, resetErrors } = useInternalErros()
+  const { errors } = useInternalErros()
   const [selectedValue, setSelectedValue] = useState(roadMap.data.initialDayMicro)
   const [open, setOpen] = useState(false)
   const [items, setItems] = useState([])
@@ -34,7 +34,7 @@ export default function InfoMacro () {
   const [openType, setOpenType] = useState(false)
 
   const handlerFunction = () => {
-    if (!startDate || !endDate || !macroName || selectedValue < 4 || selectedValue > 14) {
+    if (typeMacro === null || !startDate || !endDate || !macroName || selectedValue < 4 || selectedValue > 14) {
       newAlert('error', 'Todos los campos son obligatorios')
       return false
     }
@@ -48,7 +48,7 @@ export default function InfoMacro () {
   useEffect(() => {
     setTypeMacrocycle(typeMacro)
   }, [typeMacro])
- 
+
   useEffect(() => {
     setStartDateTop(startDate)
     setStartDate(startDate)
@@ -118,44 +118,25 @@ export default function InfoMacro () {
           errors={errors}
           name='endDate'
         />
-        <Check
-          initialCheck={check}
-          disabled={!startDate || !endDate}
-          setTopCheck={setCheck}
-          text='Duración de macrociclos iguales?'
-          information='Se crearán microciclos con una duración de 4 a 15 días'
-        />
-        {check &&
-          <Select
-            items={items}
-            selectedValue={selectedValue}
-            setSelectedValue={setSelectedValue}
-            open={open}
-            setOpen={setOpen}
-            setItems={setItems}
-            disabled={!check}
-            text='No hay posibilidad de microciclos iguales'
-          />}
-        {!check &&
-          <View>
-            <AmountMicros
-              minMicros={minMicros}
-              maxMicros={maxMicros}
-            />
-            <InputGeneral
-              style={{ marginTop: 10 }}
-              disabled={!endDate || !startDate}
-              errors={errors}
-              name='amount'
-              inputMode='numeric'
-              label='Duración de los microciclos'
-              onChangeText={setSelectedValue}
-              placeholder='Cantidad (Días)'
-              value={selectedValue}
-              editable={Boolean(endDate) && Boolean(startDate)}
-            />
-            <Txt small quick gray style={{ marginTop: 0 }}>{messageAmount}</Txt>
-          </View>}
+        <View>
+          <AmountMicros
+            minMicros={minMicros}
+            maxMicros={maxMicros}
+          />
+          <InputGeneral
+            style={{ marginTop: 10 }}
+            disabled={!endDate || !startDate}
+            errors={errors}
+            name='amount'
+            inputMode='numeric'
+            label='Duración de los microciclos'
+            onChangeText={setSelectedValue}
+            placeholder='Cantidad (Días)'
+            value={selectedValue}
+            editable={Boolean(endDate) && Boolean(startDate)}
+          />
+          <Txt small quick gray style={{ marginTop: 0 }}>{messageAmount}</Txt>
+        </View>
 
       </View>
       <Text />

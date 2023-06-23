@@ -13,12 +13,14 @@ import CalendarGeneral from '../calendarGeneral/CalendarGeneral'
 
 export default function NewMacro () {
   const { roadMap, initRoadMap, previusStage } = useContext(RoatMapContext)
-  const data = roadMap.data
-  const { macrocycle, microcycles, mesocycles, timeFrames, stages } = data
+  const { macrocycle, microcycles, mesocycles, timeFrames, stages } = roadMap.data
 
   useEffect(() => {
     AsyncStorage.getItem('roadMap')
-      .then((roadMap) => roadMap ? initRoadMap() : initRoadMap())
+      .then((roadMap) => {
+        const roadMapParsed = JSON.parse(roadMap)
+        roadMap ? initRoadMap(roadMapParsed) : initRoadMap()
+      })
   }, [])
 
   if (roadMap.currentStage === null) return <Loader />

@@ -1,5 +1,26 @@
 const theme = {
   colors: {
+    1: {
+      default: '#FFD700'
+    },
+    2: {
+      default: '#8B008B'
+    },
+    3: {
+      default: '#FF69B4'
+    },
+    4: {
+      default: '#7CFC00'
+    },
+    5: {
+      default: '#00CED1'
+    },
+    6: {
+      default: '#8B008B'
+    },
+    7: {
+      default: '#FFD700'
+    },
     text: '#333333',
     gray: '#A1A1A1',
     disbaled: '#A1A1A140',

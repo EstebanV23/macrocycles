@@ -8,6 +8,10 @@ const StyleSelect = StyleSheet.create({
     borderRadius: 5,
     fontFamily: theme.fonts.quicksand.medium
   },
+  height: {
+    height: 20,
+    padding: 0
+  },
   disabled: {
     backgroundColor: theme.colors.disbaled
   },

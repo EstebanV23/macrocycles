@@ -5,6 +5,7 @@ import Txt from '../Txt/Txt'
 import { useContext } from 'react'
 import { RoatMapContext } from '../../store/RoadMapStore'
 import getDiferenceHours from '../../logic/getDiferenceHours'
+import getTypeFromNumber from '../../logic/getTypeFromNumber'
 
 function getDay (date) {
   if (!date) return null
@@ -12,7 +13,7 @@ function getDay (date) {
   return day
 }
 
-export default function ListProgress ({ arrayContent, ...props }) {
+export default function ListProgress ({ arrayContent, types, ...props }) {
   const { roadMap } = useContext(RoatMapContext)
   const { durationInDays } = roadMap.data
   const widthUnit = 100 / arrayContent.length
@@ -21,6 +22,7 @@ export default function ListProgress ({ arrayContent, ...props }) {
   const unitsProgress = arrayContent.map((item, index) => {
     const { days } = getDiferenceHours(item.startDate, item.endDate)
     const widthComponent = ((days + 1) * 100) / durationInDays
+    const colorComponent = item.type && { [`meso${item.type}`]: true }
     return (
       <View
         key={item.id}
@@ -28,12 +30,13 @@ export default function ListProgress ({ arrayContent, ...props }) {
       >
         <View style={Style.containerF}>
           <Txt quick extraSmall primary>{getDay(item.startDate)}</Txt>
-          <Txt quick extraSmall primary>{item.startDate && item.type}</Txt>
+          <Txt quick extraSmall primary>{(types && item.startDate && item.type) ? getTypeFromNumber(types, item.type) : item.startDate && item.type}</Txt>
           <Txt quick extraSmall primary>{getDay(item.endDate)}</Txt>
         </View>
         <UnitProgress
           widthComponent={widthComponent}
           {...props}
+          {...colorComponent}
         />
       </View>
     )

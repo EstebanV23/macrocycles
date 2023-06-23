@@ -22,6 +22,7 @@ export default function CalendarGeneral ({ onDayPress, markedDates, current, hor
       markingType='period'
       markedDates={{
         ...getDates(microcycles),
+        ...getDates(mesocycles),
         [startDate]: { selected: true, color: colorsSelector(MACROCYCLE), selectedColor: colorsSelector(MACROCYCLE) },
         [endDate]: { selected: true, color: colorsSelector(MACROCYCLE), selectedColor: colorsSelector(MACROCYCLE) },
         ...getDates(timeFrames),

@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import Style from './StyleUnitProgress'
 
-export default function UnitProgress ({ green, red, orange, blue, yellow, purple, menta, style }) {
+export default function UnitProgress ({ green, red, orange, blue, yellow, purple, menta, style, mesocycle, meso1, meso2, meso3, meso4, meso5, meso6 }) {
   const styles = [
     Style.component,
     Style.transparent,
@@ -13,6 +13,13 @@ export default function UnitProgress ({ green, red, orange, blue, yellow, purple
     yellow && Style.yellow,
     purple && Style.purple,
     menta && Style.menta,
+    mesocycle && Style.mesocycle,
+    meso1 && Style.meso1,
+    meso2 && Style.meso2,
+    meso3 && Style.meso3,
+    meso4 && Style.meso4,
+    meso5 && Style.meso5,
+    meso6 && Style.meso6,
     style
   ]
   return (

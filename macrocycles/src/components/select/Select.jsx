@@ -21,6 +21,7 @@ export default function Select ({ items, selectedValue, setSelectedValue, open, 
         placeholder='Selecciona una opción'
         disabled={disabled}
         style={styles}
+        badgeStyle={{ backgroundColor: theme.colors.blue }}
         textStyle={Style.text}
         dropDownContainerStyle={Style.dropDownContainer}
         badgeDotColors={theme.colors.blue}

@@ -42,6 +42,7 @@ function getMicrosFromStage (stage, micros, i, amount, frame, allMicros, allEnds
     [stage.startDate]: { ...getMicroWithDate(microsStage, stage.startDate).printer[stage.startDate], ...frame.printer[stage.startDate], selected: true, startingDay: true, dotColor: theme.colors.stages, marked: true },
     [stage.endDate]: { ...getMicroWithDate(microsStage, stage.endDate).printer[stage.endDate], ...frame.printer[stage.endDate], selected: true, endingDay: true, dotColor: theme.colors.stages, marked: true }
   }
+
   const defaultPercent = allEnds ? percent * lastMicros : percent * amount
   stage.defaultPercent = defaultPercent
   return stage

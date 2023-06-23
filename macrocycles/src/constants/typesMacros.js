@@ -1,6 +1,6 @@
 const typesMacros = [
   {
-    label: 'Entrenamiento por fuerza',
+    label: 'Entrenamiento por unidad',
     value: 0
   },
   {

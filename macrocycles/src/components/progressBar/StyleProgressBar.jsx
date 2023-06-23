@@ -29,8 +29,10 @@ const StyleProgressBar = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '70%',
-    gap: 15,
-    alignItems: 'flex-start'
+    gap: 6,
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    marginBottom: 5
   },
   contentUnit: {
     paddingRight: 2

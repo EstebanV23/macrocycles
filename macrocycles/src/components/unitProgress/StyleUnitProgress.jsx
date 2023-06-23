@@ -32,6 +32,27 @@ const StyleUnitProgress = StyleSheet.create({
   },
   menta: {
     backgroundColor: theme.colors.menta[500]
+  },
+  mesocycle: {
+    backgroundColor: theme.colors[1].default
+  },
+  meso1: {
+    backgroundColor: theme.colors[1].default
+  },
+  meso2: {
+    backgroundColor: theme.colors[2].default
+  },
+  meso3: {
+    backgroundColor: theme.colors[3].default
+  },
+  meso4: {
+    backgroundColor: theme.colors[4].default
+  },
+  meso5: {
+    backgroundColor: theme.colors[5].default
+  },
+  meso6: {
+    backgroundColor: theme.colors[6].default
   }
 })
 

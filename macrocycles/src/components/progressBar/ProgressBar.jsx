@@ -8,6 +8,8 @@ import Txt from '../Txt/Txt'
 import formatDateToString from '../../logic/formatDateToString'
 import ListProgress from '../listProgress/ListProgress'
 import DatesBars from '../datesBars/DatesBars'
+import typesMesocycles from '../../constants/typesMesocycles'
+import typeMicrocycles from '../../constants/typesMicrocycles'
 
 export default function ProgressBar ({
   macrocycle,
@@ -21,7 +23,7 @@ export default function ProgressBar ({
       orange: macrocycle.name
     },
     mesocycle: {
-      blue: mesocycles.length > 0
+      mesocycle: mesocycles.length > 0
     },
     microcycle: {
       purple: microcycles.length > 0
@@ -44,6 +46,7 @@ export default function ProgressBar ({
         <IndicationName text='Periodo' gray {...colors.timeFrame} />
         <IndicationName text='Etapa' gray {...colors.stage} />
         <IndicationName text='Microciclos' gray {...colors.microcycle} />
+        <IndicationName text='Mesociclo' gray {...colors.mesocycle} />
       </View>
       <ScrollView
         horizontal
@@ -63,8 +66,8 @@ export default function ProgressBar ({
           <UnitProgress full={macrocycle} {...colors.macrocycle} />
           <ListProgress arrayContent={timeFrames} {...colors.timeFrame} />
           <ListProgress arrayContent={stages} {...colors.stage} />
-          <ListProgress arrayContent={mesocycles} {...colors.mesocycle} />
-          <ListProgress arrayContent={microcycles} {...colors.microcycle} />
+          <ListProgress arrayContent={mesocycles} types={typesMesocycles} />
+          <ListProgress arrayContent={microcycles} types={typeMicrocycles} {...colors.microcycle} />
         </View>
       </ScrollView>
     </View>
