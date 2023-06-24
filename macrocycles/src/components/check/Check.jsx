@@ -1,5 +1,5 @@
 import Checkbox from 'expo-checkbox'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import theme from '../../theme/theme'
 import { View, TouchableOpacity } from 'react-native'
 import Txt from '../Txt/Txt'

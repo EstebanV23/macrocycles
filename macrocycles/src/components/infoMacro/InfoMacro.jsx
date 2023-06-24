@@ -5,13 +5,11 @@ import { useContext, useEffect, useState } from 'react'
 import { RoatMapContext } from '../../store/RoadMapStore'
 import InputGeneral from '../inputGeneral/InputGeneral'
 import formatDataFromDate from '../../logic/formatDataFromDate'
-import Check from '../check/Check'
 import useHanlderDates from '../../hooks/useHanlderDates'
 import { UserContext } from '../../store/UserStore'
 import Select from '../select/Select'
 import AmountMicros from '../amountMicros/AmountMicros'
 import maxMinDaysMicros from '../../constants/maxMinDaysMicros'
-import getMicrosEquals from '../../logic/getMicrosEquals'
 import useMinMax from '../../hooks/useMinMax'
 import useInternalErros from '../../hooks/useInternalErros'
 import getAmountMicrosForAmount from '../../logic/getAmountMicrosForAmount'
@@ -22,13 +20,10 @@ export default function InfoMacro () {
   const { setCurrentFunction, roadMap, setStartDate: setStartDateTop, setEndDate: setEndDateTop, setNameMacro, generateMicros, setTypeMacrocycle } = useContext(RoatMapContext)
   const { startDate, setStartDate, endDate, setEndDate, differentsDays } = useHanlderDates(roadMap.data.startDate, roadMap.data.endDate, roadMap.data.durationInDays)
   const { newAlert } = useContext(UserContext)
-  const [check, setCheck] = useState(false)
   const [typeMacro, setTypeMacro] = useState(roadMap.data.macrocycle.typeMacrocycle)
   const [macroName, setMacroName] = useState(roadMap.data.macrocycle.name)
   const { errors } = useInternalErros()
   const [selectedValue, setSelectedValue] = useState(roadMap.data.initialDayMicro)
-  const [open, setOpen] = useState(false)
-  const [items, setItems] = useState([])
   const [minMicros, maxMicros] = useMinMax(differentsDays)
   const [messageAmount, setMessageAmount] = useState(null)
   const [openType, setOpenType] = useState(false)
@@ -62,10 +57,6 @@ export default function InfoMacro () {
     setEndDateTop(endDate)
     setEndDate(endDate)
   }, [endDate])
-
-  useEffect(() => {
-    setItems(getMicrosEquals(differentsDays))
-  }, [check, differentsDays])
 
   useEffect(() => {
     if (!selectedValue || selectedValue < 4 || selectedValue > 14) {

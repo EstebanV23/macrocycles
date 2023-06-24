@@ -30,7 +30,13 @@ export default function Txt ({
   menta,
   blue,
   extraSmall,
-  ...props
+  mesocycle,
+  meso1,
+  meso2,
+  meso3,
+  meso4,
+  meso5,
+  meso6
 }) {
   const styleText = [
     Style.defualtColor,
@@ -59,6 +65,13 @@ export default function Txt ({
     menta && Style.menta,
     blue && Style.blue,
     extraSmall && Style.extraSmall,
+    mesocycle && Style.mesocycle,
+    meso1 && Style.meso1,
+    meso2 && Style.meso2,
+    meso3 && Style.meso3,
+    meso4 && Style.meso4,
+    meso5 && Style.meso5,
+    meso6 && Style.meso6,
     style
   ]
   return (

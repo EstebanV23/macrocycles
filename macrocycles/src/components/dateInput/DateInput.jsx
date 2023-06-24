@@ -12,7 +12,6 @@ import CalendarGeneral from '../calendarGeneral/CalendarGeneral'
 
 export default function DateInput ({
   label,
-  limitDate,
   minDate = formatDataFromDate(),
   disabled = false,
   setValue,
@@ -24,7 +23,6 @@ export default function DateInput ({
   const [open, setOpen] = useState(false)
 
   const handleChange = (date) => {
-    console.log({ date })
     if (conditionFunction) {
       const permit = conditionFunction(date)
       if (!permit) return

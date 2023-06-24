@@ -13,6 +13,11 @@ function getDay (date) {
   return day
 }
 
+function getType (types, item) {
+  const type = (!types || !item.startDate || !item.type) ? item.type : getTypeFromNumber(types, item.type)
+  return type && type.length > 13 ? `${type.slice(0, 13)}...` : type
+}
+
 export default function ListProgress ({ arrayContent, types, ...props }) {
   const { roadMap } = useContext(RoatMapContext)
   const { durationInDays } = roadMap.data
@@ -30,7 +35,7 @@ export default function ListProgress ({ arrayContent, types, ...props }) {
       >
         <View style={Style.containerF}>
           <Txt quick extraSmall primary>{getDay(item.startDate)}</Txt>
-          <Txt quick extraSmall primary>{(types && item.startDate && item.type) ? getTypeFromNumber(types, item.type) : item.startDate && item.type}</Txt>
+          <Txt quick extraSmall primary>{getType(types, item)}</Txt>
           <Txt quick extraSmall primary>{getDay(item.endDate)}</Txt>
         </View>
         <UnitProgress

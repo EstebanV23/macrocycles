@@ -9,7 +9,6 @@ import NavbarBot from '../navbarBot/NavbarBot'
 import iconsConstants from '../../constants/iconConstants'
 import { Button } from '@react-native-material/core'
 import theme from '../../theme/theme'
-import { CalendarList } from 'react-native-calendars'
 
 export default function Home () {
   const { user: { name }, logout } = useContext(UserContext)

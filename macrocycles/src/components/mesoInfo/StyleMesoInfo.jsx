@@ -14,8 +14,10 @@ const styleMesoInfo = StyleSheet.create({
   contentAdd: {
     display: 'flex',
     margin: 'auto',
+    marginVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 15
   },
   containerPressableColor: {
@@ -26,6 +28,12 @@ const styleMesoInfo = StyleSheet.create({
   },
   success: {
     backgroundColor: theme.colors.green[100]
+  },
+  contentInputs: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10
   }
 })
 

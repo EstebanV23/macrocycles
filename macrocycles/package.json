@@ -66,7 +66,8 @@
       "camelcase": "warn",
       "prefer-regex-literals": "off",
       "react-hooks/exhaustive-deps": "off",
-      "no-unused-vars": "warn"
+      "no-unused-vars": "warn",
+      "no-console": "off"
     }
   }
 }

@@ -38,7 +38,6 @@ export default function RegisterForm () {
       key === 'password' ? [key, value] : [key, setDataSend(value)]
     ))
     const newDat = Object.fromEntries(arrValues)
-    console.log({ newDat })
     try {
       setLoading(true)
       const response = await serviceRegister(newDat)
@@ -47,7 +46,7 @@ export default function RegisterForm () {
       if (response) navigate('/login')
     } catch (error) {
       setLoading(false)
-      console.log(error)
+      console.error(error)
     }
   }
 

@@ -22,7 +22,7 @@ export default function useAlert () {
         visibilityTime: 3000,
         autoHide: true,
         topOffset: Constants.statusBarHeight + 20,
-        position: 'top'
+        position: 'bottom'
       })
     }
   }

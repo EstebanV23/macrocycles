@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 export default function useInternalErros (initialState = {}) {
-  const [errors, setError] = useState({})
+  const [errors, setError] = useState(initialState)
 
   const handlerError = (name, message) => {
     setError({

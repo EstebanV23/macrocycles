@@ -5,7 +5,7 @@
  */
 export default function formatDateToString (date) {
   if (!date) return ''
-  const [_, month, day] = date.split('-')
+  const [year, month, day] = date.split('-')
   const newMonth = monthsObject[month - 1]
   const monthString = newMonth.name
   return `${monthString.substring(0, 3)} - ${day}`

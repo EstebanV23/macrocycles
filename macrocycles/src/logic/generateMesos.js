@@ -1,5 +1,5 @@
 import getAllDatesBetween from './getAllDatesBetween'
-import getDates, { getDatesOnlyCorner } from './getDates'
+import { getDatesOnlyCorner } from './getDates'
 
 export default function generateMesos ({ type, microcycles, currentPosition }) {
   const startDate = microcycles[0].startDate

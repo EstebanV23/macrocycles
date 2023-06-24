@@ -32,7 +32,7 @@ export default function FormLogin () {
       if (response) navigate('/')
     } catch (error) {
       setLoading(false)
-      console.log(error)
+      console.error(error)
     }
   }
   const dataInvalid = () => {

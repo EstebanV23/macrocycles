@@ -82,6 +82,27 @@ const StyleTxt = StyleSheet.create({
   },
   extraSmall: {
     fontSize: theme.sizes.extraSmall
+  },
+  mesocycle: {
+    color: theme.colors[1].default
+  },
+  meso1: {
+    color: theme.colors[1].default
+  },
+  meso2: {
+    color: theme.colors[2].default
+  },
+  meso3: {
+    color: theme.colors[3].default
+  },
+  meso4: {
+    color: theme.colors[4].default
+  },
+  meso5: {
+    color: theme.colors[5].default
+  },
+  meso6: {
+    color: theme.colors[6].default
   }
 })
 

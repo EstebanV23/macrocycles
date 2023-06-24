@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-native'
+import { useNavigate } from 'react-router-native'
 import Txt from '../Txt/Txt'
 import StyleLinkForm from './StyleLinkForm'
 import { TouchableOpacity } from 'react-native'

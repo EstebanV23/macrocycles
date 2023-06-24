@@ -12,6 +12,7 @@ import getStages from '../logic/getStages'
 import theme from '../theme/theme'
 import getDiferenceHours from '../logic/getDiferenceHours'
 import { getDataBetweenDates } from '../logic/getsWithDate'
+import serviceAllDataMacro from '../services/serviceAllDataMacro'
 
 export const RoatMapContext = createContext()
 
@@ -59,7 +60,6 @@ const generateMicro = (startDate, endDate, id) => {
 export const generatePrinter = (itemSelected, color, dot, micros, frames) => {
   const objectDotStart = dot && micros && frames ? { ...getDataBetweenDates(micros, itemSelected.startDate).printer[itemSelected.startDate], ...getDataBetweenDates(frames, itemSelected.startDate).printer[itemSelected.startDate], startingDay: true, selected: true, marked: true, dotColor: color } : { startingDay: true, selected: true, color, textColor: '#ffffff' }
   const objectDotEnd = dot && micros && frames ? { ...getDataBetweenDates(micros, itemSelected.endDate).printer[itemSelected.endDate], ...getDataBetweenDates(frames, itemSelected.endDate).printer[itemSelected.endDate], endingDay: true, selected: true, marked: true, dotColor: color } : { endingDay: true, selected: true, color, textColor: '#ffffff' }
-  console.log({ objectDotStart, objectDotEnd })
   const item = {
     printer: {
       [itemSelected.startDate]: objectDotStart,
@@ -114,15 +114,21 @@ export default function RoadMapStore ({ children }) {
     roadMap.currentStage && navigate(roadMap.currentStage.path)
   }, [count])
 
+  const saveRoadMap = async ({ roadMap }) => {
+    try {
+      setLoading(true)
+      const roadMapToSave = JSON.parse(JSON.stringify(roadMap))
+      AsyncStorage.setItem('roadMap', roadMapToSave)
+    } catch (error) {
+      Alert.alert('Error', 'No se pudo guardar el roadmap')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const previewMeso = (meso, currentPosition) => {
     const newRoadMap = JSON.parse(JSON.stringify(roadMap))
     newRoadMap.data.mesocycles[currentPosition] = meso
-    setRoadMap(newRoadMap)
-  }
-
-  const addMesos = (meso) => {
-    const newRoadMap = JSON.parse(JSON.stringify(roadMap))
-    newRoadMap.data.mesocycles.push(meso)
     setRoadMap(newRoadMap)
   }
 
@@ -209,7 +215,10 @@ export default function RoadMapStore ({ children }) {
     const currentNumberStage = currentStage.roadPosition
     const nextNumberStage = currentNumberStage + 1
     if (nextNumberStage > ALL_STAGES) {
+      await serviceAllDataMacro(currentRoapMap.data)
       currentRoapMap.finished = true
+      currentRoapMap.currentStage = { path: '/' }
+      await AsyncStorage.removeItem('roadMap')
       setRoadMap(currentRoapMap)
       return currentRoapMap
     }
@@ -244,7 +253,6 @@ export default function RoadMapStore ({ children }) {
     }
     const previusStage = stages.find(stage => stage.roadPosition === previusNumberStage)
     currentRoapMap.currentStage = previusStage
-    console.log('🚀 ~ file: RoadMapStore.js:156 ~ previusStage ~ currentRoapMap:', currentRoapMap)
     setRoadMap(currentRoapMap)
     return true
   }
@@ -268,7 +276,6 @@ export default function RoadMapStore ({ children }) {
     loading,
     updateAll,
     setTypeMacrocycle,
-    addMesos,
     previewMeso
   }
 

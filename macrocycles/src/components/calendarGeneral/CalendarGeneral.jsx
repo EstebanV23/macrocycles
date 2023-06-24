@@ -9,7 +9,7 @@ import { Dimensions } from 'react-native'
 
 export default function CalendarGeneral ({ onDayPress, markedDates, current, horizontal = true, limitDate }) {
   const { roadMap: { data } } = useContext(RoatMapContext)
-  const { macrocycle, microcycles, mesocycles, stages, startDate, endDate, durationInDays, timeFrames } = data
+  const { microcycles, mesocycles, stages, startDate, endDate, durationInDays, timeFrames } = data
   return (
     <CalendarList
       horizontal={horizontal}
