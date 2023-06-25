@@ -14,7 +14,7 @@ function getDay (date) {
 }
 
 function getType (types, item) {
-  const type = (!types || !item.startDate || !item.type) ? item.type : getTypeFromNumber(types, item.type)
+  const type = ((item.startDate && !types) || !item.type) ? item.type : (item.startDate && getTypeFromNumber(types, item.type))
   return type && type.length > 13 ? `${type.slice(0, 13)}...` : type
 }
 

@@ -33,9 +33,10 @@ export default function MesoInfo () {
       return false
     })
     if (direction > 0) {
-      if (currentPosition > typesMesocycles.length - 2) {
+      if (amountMicrosSelected === 0) return
+      if (currentPosition > typesMesocycles.length - 2 && leftMicros === 0) {
+        newAlert('success', 'Presiona el botón de continuar para guardar la información del macrociclo completo')
         setCurrentFunction(() => () => {
-          newAlert('success', 'Presiona el botón de continuar para guardar la información del macrociclo completo')
           return true
         })
         return
@@ -70,7 +71,7 @@ export default function MesoInfo () {
       return {
         ...micro,
         type: newMicroInfo.type,
-        frecuency: newMicroInfo.frecuency,
+        frequency: newMicroInfo.frequency,
         test: newMicroInfo.test
       }
     })
@@ -92,7 +93,7 @@ export default function MesoInfo () {
       return {
         ...micro,
         type: newMicroInfo.type,
-        frecuency: newMicroInfo.frecuency,
+        frequency: newMicroInfo.frequency,
         test: newMicroInfo.test
       }
     })
@@ -128,7 +129,7 @@ export default function MesoInfo () {
         <Txt>{amountMicrosSelected}</Txt>
         <Pressable
           onPress={() => {
-            if (typeSelected === null) return
+            if (typeSelected === null || leftMicros === 0) return
             return setAmountMicrosSelected(amountMicrosSelected + 1)
           }}
           style={[Style.containerPressable, Style.containerPressableColor, Style.success]}

@@ -1,15 +1,15 @@
 import { API_URL } from '../config/requests'
 import addSnakeCaseDates from '../logic/addSnakeCaseDates'
 
-export default async function serviceNewMicrocycle (microcycle) {
-  if (microcycle.id) delete microcycle.id
-  const newMicro = microcycle // addSnakeCaseDates(microcycle)
-  return fetch(`${API_URL}/microcycle`, {
+export default async function serviceNewMacrocycle (macrocycle) {
+  if (macrocycle.id) delete macrocycle.id
+  const newMacrocycle = addSnakeCaseDates(macrocycle)
+  return fetch(`${API_URL}/macrocycle`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(newMicro)
+    body: JSON.stringify(newMacrocycle)
   }).then(response => {
     return response.json()
   }).catch(err => console.error(err))

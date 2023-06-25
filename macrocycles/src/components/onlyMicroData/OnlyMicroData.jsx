@@ -13,7 +13,7 @@ export default function OnlyMicroData ({ micro, functionArray, array }) {
   const [value, setValue] = useState(1)
   const [check, setCheck] = useState(() => Boolean(micro.test))
   const [test, setTest] = useState(() => micro.test || '')
-  const [frecuency, setFrecuency] = useState(() => {
+  const [frequency, setFrequency] = useState(() => {
     const { days } = getDiferenceHours(micro.startDate, micro.endDate)
     return `${days}`
   })
@@ -21,7 +21,7 @@ export default function OnlyMicroData ({ micro, functionArray, array }) {
   useEffect(() => {
     const infoMicro = {
       type: value,
-      frecuency,
+      frequency,
       id: micro.id,
       test
     }
@@ -29,7 +29,7 @@ export default function OnlyMicroData ({ micro, functionArray, array }) {
     const newArray = array.filter(item => item.id !== micro.id)
     newArray.push(infoMicro)
     functionArray(newArray)
-  }, [value, frecuency])
+  }, [value, frequency])
   return (
     <View style={{ marginTop: 20 }}>
       <Txt quick>Microciclo {micro.startDate} - {micro.endDate}</Txt>
@@ -60,8 +60,8 @@ export default function OnlyMicroData ({ micro, functionArray, array }) {
         errors={{}}
         label='Frecuencia'
         name={micro.id}
-        value={frecuency}
-        onChangeText={setFrecuency}
+        value={frequency}
+        onChangeText={setFrequency}
         inputMode='numeric'
       />
       <Check

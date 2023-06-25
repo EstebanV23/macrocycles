@@ -207,7 +207,7 @@ export default function RoadMapStore ({ children }) {
     return newRoapMap
   }
 
-  const nextStage = async () => {
+  const nextStage = async (user) => {
     setLoading(true)
     const currentRoapMap = JSON.parse(JSON.stringify(roadMap))
     const { currentStage } = currentRoapMap
@@ -215,12 +215,21 @@ export default function RoadMapStore ({ children }) {
     const currentNumberStage = currentStage.roadPosition
     const nextNumberStage = currentNumberStage + 1
     if (nextNumberStage > ALL_STAGES) {
-      await serviceAllDataMacro(currentRoapMap.data)
-      currentRoapMap.finished = true
-      currentRoapMap.currentStage = { path: '/' }
-      await AsyncStorage.removeItem('roadMap')
-      setRoadMap(currentRoapMap)
-      return currentRoapMap
+      try {
+        const responseFetch = await serviceAllDataMacro(currentRoapMap.data, user)
+        setLoading(false)
+        if (responseFetch.error) return responseFetch
+        currentRoapMap.finished = true
+        await AsyncStorage.removeItem('roadMap')
+        const newRoadMap = JSON.parse(JSON.stringify(initialRoatMap))
+        setRoadMap(newRoadMap)
+        navigate('/')
+        return responseFetch
+      } catch (error) {
+        console.error(error)
+        setLoading(false)
+        return { error: true, message: 'Error al guardar la información' }
+      }
     }
     increment()
     const nextStage = stages.find(stage => stage.roadPosition === nextNumberStage)
