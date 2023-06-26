@@ -44,23 +44,24 @@ export default function MacroItem ({ macrocycle }) {
   const [mesoSelected, setMesoSelected] = useState(() => {
     if (today <= firstDate) return macrocycle.mesocycles[0]
     if (today >= lastDate) return macrocycle.mesocycles[macrocycle.mesocycles.length - 1]
-
+    console.log('paso del primero')
     const meso = macrocycle.mesocycles.find((meso) => {
-      const startDate = new Date(meso.start_date)
-      const endDate = new Date(meso.end_date)
+      const startDate = new Date(meso.startDate)
+      const endDate = new Date(meso.endDate)
       return today >= startDate && today <= endDate
     })
 
     return meso
   })
+  console.log('🚀 ~ file: MacroItem.jsx:56 ~ const[mesoSelected,setMesoSelected]=useState ~ mesoSelected:', mesoSelected)
 
   const [microSelected, setMicroSelected] = useState(() => {
     if (today <= firstDate) return mesoSelected.microcycles[0]
     if (today >= lastDate) return mesoSelected.microcycles[mesoSelected.microcycles.length - 1]
 
     const micro = mesoSelected.microcycles.find((micro) => {
-      const startDate = new Date(micro.start_date)
-      const endDate = new Date(micro.end_date)
+      const startDate = new Date(micro.startDate)
+      const endDate = new Date(micro.endDate)
       return today >= startDate && today <= endDate
     })
 

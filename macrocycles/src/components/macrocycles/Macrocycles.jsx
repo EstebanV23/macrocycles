@@ -1,6 +1,5 @@
 import { View } from 'react-native'
 import MacroItem from '../macroItem/MacroItem'
-import Txt from '../Txt/Txt'
 
 export default function Macrocycles ({ macrocycles }) {
   return (

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import { Calendar, CalendarList } from 'react-native-calendars'
+import { useState } from 'react'
+import { CalendarList } from 'react-native-calendars'
 import theme from '../../theme/theme'
-import getAllDatesBetween, { getAllDatesBetweenOnly } from '../../logic/getAllDatesBetween'
+import { getAllDatesBetweenOnly } from '../../logic/getAllDatesBetween'
 
 export default function CalendarWithData ({ macrocycle, timeFrames, stages, mesocycles, microcycles }) {
   const [markedTimeFrames, setMarkedTimeFrames] = useState(() => {
@@ -23,10 +23,10 @@ export default function CalendarWithData ({ macrocycle, timeFrames, stages, meso
   const [markedMesocycles, setMarkedMesocycles] = useState(() => {
     const marked = {}
     mesocycles.forEach((mesocycle) => {
-      marked[mesocycle.startDate] = { ...markedStages[mesocycle.startDate], dotColor: theme.colors.mesocycle, marked: true }
-      marked[mesocycle.endDate] = { ...markedStages[mesocycle.endDate], dotColor: theme.colors.mesocycle, marked: true }
+      marked[mesocycle.startDate] = { ...markedStages[mesocycle.startDate], startingDay: true, selected: true, color: theme.colors[mesocycle.type].default }
+      marked[mesocycle.endDate] = { ...markedStages[mesocycle.endDate], endingDay: true, selected: true, color: theme.colors[mesocycle.type].default }
       getAllDatesBetweenOnly(mesocycle.startDate, mesocycle.endDate).forEach((date) => {
-        marked[date] = { selected: true, color: theme.colors.blue.default }
+        marked[date] = { selected: true, color: theme.colors[mesocycle.type].default }
       })
     })
     return marked
@@ -35,8 +35,8 @@ export default function CalendarWithData ({ macrocycle, timeFrames, stages, meso
     const marked = {}
     console.log('🚀 ~ file: CalendarWithData.jsx:40 ~ microcycles.forEach ~ microcycles:', microcycles)
     microcycles.forEach((microcycle) => {
-      marked[microcycle.startDate] = { ...markedStages[microcycle.startDate], startingDay: true, selected: true, color: theme.colors.micros }
-      marked[microcycle.endDate] = { ...markedStages[microcycle.endDate], endingDay: true, selected: true, color: theme.colors.micros }
+      marked[microcycle.startDate] = { ...markedStages[microcycle.startDate], startingDay: true, selected: true, color: theme.colors.micros, ...markedTimeFrames[microcycle.startDate] }
+      marked[microcycle.endDate] = { ...markedStages[microcycle.endDate], endingDay: true, selected: true, color: theme.colors.micros, ...markedTimeFrames[microcycle.endDate] }
     })
     return marked
   })
@@ -44,10 +44,10 @@ export default function CalendarWithData ({ macrocycle, timeFrames, stages, meso
     <CalendarList
       markingType='period'
       markedDates={{
-        ...markedTimeFrames,
         ...markedMesocycles,
         ...markedStages,
-        ...markedMicrocycles
+        ...markedTimeFrames,
+        ...markedMicrocycles,
       }}
       minDate={macrocycle.start_date}
       maxDate={macrocycle.end_date}
