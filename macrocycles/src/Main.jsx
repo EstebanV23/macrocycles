@@ -14,6 +14,8 @@ import InfoMacro from './components/infoMacro/InfoMacro'
 import MesoInfo from './components/mesoInfo/MesoInfo'
 import FrameAndStage from './components/frameAndStage/FrameAndStage'
 import { RoatMapContext } from './store/RoadMapStore'
+import ListMacrocycles from './components/listMacrocycles/ListMacrocycles'
+import OnlyMacro from './components/onlyMacro/OnlyMacro'
 
 export default function Main () {
   useAlert()
@@ -40,6 +42,8 @@ export default function Main () {
             <Route path='mesoInfo' element={<MesoInfo />} />
             <Route path='frameAndStage' element={<FrameAndStage />} />
           </Route>
+          <Route path='/macrocycles' element={<ProtectedRoute userLoged><ListMacrocycles /></ProtectedRoute>} />
+          <Route path='/macrocycles/:id' element={<ProtectedRoute userLoged><OnlyMacro /></ProtectedRoute>} />
         </Routes>
       </View>
     </>

@@ -3,12 +3,12 @@
  * @param {string} date - format 'YYYY-MM-DD'
  * @returns
  */
-export default function formatDateToString (date) {
+export default function formatDateToString (date, includeYear = false) {
   if (!date) return ''
   const [year, month, day] = date.split('-')
   const newMonth = monthsObject[month - 1]
   const monthString = newMonth.name
-  return `${monthString.substring(0, 3)} - ${day}`
+  return includeYear ? `${monthString.substring(0, 3)} - ${day} - ${year}` : `${monthString.substring(0, 3)} - ${day}`
 }
 
 export const monthsObject = [

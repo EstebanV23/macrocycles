@@ -20,3 +20,19 @@ export default function PressableLink ({ children, icon, to, style, size = 25 })
     </Pressable>
   )
 }
+
+export function PressableLinkEdit ({ children, to, style }) {
+  const navigate = useNavigate()
+
+  const redirect = () => {
+    navigate(to)
+  }
+  return (
+    <Pressable
+      onPress={redirect}
+      style={[Style.containerPressable, style]}
+    >
+      {children}
+    </Pressable>
+  )
+}

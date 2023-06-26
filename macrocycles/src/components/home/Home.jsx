@@ -19,7 +19,7 @@ export default function Home () {
         <Txt quick primary medium light>Qué deseas hacer el día de hoy?</Txt>
         <View style={Style.containerLinks}>
           <PressableLink to='/new-macro' icon={iconsConstants.newDocument}>Crear un nuevo <Txt quick primary>macrociclo</Txt></PressableLink>
-          <PressableLink to='/' icon={iconsConstants.list}>Ver tus registros de <Txt quick primary>macrociclos</Txt>.</PressableLink>
+          <PressableLink to='/macrocycles' icon={iconsConstants.list}>Ver tus registros de <Txt quick primary>macrociclos</Txt>.</PressableLink>
           <PressableLink to='/' icon={iconsConstants.run}>Crear una nueva <Txt quick primary>sesión</Txt> para un microciclo</PressableLink>
           <PressableLink to='/' icon={iconsConstants.camera}>Agregar nuevos <Txt quick primary>ejercicios</Txt>.</PressableLink>
           <PressableLink to='/' icon={iconsConstants.account}>Ver o editar tu <Txt quick primary>perfíl</Txt>.</PressableLink>

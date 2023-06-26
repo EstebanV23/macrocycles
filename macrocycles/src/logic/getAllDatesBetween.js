@@ -38,3 +38,32 @@ export default function getAllDatesBetween (startDate, endDate, color = 'green')
 function formatNumbers (number) {
   return number < 10 ? `0${number}` : number
 }
+
+export function getAllDatesBetweenOnly (startDate, endDate) {
+  if (!startDate || !endDate) return []
+  const dates = []
+  let [startYear, startMonth, startDay] = startDate.split('-').map(item => parseInt(item))
+  const [endYear, endMonth, endDay] = endDate.split('-').map(item => parseInt(item))
+
+  while (startYear <= endYear) {
+    while (startMonth <= 12 + 1) {
+      while (startDay <= months[startMonth - 1] + 1) {
+        startDay++
+        if (startDay === endDay || startDay > months[startMonth - 1]) {
+          startDay = 0
+          break
+        }
+        dates.push([`${startYear}-${formatNumbers(startMonth)}-${formatNumbers(startDay)}`])
+      }
+      if (startMonth === endMonth || startMonth > 12) {
+        startMonth = 1
+        break
+      }
+      startMonth++
+    }
+    if (startYear === endYear) break
+    startYear++
+  }
+
+  return dates
+}

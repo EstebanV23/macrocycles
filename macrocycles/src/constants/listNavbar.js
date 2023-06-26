@@ -5,7 +5,7 @@ const listNavbar = {
     id: 1,
     iconName: iconsConstants.list,
     title: 'Registros de macrociclos',
-    path: '/'
+    path: '/macrocycles'
   },
   photoSession: {
     id: 2,
