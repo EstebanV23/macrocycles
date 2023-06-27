@@ -21,6 +21,8 @@ public class ExerciseController {
     @Autowired
     private SessionStageRepository sessionStageRepository;
 
+
+
     @GetMapping("/")
     public ResponseEntity<Object> getExercises() {
         try {

@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class Session {
     @MongoId
     private String id;
-    private LocalDateTime date;
+    private LocalDate date;
     private int sessionNumber;
     private int amountSportsmans;
     private String category;
@@ -29,7 +30,7 @@ public class Session {
     public Session() {
     }
 
-    public Session(LocalDateTime date, int sessionNumber, int amountSportsmans, String category, String place, String trainner, List<String> material, String objectiveTec, String objectivePhysical, String objectiveEducational, List<SessionStage> stages) {
+    public Session(LocalDate date, int sessionNumber, int amountSportsmans, String category, String place, String trainner, List<String> material, String objectiveTec, String objectivePhysical, String objectiveEducational, List<SessionStage> stages) {
         this.date = date;
         this.sessionNumber = sessionNumber;
         this.amountSportsmans = amountSportsmans;
@@ -43,7 +44,7 @@ public class Session {
         this.stages = stages;
     }
 
-    public Session(String id, LocalDateTime date, int sessionNumber, int amountSportsmans, String category, String place, String trainner, List<String> material, String objectiveTec, String objectivePhysical, String objectiveEducational, List<SessionStage> stages) {
+    public Session(String id, LocalDate date, int sessionNumber, int amountSportsmans, String category, String place, String trainner, List<String> material, String objectiveTec, String objectivePhysical, String objectiveEducational, List<SessionStage> stages) {
         this.id = id;
         this.date = date;
         this.sessionNumber = sessionNumber;
@@ -66,11 +67,11 @@ public class Session {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

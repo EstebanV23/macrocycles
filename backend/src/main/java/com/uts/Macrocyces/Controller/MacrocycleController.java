@@ -232,6 +232,25 @@ public class MacrocycleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+    @DeleteMapping("/")
+    public ResponseEntity<Object> deleteAllMesocycles() {
+        try {
+            macrocycleRepository.deleteAll(); // Elimina todos los elementos de la colección
 
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "success");
+            response.put("message", "Todos los mesociclos han sido eliminados exitosamente");
+            response.put("status", HttpStatus.OK.value());
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al eliminar los mesociclos");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 }
