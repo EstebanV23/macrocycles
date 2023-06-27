@@ -103,7 +103,6 @@ export default function MesoInfo () {
 
   return (
     <View>
-      <Txt quick style={{ textAlign: 'center' }}>Cantidad de microciclos disponibles: <Txt>{leftMicros}</Txt></Txt>
       <Select
         items={typesMesocycles}
         placeholder='Selecciona un tipo de mesociclo'
@@ -138,6 +137,7 @@ export default function MesoInfo () {
         </Pressable>
       </View>
       <Txt quick style={{ textAlign: 'center' }}>Microciclos seleccionados: <Txt>{lastAmount + amountMicrosSelected}</Txt></Txt>
+      <Txt quick style={{ textAlign: 'center' }}>Cantidad de microciclos disponibles: <Txt>{leftMicros}</Txt></Txt>
       <View style={Style.container}>
         <Pressable
           onPress={() => setDirection(-1 * currentPosition - 1)}

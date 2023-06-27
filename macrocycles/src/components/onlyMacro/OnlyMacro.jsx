@@ -7,6 +7,7 @@ import MacroMoreInfo from '../macroMoreInfo/MacroMoreInfo'
 import Txt from '../Txt/Txt'
 import { ScrollView } from 'react-native'
 import Loader from '../loader/Loader'
+import iconsConstants from '../../constants/iconConstants'
 
 export default function OnlyMacro () {
   const { id } = useParams()
@@ -30,6 +31,7 @@ export default function OnlyMacro () {
         title={macrocycle.name.slice(0, 15)}
         subtitle='Macrociclo'
         onPress={() => navigate('/macrocycles')}
+        iconName={iconsConstants.trophy}
       />
       {(!macrocycle) ? <Txt>ERROR</Txt> : <ScrollView><MacroMoreInfo macrocycle={macrocycle} /></ScrollView>}
     </>

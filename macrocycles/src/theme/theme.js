@@ -114,7 +114,7 @@ const theme = {
     },
     timeFrames: '#008080',
     stages: '#59FFDF',
-    micros: '#800080'
+    micros: '#6DC2DE'
   },
   fonts: {
     quicksand: {

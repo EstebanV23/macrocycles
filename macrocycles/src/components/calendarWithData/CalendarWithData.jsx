@@ -3,7 +3,7 @@ import { CalendarList } from 'react-native-calendars'
 import theme from '../../theme/theme'
 import { getAllDatesBetweenOnly } from '../../logic/getAllDatesBetween'
 
-export default function CalendarWithData ({ macrocycle, timeFrames, stages, mesocycles, microcycles }) {
+export default function CalendarWithData ({ macrocycle, timeFrames, stages, mesocycles, microcycles, ...props }) {
   const [markedTimeFrames, setMarkedTimeFrames] = useState(() => {
     const marked = {}
     timeFrames.forEach((timeFrame) => {
@@ -12,6 +12,7 @@ export default function CalendarWithData ({ macrocycle, timeFrames, stages, meso
     })
     return marked
   })
+
   const [markedStages, setMarkedStages] = useState(() => {
     const marked = {}
     stages.forEach((stage) => {
@@ -20,6 +21,7 @@ export default function CalendarWithData ({ macrocycle, timeFrames, stages, meso
     })
     return marked
   })
+
   const [markedMesocycles, setMarkedMesocycles] = useState(() => {
     const marked = {}
     mesocycles.forEach((mesocycle) => {
@@ -47,7 +49,7 @@ export default function CalendarWithData ({ macrocycle, timeFrames, stages, meso
         ...markedMesocycles,
         ...markedStages,
         ...markedTimeFrames,
-        ...markedMicrocycles,
+        ...markedMicrocycles
       }}
       minDate={macrocycle.start_date}
       maxDate={macrocycle.end_date}
@@ -55,6 +57,7 @@ export default function CalendarWithData ({ macrocycle, timeFrames, stages, meso
       pastScrollRange={7}
       horizontal
       pagingEnabled
+      {...props}
     />
   )
 }

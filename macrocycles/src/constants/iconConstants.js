@@ -6,7 +6,8 @@ const iconsConstants = {
   account: 'account-circle-outline',
   arrowLeft: 'arrow-left',
   calendar: 'calendar-month-outline',
-  calendarCheck: 'calendar-check'
+  calendarCheck: 'calendar-check',
+  trophy: 'trophy'
 }
 
 export default iconsConstants
