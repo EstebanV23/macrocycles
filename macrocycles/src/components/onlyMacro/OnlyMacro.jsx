@@ -33,7 +33,7 @@ export default function OnlyMacro () {
         onPress={() => navigate('/macrocycles')}
         iconName={iconsConstants.trophy}
       />
-      {(!macrocycle) ? <Txt>ERROR</Txt> : <ScrollView><MacroMoreInfo macrocycle={macrocycle} /></ScrollView>}
+      {(!macrocycle) ? <Txt>ERROR</Txt> : <ScrollView><MacroMoreInfo macrocycleId={macrocycle} /></ScrollView>}
     </>
   )
 }

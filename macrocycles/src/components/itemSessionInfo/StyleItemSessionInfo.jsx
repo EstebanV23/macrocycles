@@ -9,7 +9,7 @@ const StyleItemSessionInfo = StyleSheet.create({
     justifyContent: 'center',
     padding: 8,
     borderRadius: 8,
-    backgroundColor: theme.colors.disbaled
+    backgroundColor: `${theme.colors.gray}20`
   }
 })
 

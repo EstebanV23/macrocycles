@@ -14,15 +14,17 @@ import typeMicrocycles from '../../constants/typesMicrocycles'
 import { getAllDatesBetweenOnly } from '../../logic/getAllDatesBetween'
 import monthToString from '../../logic/monthToString'
 import dayToString from '../../constants/dayToString'
-import { Pressable } from '@react-native-material/core'
+import { Icon, IconButton, Pressable } from '@react-native-material/core'
 import serviceGetOneMacro from '../../services/serviceGetOneMacro'
 import { UserContext } from '../../store/UserStore'
+import { useNavigate } from 'react-router-native'
+import iconsConstants from '../../constants/iconConstants'
 
 const snakeCase = true
 
 export default function MacroMoreInfo ({ macrocycleId }) {
+  const { time_frame: timeFrames, stages, mesocycles } = macrocycleId
   const [macrocycle, setMacrocycle] = useState(macrocycleId)
-  const { time_frame: timeFrames, stages, mesocycles } = macrocycle
   const [macrocycleSelected, setMacrocycleSelected] = useState(macrocycle)
   const [timeFramesSelected, setTimeFramesSelected] = useState(timeFrames)
   const [stagesSelected, setStagesSelected] = useState(stages)
@@ -42,8 +44,11 @@ export default function MacroMoreInfo ({ macrocycleId }) {
   const { setLoading } = useContext(UserContext)
   const [action, setAction] = useState(0)
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     if (action === 0) return
+    console.log('🚀 ~ file: MacroMoreInfo.jsx:47 ~ useEffect ~ action:', action)
     setLoading(true)
     serviceGetOneMacro(macrocycle.id)
       .then(macroResponse => {
@@ -101,11 +106,6 @@ export default function MacroMoreInfo ({ macrocycleId }) {
         onDayPress={(day) => {
           handlePress(day)
           setVisibleFirstModal(true)
-        }}
-        onDayLongPress={(day) => {
-          handlePress(day)
-          setVisibleSecondModal(true)
-          setSelectedDate(day.dateString)
         }}
       />
       <Modal
@@ -177,68 +177,83 @@ export default function MacroMoreInfo ({ macrocycleId }) {
         </View>
       </Modal>
 
-      <Modal
-        animationType='slide'
-        visible={visibleSecondModal}
-        transparent
-      >
-        <View style={Style.modal}>
-          <ScrollView
-            style={Style.containerScrollView}
-          >
-            {listDates.filter(date => Object.keys(date)[0] === selectedDate).map(date => {
-              const [key, value] = Object.entries(date)[0]
-              const [year, month, day] = key.split('-')
-              return (
-                <View
-                  key={key}
-                  style={[Style.containerPressable, Style.containerColumnStart]}
-                >
-                  {value.map((session, index) => (
-                    <Pressable key={`${session.id} ${index}`} style={Style.contentOnlySession}>
-                      <View style={Style.containerColumn}>
-                        <Txt quick orange>{dayToString[new Date(key).getDay()]}</Txt>
-                        <Txt quick medium blue>{day}</Txt>
-                        <Txt quick gray>{monthToString(month)} - {year}</Txt>
-                      </View>
-                      <View
-                        style={Style.containerInfoSession}
+      {selectedDate &&
+        <Modal
+          animationType='slide'
+          visible={visibleSecondModal}
+          transparent
+        >
+          <View style={Style.modal}>
+            <ScrollView
+              style={Style.containerScrollView}
+            >
+              {listDates.filter(date => Object.keys(date)[0] === selectedDate).map(date => {
+                const [key, value] = Object.entries(date)[0]
+                const [year, month, day] = key.split('-')
+                return (
+                  <View
+                    key={key}
+                    style={[Style.containerPressable, Style.containerColumnStart]}
+                  >
+                    {value.map((session, index) => (
+                      <Pressable
+                        key={`${session.id} ${index}`}
+                        style={Style.contentOnlySession}
+                        onPress={() => {
+                          navigate(`/sessions/${session.id}/${microToSession.id}/${key}/${macrocycleSelected.id}`)
+                        }}
                       >
-                        <Txt quick>{session.category}</Txt>
-                        <Txt quick small gray>{session.place} - {session.trainner}</Txt>
-                      </View>
-                    </Pressable>
-                  ))}
-                </View>
-              )
-            })}
-          </ScrollView>
-          <View style={Style.containeIndications}>
-            <IndicationButton
-              text={mesoToSession?.label}
-              color={theme.colors[mesoToSession?.value]?.default}
-            />
-            <IndicationButton
-              text={stageToSession}
-              color={theme.colors.stages}
-            />
-            <IndicationButton
-              text={frameToSession}
-              color={theme.colors.timeFrames}
-            />
-            <IndicationButton
-              text={typeMicrocycles[microToSession?.type]?.label}
-              color={theme.colors.micros}
+                        <View style={Style.containerColumn}>
+                          <Txt quick orange>{dayToString[new Date(key).getDay()]}</Txt>
+                          <Txt quick medium blue>{day}</Txt>
+                          <Txt quick gray>{monthToString(month)} - {year}</Txt>
+                        </View>
+                        <View
+                          style={Style.containerInfoSession}
+                        >
+                          <Txt quick>{session.category}</Txt>
+                          <Txt quick small gray>{session.place} - {session.trainner}</Txt>
+                        </View>
+                      </Pressable>
+                    ))}
+                    <View style={Style.containerCenter}>
+                      <IconButton
+                        onPress={() => navigate(`/sessions/na/${microToSession.id}/${key}/${macrocycleSelected.id}`)}
+                        icon={<Icon name={iconsConstants.more} size={30} />}
+                        style={Style.iconButton}
+                      />
+                    </View>
+
+                  </View>
+                )
+              })}
+            </ScrollView>
+            <View style={Style.containeIndications}>
+              <IndicationButton
+                text={mesoToSession?.label}
+                color={theme.colors[mesoToSession?.value]?.default}
+              />
+              <IndicationButton
+                text={stageToSession}
+                color={theme.colors.stages}
+              />
+              <IndicationButton
+                text={frameToSession}
+                color={theme.colors.timeFrames}
+              />
+              <IndicationButton
+                text={typeMicrocycles[microToSession?.type]?.label}
+                color={theme.colors.micros}
+              />
+            </View>
+            <ButtonGeneral
+              onPress={() => setVisibleSecondModal(false)}
+              title='Cerrar'
+              color={`${theme.colors.red[100]}`}
+              tintColor={theme.colors.red.default}
             />
           </View>
-          <ButtonGeneral
-            onPress={() => setVisibleSecondModal(false)}
-            title='Cerrar'
-            color={`${theme.colors.red[100]}`}
-            tintColor={theme.colors.red.default}
-          />
-        </View>
-      </Modal>
+        </Modal>}
 
     </View>
   )

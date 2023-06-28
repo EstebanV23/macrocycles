@@ -67,7 +67,8 @@
       "prefer-regex-literals": "off",
       "react-hooks/exhaustive-deps": "off",
       "no-unused-vars": "warn",
-      "no-console": "off"
+      "no-console": "off",
+      "react/jsx-no-bind": "off"
     }
   }
 }

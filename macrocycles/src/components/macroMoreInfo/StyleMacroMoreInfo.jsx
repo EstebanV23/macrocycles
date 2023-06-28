@@ -3,11 +3,11 @@ import theme from '../../theme/theme'
 
 const StyleMacroMoreInfo = StyleSheet.create({
   modal: {
-    width: Dimensions.get('window').width - 20,
-    height: Dimensions.get('window').height - 40,
+    width: Dimensions.get('window').width - 50,
+    height: Dimensions.get('window').height - 70,
     position: 'absolute',
-    top: 20,
-    left: 10,
+    top: 35,
+    left: 25,
     elevation: 5,
     backgroundColor: 'white',
     borderRadius: 8,
@@ -21,6 +21,18 @@ const StyleMacroMoreInfo = StyleSheet.create({
     gap: 5,
     flexWrap: 'wrap'
   },
+  containerCenter: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%'
+  },
+  iconButton: {
+    margin: 'auto',
+    marginTop: 20,
+    backgroundColor: theme.colors.blue[200]
+  },
   containerPressable: {
     display: 'flex',
     flexDirection: 'row',
@@ -30,8 +42,7 @@ const StyleMacroMoreInfo = StyleSheet.create({
     minHeight: 40,
     width: '100%',
     padding: 5,
-    borderRadius: 8,
-    backgroundColor: `${theme.colors.disbaled}50`
+    borderRadius: 8
   },
   containerColumnStart: {
     display: 'flex',
@@ -73,7 +84,12 @@ const StyleMacroMoreInfo = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    gap: 13
+    gap: 13,
+    width: '100%',
+    padding: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.gray
   }
 })
 

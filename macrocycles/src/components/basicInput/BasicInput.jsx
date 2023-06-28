@@ -45,9 +45,10 @@ export default function BasicInput ({
   )
 }
 
-export function BasicInputNoControl ({ editable, selected, setSelected, onChangeText, value, placeholder, style, disabled, error, multiline, inputMode }) {
+export function BasicInputNoControl ({ editable, selected, setSelected, onChangeText, value, placeholder, style, disabled, error, multiline, inputMode, onKeyPress = () => {} }) {
   return (
     <TextInput
+      onSubmitEditing={() => onKeyPress()}
       editable={editable}
       placeholder={placeholder}
       value={value}

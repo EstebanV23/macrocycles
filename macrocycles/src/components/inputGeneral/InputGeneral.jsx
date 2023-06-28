@@ -13,8 +13,9 @@ export default function InputGeneral ({
   disabled,
   onChangeText,
   editable = true,
-  errors,
-  style
+  errors = {},
+  style,
+  onKeyPress
 }) {
   const [selected, setSelected] = useState(false)
 
@@ -42,6 +43,7 @@ export default function InputGeneral ({
         error={errors[name]}
         inputMode={inputMode}
         multiline={multiline}
+        onKeyPress={onKeyPress}
       />
       {errors[name] && <Txt quick small error style={{ marginTop: 0 }}>{errors[name].message}</Txt>}
     </View>

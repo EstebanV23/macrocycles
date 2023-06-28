@@ -7,7 +7,11 @@ const iconsConstants = {
   arrowLeft: 'arrow-left',
   calendar: 'calendar-month-outline',
   calendarCheck: 'calendar-check',
-  trophy: 'trophy'
+  trophy: 'trophy',
+  more: 'plus-circle',
+  pencil: 'pencil-circle',
+  trash: 'delete',
+  check: 'check-circle'
 }
 
 export default iconsConstants

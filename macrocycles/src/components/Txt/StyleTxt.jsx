@@ -103,6 +103,9 @@ const StyleTxt = StyleSheet.create({
   },
   meso6: {
     color: theme.colors[6].default
+  },
+  center: {
+    textAlign: 'center'
   }
 })
 

@@ -36,7 +36,8 @@ export default function Txt ({
   meso3,
   meso4,
   meso5,
-  meso6
+  meso6,
+  center
 }) {
   const styleText = [
     Style.defualtColor,
@@ -72,6 +73,7 @@ export default function Txt ({
     meso4 && Style.meso4,
     meso5 && Style.meso5,
     meso6 && Style.meso6,
+    center && Style.center,
     style
   ]
   return (

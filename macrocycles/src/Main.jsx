@@ -16,6 +16,7 @@ import FrameAndStage from './components/frameAndStage/FrameAndStage'
 import { RoatMapContext } from './store/RoadMapStore'
 import ListMacrocycles from './components/listMacrocycles/ListMacrocycles'
 import OnlyMacro from './components/onlyMacro/OnlyMacro'
+import OnlySession from './components/onlySessions/OnlySession'
 
 export default function Main () {
   useAlert()
@@ -44,6 +45,7 @@ export default function Main () {
           </Route>
           <Route path='/macrocycles' element={<ProtectedRoute userLoged><ListMacrocycles /></ProtectedRoute>} />
           <Route path='/macrocycles/:id' element={<ProtectedRoute userLoged><OnlyMacro /></ProtectedRoute>} />
+          <Route path='/sessions/:id/:microcycle/:date/:macrocycle' element={<ProtectedRoute userLoged><OnlySession /></ProtectedRoute>} />
         </Routes>
       </View>
     </>
