@@ -17,6 +17,9 @@ public class Macrocycle {
     private LocalDate start_date;
     private LocalDate end_date;
 
+    private int type;
+
+
     @DBRef
     private List<TimeFrame> time_frame;
 
@@ -30,20 +33,22 @@ public class Macrocycle {
     public Macrocycle() {
     }
 
-    public Macrocycle(String name, LocalDate start_date, LocalDate end_date, List<TimeFrame> time_frame, List<Stage> stages, List<Mesocycle> mesocycles) {
+    public Macrocycle(String name, LocalDate start_date, LocalDate end_date, int type, List<TimeFrame> time_frame, List<Stage> stages, List<Mesocycle> mesocycles) {
         this.name = name;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.type = type;
         this.time_frame = time_frame;
         this.stages = stages;
         this.mesocycles = mesocycles;
     }
 
-    public Macrocycle(String id, String name, LocalDate start_date, LocalDate end_date, List<TimeFrame> time_frame, List<Stage> stages, List<Mesocycle> mesocycles) {
+    public Macrocycle(String id, String name, LocalDate start_date, LocalDate end_date, int type, List<TimeFrame> time_frame, List<Stage> stages, List<Mesocycle> mesocycles) {
         this.id = id;
         this.name = name;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.type = type;
         this.time_frame = time_frame;
         this.stages = stages;
         this.mesocycles = mesocycles;
@@ -79,6 +84,14 @@ public class Macrocycle {
 
     public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public List<TimeFrame> getTime_frame() {

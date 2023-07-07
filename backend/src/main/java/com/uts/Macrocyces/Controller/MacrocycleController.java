@@ -20,6 +20,11 @@ public class MacrocycleController {
     @Autowired
     private MacrocycleRepository macrocycleRepository;
 
+    @GetMapping("/type/{type}")
+    public List<Macrocycle> getMacrocyclesByType(@PathVariable int type) {
+        return macrocycleRepository.findByType(type);
+    }
+
     @GetMapping("/")
     public ResponseEntity<Object> getAllMacrocycles() {
         try {
@@ -156,6 +161,10 @@ public class MacrocycleController {
                 // Verificar si se proporciona una fecha de finalización actualizada en el cuerpo de la solicitud
                 if (updatedMacrocycle.getEnd_date() != null) {
                     macrocycle.setEnd_date(updatedMacrocycle.getEnd_date());
+                }
+
+                if(updatedMacrocycle.getType() != 0){
+                    macrocycle.setType(updatedMacrocycle.getType());
                 }
 
                 // Verificar si se proporciona una lista de marcos de tiempo actualizada en el cuerpo de la solicitud
