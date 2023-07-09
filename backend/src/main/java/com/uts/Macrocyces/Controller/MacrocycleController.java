@@ -7,10 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/macrocycle")
@@ -47,6 +45,40 @@ public class MacrocycleController {
         }
     }
 
+    @GetMapping("/components/{id}")
+    public ResponseEntity<Object> getMacrocycleByIdComponents(@PathVariable("id") String id) {
+        try {
+            Optional<Macrocycle> macrocycleOptional = macrocycleRepository.findById(id);
+            if (macrocycleOptional.isEmpty()) {
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("type", "error");
+                response.put("message", "Macrociclo no encontrado");
+                response.put("status", HttpStatus.NOT_FOUND.value());
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            Macrocycle macrocycle = macrocycleOptional.get();
+            List<Macrocycle.Component> components = List.of(macrocycle.getComponents());
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("data", components);
+            response.put("type", "success");
+            response.put("message", "Componentes del macrociclo encontrado");
+            response.put("status", HttpStatus.OK.value());
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Componentes del macrociclo no encontrados");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getMacrocycleById(@PathVariable("id") String id) {
         try {
@@ -80,6 +112,76 @@ public class MacrocycleController {
     }
 
     @PostMapping("")
+    public ResponseEntity<Object> createMacrocycle(@RequestBody Macrocycle macrocycleRequest) {
+        try {
+            Macrocycle macrocycle = new Macrocycle();
+            macrocycle.setName(macrocycleRequest.getName());
+            macrocycle.setStart_date(macrocycleRequest.getStart_date());
+            macrocycle.setEnd_date(macrocycleRequest.getEnd_date());
+
+            // Create components
+            List<Macrocycle.Component> components = new ArrayList<>();
+            for (Macrocycle.Component componentRequest : macrocycleRequest.getComponents()) {
+                Macrocycle.Component component = new Macrocycle.Component();
+                component.setAmount(componentRequest.getAmount());
+                component.setType(componentRequest.getType());
+                component.setUnitMeasure(componentRequest.getUnitMeasure());
+
+                // Create mesocycles
+                List<Macrocycle.Component.Mesocycles> mesocycles = new ArrayList<>();
+                for (Macrocycle.Component.Mesocycles mesocycleRequest : componentRequest.getMesocycles()) {
+                    Macrocycle.Component.Mesocycles mesocycle = new Macrocycle.Component.Mesocycles();
+                    mesocycle.setType(mesocycleRequest.getType());
+                    mesocycle.setPercent(mesocycleRequest.getPercent());
+                    mesocycle.setAmount(mesocycleRequest.getAmount());
+
+                    // Create microcycles
+                    List<Macrocycle.Component.Mesocycles.Microcycles> microcycles = new ArrayList<>();
+                    for (Macrocycle.Component.Mesocycles.Microcycles microcycleRequest : mesocycleRequest.getMicrocycles()) {
+                        Macrocycle.Component.Mesocycles.Microcycles microcycle = new Macrocycle.Component.Mesocycles.Microcycles();
+                        microcycle.setType(microcycleRequest.getType());
+                        microcycle.setPercent(microcycleRequest.getPercent());
+                        microcycle.setAmount(microcycleRequest.getAmount());
+
+                        microcycles.add(microcycle);
+                    }
+                    mesocycle.setMicrocycles(microcycles);
+
+                    mesocycles.add(mesocycle);
+                }
+                component.setMesocycles(mesocycles);
+
+                components.add(component);
+            }
+            macrocycle.setComponents(components);
+
+            macrocycle.setTime_frame(macrocycleRequest.getTime_frame());
+            macrocycle.setStages(macrocycleRequest.getStages());
+            macrocycle.setMesocycles(macrocycleRequest.getMesocycles());
+
+            Macrocycle newMacrocycle = macrocycleRepository.save(macrocycle);
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("data", newMacrocycle);
+            response.put("type", "success");
+            response.put("message", "Macrociclo añadido exitosamente");
+            response.put("status", HttpStatus.CREATED.value());
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception ex) {
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("type", "error");
+            response.put("message", "Error al añadir el macrociclo");
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
+
+
+    /*
     public ResponseEntity<Object> addMacrocycle(@RequestBody Macrocycle macrocycle) {
         try {
             Macrocycle newMacrocycle = macrocycleRepository.save(macrocycle);
@@ -100,6 +202,8 @@ public class MacrocycleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+    */
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateMacrocycle(@PathVariable("id") String id, @RequestBody Macrocycle updatedMacrocycle) {
@@ -165,6 +269,10 @@ public class MacrocycleController {
 
                 if(updatedMacrocycle.getType() != 0){
                     macrocycle.setType(updatedMacrocycle.getType());
+                }
+
+                if(updatedMacrocycle.getComponents() != null){
+                    macrocycle.setComponents(List.of(updatedMacrocycle.getComponents()));
                 }
 
                 // Verificar si se proporciona una lista de marcos de tiempo actualizada en el cuerpo de la solicitud
