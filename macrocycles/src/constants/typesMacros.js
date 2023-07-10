@@ -1,11 +1,11 @@
 const typesMacros = [
   {
     label: 'Entrenamiento por unidad',
-    value: 0
+    value: 1
   },
   {
     label: 'Entrenamiento por tiempo',
-    value: 1
+    value: 2
   }
 ]
 

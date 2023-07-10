@@ -1,6 +1,6 @@
 import { API_URL } from '../config/requests'
 
-export default function serviceNewSessionStage ({ data }) {
+export default function serviceNewSessionStage (data) {
   if (data.id || data.id === 0) delete data.id
 
   return fetch(`${API_URL}/session-stage`, {

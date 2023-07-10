@@ -50,7 +50,7 @@ export default function NewStage ({ arrayToSave, setArrayToSave, stageSelected }
 
   const createOrModify = () => {
     if (name.trim() === '') {
-      newAlert('error', 'El nombre de la fase es obligatorio')
+      newAlert('info', 'El nombre de la fase es obligatorio')
       return
     }
     setName('')

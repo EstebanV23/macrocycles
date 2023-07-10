@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import EditSessions from '../editSessions/EditSessions'
 import ViewInfoSession from '../viewInfoSession/ViewInfoSession'
 import { UserContext } from '../../store/UserStore'
@@ -11,7 +11,7 @@ import { Icon, IconButton } from '@react-native-material/core'
 import iconsConstants from '../../constants/iconConstants'
 import theme from '../../theme/theme'
 
-export default function NewSession ({ microcycleSelected, dateSelected, session, macrocycleSelected }) {
+export default function NewSession ({ microcycleSelected, dateSelected, session, macrocycleSelected, setRetryFetch }) {
   const [id, setId] = useState(session?.id ?? null)
   const [amountSportsmans, setAmountSportsmans] = useState(session?.amountSportsmans ?? null)
   const [category, setCategory] = useState(session?.category ?? null)
@@ -26,6 +26,7 @@ export default function NewSession ({ microcycleSelected, dateSelected, session,
   const { setLoading } = useContext(UserContext)
   const [functionToExecute, setFunctionToExecute] = useState(() => {})
   const [year, month, day] = dateSelected.split('-')
+  console.log('🚀 ~ file: NewSession.jsx:28 ~ NewSession ~ functionToExecute:', functionToExecute)
 
   return (
     <View style={Style.containerGeneral}>
@@ -69,6 +70,7 @@ export default function NewSession ({ microcycleSelected, dateSelected, session,
               stages={stages}
             />
           : <EditSessions
+              setRetryFetch={setRetryFetch}
               id={id}
               amountSportsmans={amountSportsmans}
               category={category}

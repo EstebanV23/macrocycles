@@ -1,5 +1,5 @@
 
-import PressableLink, { PressableLinkEdit } from '../pressableLink/PressableLink'
+import { PressableLinkEdit } from '../pressableLink/PressableLink'
 import Style from './StyleMacroItem'
 import Txt from '../Txt/Txt'
 import IndicationButton from '../indicationButton/IndicationButton'
@@ -11,7 +11,8 @@ import typeMicrocycles from '../../constants/typesMicrocycles'
 import typesMesocycles from '../../constants/typesMesocycles'
 
 export default function MacroItem ({ macrocycle }) {
-  const today = new Date()
+  console.log('🚀 ~ file: MacroItem.jsx:14 ~ MacroItem ~ macrocycle:', macrocycle)
+  const today = new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`)
   const firstDate = new Date(macrocycle.start_date)
   const lastDate = new Date(macrocycle.end_date)
 
@@ -44,7 +45,8 @@ export default function MacroItem ({ macrocycle }) {
   const [mesoSelected, setMesoSelected] = useState(() => {
     if (today <= firstDate) return macrocycle.mesocycles[0]
     if (today >= lastDate) return macrocycle.mesocycles[macrocycle.mesocycles.length - 1]
-    console.log('paso del primero')
+
+    console.log('🚀 ~ file: MacroItem.jsx:57 ~ Prueba:', 'DE PASO')
     const meso = macrocycle.mesocycles.find((meso) => {
       const startDate = new Date(meso.startDate)
       const endDate = new Date(meso.endDate)
@@ -53,7 +55,7 @@ export default function MacroItem ({ macrocycle }) {
 
     return meso
   })
-  console.log('🚀 ~ file: MacroItem.jsx:56 ~ const[mesoSelected,setMesoSelected]=useState ~ mesoSelected:', mesoSelected)
+  console.log('🚀 ~ file: MacroItem.jsx:57 ~ const[mesoSelected,setMesoSelected]=useState ~ mesoSelected:', mesoSelected)
 
   const [microSelected, setMicroSelected] = useState(() => {
     if (today <= firstDate) return mesoSelected.microcycles[0]
@@ -83,8 +85,8 @@ export default function MacroItem ({ macrocycle }) {
         <View style={Style.containerIndications}>
           <IndicationButton text={timeFrameSelected.type} color={theme.colors.timeFrames} />
           <IndicationButton text={stageSelected.type} color={theme.colors.stages} />
-          <IndicationButton text={typesMesocycles.find(item => item.value === Number(mesoSelected.type)).label} color={theme.colors.micros} />
-          <IndicationButton text={typeMicrocycles.find(item => item.value === Number(microSelected.type)).label} color={theme.colors.micros} />
+          <IndicationButton text={typesMesocycles.find(item => item.value === Number(mesoSelected?.type))?.label ?? 'No sé'} color={theme.colors.micros} />
+          <IndicationButton text={typeMicrocycles.find(item => item.value === Number(microSelected?.type))?.label ?? 'No sé'} color={theme.colors.micros} />
         </View>
       </View>
       <View style={Style.containerDates}>

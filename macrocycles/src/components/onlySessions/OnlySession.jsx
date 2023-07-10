@@ -8,17 +8,20 @@ import iconsConstants from '../../constants/iconConstants'
 
 export default function OnlySession () {
   const { id, date, microcycle, macrocycle } = useParams()
-
   const [session, setSession] = useState(undefined)
+  const [retryFetch, setRetryFetch] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
+    if (!retryFetch) return
+    setSession(undefined)
     serviceGetOneSession(id)
       .then(sessionResponse => {
-        console.log('🚀 ~ file: OnlySession.jsx:20 ~ useEffect ~ sessionResponse:', sessionResponse)
         setSession(sessionResponse?.data ?? null)
       })
-  }, [])
+
+    setRetryFetch(false)
+  }, [retryFetch])
 
   if (session === undefined) return <Loader />
 
@@ -31,6 +34,7 @@ export default function OnlySession () {
         onPress={() => navigate(`/macrocycles/${macrocycle}`)}
       />
       <NewSession
+        setRetryFetch={setRetryFetch}
         dateSelected={date}
         microcycleSelected={microcycle}
         session={session}

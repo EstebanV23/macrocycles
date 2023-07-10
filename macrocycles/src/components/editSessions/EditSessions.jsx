@@ -4,7 +4,7 @@ import serviceUpdateSession from '../../services/serviceUpdateSession'
 import serviceNewSession from '../../services/serviceNewSession'
 import InputGeneral from '../inputGeneral/InputGeneral'
 import { useNavigate } from 'react-router-native'
-import { TextInput, View } from 'react-native'
+import { View } from 'react-native'
 import IndicationButton from '../indicationButton/IndicationButton'
 import theme from '../../theme/theme'
 import Style from './StyleEditSessions'
@@ -12,14 +12,12 @@ import { Icon, IconButton } from '@react-native-material/core'
 import iconsConstants from '../../constants/iconConstants'
 import { UserContext } from '../../store/UserStore'
 import NewStage from '../newStage/NewStage'
-import Select from '../select/Select'
-import getAllSessionsToSelect from '../../logic/getAllSessionsToSelect'
 import arrToCreateOrEdit from '../../logic/arrToCreateOrEdit'
 import serviceNewExercise from '../../services/serviceNewExercise'
 import serviceUpdateExercise from '../../services/serviceUpdateExercise'
-import serviceNewStage from '../../services/serviceNewStage'
-import serviceUpdateNewStage from '../../services/serviceUpdateStage'
 import { LoadingContext } from '../../store/LoadingStore'
+import serviceUpdateSessionStage from '../../services/serviceUpdateSessionStage'
+import serviceNewSessionStage from '../../services/serviceNewSessionStage'
 
 const UPDATE = 'update'
 const CREATE = 'create'
@@ -38,8 +36,10 @@ export default function EditSessions ({
   microId,
   macroId,
   date,
-  setFunctionToExecute
+  setFunctionToExecute,
+  setRetryFetch
 }) {
+  const navigate = useNavigate()
   const [newId, setNewId] = useState(id ?? null)
   const [newAmountSportsmans, setNewAmountSportsmans] = useState(amountSportsmans ?? '')
   const [newCategory, setNewCategory] = useState(category ?? '')
@@ -55,52 +55,67 @@ export default function EditSessions ({
   const [addNewStage, setAddNewStage] = useState(0)
   const [lastNumber, setLastNumber] = useState(0)
 
-  const [fsd, setLoading] = useContext(LoadingContext)
+  const { setLoading } = useContext(LoadingContext)
 
   const [functionSave, setFunctionSave] = useState(id ? UPDATE : CREATE)
 
-  const navigate = useNavigate()
-
   useEffect(() => {
     setFunctionToExecute(() => async () => {
-      setLoading(true)
-      if (newCategory.trim() === '' || newPlace.trim() === '' || newTrainner.trim() === '' || newObjectiveTec.trim() === '' || newObjectivePhysical.trim() === '' || newObjectiveEducational.trim() === '' || newMaterial.length === 0 || newStages.length === 0) {
-        newAlert('error', 'Los campos son * son obligatorios')
-        return
-      }
-
-      console.log('🚀 ~ file: EditSessions.jsx:77 ~ newStagesToSave ~ stage:', 'fdasf')
-      const newStagesToSave = await Promise.all(newStages.map(async (stage, index) => {
-        const { exercises } = stage
-        const newExcercises = await arrToCreateOrEdit({ arr: exercises, functionToCreate: serviceNewExercise, functionToUpdate: serviceUpdateExercise, special: true })
-        return {
-          ...stage,
-          exercises: newExcercises
+      try {
+        setLoading(true)
+        if (newCategory.trim() === '' || newPlace.trim() === '' || newTrainner.trim() === '' || newObjectiveTec.trim() === '' || newObjectivePhysical.trim() === '' || newObjectiveEducational.trim() === '' || newMaterial.length === 0 || newStages.length === 0) {
+          console.log("🚀 ~ file: EditSessions.jsx:72 ~ setFunctionToExecute ~  newTrainner.trim() === '':", newTrainner.trim() === '')
+          newAlert('info', 'Los campos son * son obligatorios')
+          setLoading(false)
+          return
         }
-      }))
+        console.log('🚀 ~ file: EditSessions.jsx:80 ~ newStagesToSave ~ newStages:', newStages)
+        const newStagesToSave = await Promise.all(newStages.map(async (stage, index) => {
+          const { exercises } = stage
+          const newExcercises = await arrToCreateOrEdit({ arr: exercises, functionToCreate: serviceNewExercise, functionToEdit: serviceUpdateExercise, special: true })
+          console.log('🚀 ~ file: EditSessions.jsx:77 ~ newStagesToSave ~ newExcercises:', newExcercises)
+          return {
+            ...stage,
+            exercises: newExcercises
+          }
+        }))
+        console.log('🚀 ~ file: EditSessions.jsx:80 ~ newStagesToSave ~ newStagesToSave:', newStagesToSave)
 
-      const newStageToSave = await arrToCreateOrEdit({ arr: newStagesToSave, functionToCreate: serviceNewStage, functionToUpdate: serviceUpdateNewStage })
+        const newStageToSave = await arrToCreateOrEdit({ arr: newStagesToSave, functionToCreate: serviceNewSessionStage, functionToEdit: serviceUpdateSessionStage })
+        console.log('🚀 ~ file: EditSessions.jsx:84 ~ setFunctionToExecute ~ newStageToSave:', newStageToSave)
 
-      const dataSend = {
-        amountSportsmans: Number(newAmountSportsmans),
-        category: newCategory,
-        place: newPlace,
-        trainner: newTrainner,
-        objectiveTec: newObjectiveTec,
-        objectivePhysical: newObjectivePhysical,
-        objectiveEducational: newObjectiveEducational,
-        material: newMaterial,
-        stages: newStageToSave,
-        date
+        const dataSend = {
+          amountSportsmans: Number(newAmountSportsmans),
+          category: newCategory,
+          place: newPlace,
+          trainner: newTrainner,
+          objectiveTec: newObjectiveTec,
+          objectivePhysical: newObjectivePhysical,
+          objectiveEducational: newObjectiveEducational,
+          material: newMaterial,
+          stages: newStageToSave,
+          date
+        }
+        console.log('🚀 ~ file: EditSessions.jsx:124 ~ setFunctionToExecute ~ dataSend:', dataSend)
+        console.log('🚀 ~ file: EditSessions.jsx:105 ~ setFunctionToExecute ~ newId:', newId)
+        console.log('🚀 ~ file: EditSessions.jsx:104 ~ setFunctionToExecute ~ functionSave:', functionSave)
+        const newData = functionSave === UPDATE
+          ? await serviceUpdateSession({ id: newId, data: dataSend })
+          : await serviceNewSession({ data: dataSend, microId })
+        setLoading(false)
+
+        console.log('🚀 ~ file: EditSessions.jsx:97 ~ newData:', newData)
+        navigate(`/sessions/${newData.data.id}/${microId}/${date}/${macroId}`)
+        newAlert('success', 'Sesión guardada correctamente')
+      } catch (error) {
+        setLoading(false)
+        console.log(error)
+        newAlert('error', 'Error al guardar la sesión')
       }
       setLoading(false)
-      const newData = functionSave === UPDATE
-        ? await serviceUpdateSession({ id: newId, data: dataSend })
-        : await serviceNewSession({ data: dataSend, microId })
-
-      navigate(`/sessions/${newData.data.id}/${microId}/${date}/${macroId}`)
+      setRetryFetch(true)
     })
-  }, [])
+  }, [newStages, newMaterial, newObjectiveEducational, newObjectivePhysical, newObjectiveTec, newTrainner, newCategory])
 
   useEffect(() => {
     if (addNewStage === 0) return

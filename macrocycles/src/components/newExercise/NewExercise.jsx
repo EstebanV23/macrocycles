@@ -25,7 +25,7 @@ export default function NewExercise ({ arrayToSave, setArrayToSave, exerciceSele
         if (item.id === id) {
           item.name = name
           item.description = description
-          item.duration = duration
+          item.duration = Number(duration)
         }
         return item
       })
@@ -60,8 +60,8 @@ export default function NewExercise ({ arrayToSave, setArrayToSave, exerciceSele
         />
         <InputGeneral
           style={Style.input}
-          label='Duración'
-          value={duration}
+          label='Duración (Minutos)'
+          value={String(duration)}
           inputMode='numeric'
           onChangeText={setDuration}
           placeholder='Duración del ejercicio'

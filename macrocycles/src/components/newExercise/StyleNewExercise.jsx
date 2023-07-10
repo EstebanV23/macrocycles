@@ -13,7 +13,7 @@ const StyleNewExercise = StyleSheet.create({
   content: {
     padding: 7,
     borderRadius: 8,
-    backgroundColor: theme.colors.blue[200]
+    backgroundColor: theme.colors.orange[100]
   },
   columnCon: {
     display: 'flex',
