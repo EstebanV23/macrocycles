@@ -19,17 +19,19 @@ import serviceGetOneMacro from '../../services/serviceGetOneMacro'
 import { UserContext } from '../../store/UserStore'
 import { useNavigate } from 'react-router-native'
 import iconsConstants from '../../constants/iconConstants'
+import ListComponents from '../listComponents/ListComponents'
 
 const snakeCase = true
 
 export default function MacroMoreInfo ({ macrocycleId }) {
-  const { time_frame: timeFrames, stages, mesocycles } = macrocycleId
+  const { time_frame: timeFrames, stages, mesocycles, components, type: typeMacro } = macrocycleId
   const [macrocycle, setMacrocycle] = useState(macrocycleId)
   const [macrocycleSelected, setMacrocycleSelected] = useState(macrocycle)
   const [timeFramesSelected, setTimeFramesSelected] = useState(timeFrames)
   const [stagesSelected, setStagesSelected] = useState(stages)
   const [mesocyclesSelected, setMesocyclesSelected] = useState(mesocycles)
   const [microcyclesSelected, setMicrocyclesSelected] = useState(() => mesocyclesSelected.map((mesocycle) => mesocycle.microcycles).flat())
+  const [componentsSelected, setComponentsSelected] = useState(components)
 
   const [microToSession, setMicroToSession] = useState(null)
   const [mesoToSession, setMesoToSession] = useState(null)
@@ -97,17 +99,26 @@ export default function MacroMoreInfo ({ macrocycleId }) {
         mesocycles={mesocyclesSelected}
         microcycles={microcyclesSelected}
       />
-      <CalendarWithData
-        macrocycle={macrocycleSelected}
-        timeFrames={timeFramesSelected}
-        stages={stagesSelected}
-        mesocycles={mesocyclesSelected}
-        microcycles={microcyclesSelected}
-        onDayPress={(day) => {
-          handlePress(day)
-          setVisibleFirstModal(true)
-        }}
-      />
+      <ScrollView>
+        <CalendarWithData
+          macrocycle={macrocycleSelected}
+          timeFrames={timeFramesSelected}
+          stages={stagesSelected}
+          mesocycles={mesocyclesSelected}
+          microcycles={microcyclesSelected}
+          onDayPress={(day) => {
+            handlePress(day)
+            setVisibleFirstModal(true)
+          }}
+        />
+        <ListComponents
+          macrocycleId={macrocycleId}
+          components={componentsSelected}
+          typeMacro={typeMacro}
+        />
+        <Txt />
+        <Txt />
+      </ScrollView>
       <Modal
         animationType='slide'
         visible={visibleFirstModal}
