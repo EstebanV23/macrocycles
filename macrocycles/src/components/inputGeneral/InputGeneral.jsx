@@ -31,7 +31,7 @@ export default function InputGeneral ({
         style
       ]}
     >
-      <Txt quick gray={!selected} red={selected} error={errors[name]}>{label}</Txt>
+      {label && <Txt quick gray={!selected} red={selected} error={errors[name]}>{label}</Txt>}
       <BasicInputNoControl
         editable={editable ?? disabled}
         placeholder={placeholder}

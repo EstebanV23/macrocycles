@@ -48,25 +48,26 @@ import componentsUnits from '../../constants/componentsUnits'
 import Style from './StyleInfoComponent'
 import ComponentMesocycle from '../componentMesocycle/ComponentMesocycle'
 
-export default function InfoComponent ({ component, typeMacro, macrocycleId }) {
-  const { amount, type, unitMeasure, mesocycles } = component
+export default function InfoComponent ({ component, typeMacro }) {
+  const { amount, type, unitMeasure, mesocycles: mesocycleComponent } = component
 
-  const unitMeasureInfo = componentsUnits[unitMeasure - 1]
-  const { unitValue, unitName } = unitMeasureInfo
+  const unitMeasureInfo = componentsUnits.find(unit => unit.value === unitMeasure)
+  const { unitValue } = unitMeasureInfo
 
   return (
     <View Style={Style.content}>
-      <Txt quickBold medium>Componente por {unitName}</Txt>
+      <Txt quickBold medium>Componente por {type}</Txt>
       {typeMacro === 1 && <Txt quick>Cantidad total: {amount} {unitValue}</Txt>}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         style={Style.scroll}
       >
-        {mesocycles.map((mesocycle, index) => (
+        {mesocycleComponent.map((mesocycle, index) => (
           <ComponentMesocycle
-            key={`${mesocycle.type}${mesocycle.amount}${mesocycle.percent}+${index}`}
+            key={`${mesocycle.type}${mesocycle.amount}${mesocycle.percent}re${index}`}
             mesocycle={mesocycle}
+            typeMacro={typeMacro}
           />
         ))}
       </ScrollView>

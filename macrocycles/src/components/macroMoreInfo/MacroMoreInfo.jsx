@@ -115,6 +115,7 @@ export default function MacroMoreInfo ({ macrocycleId }) {
           macrocycleId={macrocycleId}
           components={componentsSelected}
           typeMacro={typeMacro}
+          mesocycles={mesocycles}
         />
         <Txt />
         <Txt />

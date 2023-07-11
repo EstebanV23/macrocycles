@@ -11,7 +11,7 @@ const iconsConstants = {
   more: 'plus-circle',
   pencil: 'pencil-circle',
   trash: 'delete',
-  check: 'check-circle'
+  check: 'check-circle',
+  cancel: 'clock-time-six'
 }
-
 export default iconsConstants

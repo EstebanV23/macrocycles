@@ -1,43 +1,43 @@
 const componentsUnits = [
   {
-    id: 1,
+    value: 1,
     unitValue: 'kg',
-    unitName: 'Kilogramos'
+    label: 'Kilogramos'
   },
   {
-    id: 2,
+    value: 2,
     unitValue: 'Cm',
-    unitName: 'Centimétros'
+    label: 'Centimétros'
   },
   {
-    id: 3,
+    value: 3,
     unitValue: 'M',
-    unitName: 'Métros'
+    label: 'Métros'
   },
   {
-    id: 5,
+    value: 5,
     unitValue: 'Gr',
-    unitName: 'Gramos'
+    label: 'Gramos'
   },
   {
-    id: 6,
+    value: 6,
     unitValue: 'Km',
-    unitName: 'Kilómetros'
+    label: 'Kilómetros'
   },
   {
-    id: 7,
+    value: 7,
     unitValue: 'M/s',
-    unitName: 'Metros por segundo'
+    label: 'Metros por segundo'
   },
   {
-    id: 8,
+    value: 8,
     unitValue: 'a/s2',
-    unitName: 'Aceleración'
+    label: 'Aceleración'
   },
   {
-    id: 9,
+    value: 9,
     unitValue: 'N',
-    unitName: 'Fuerza'
+    label: 'Fuerza'
   }
 ]
 
