@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react'
 export default function ListComponents ({ macrocycleId, components, typeMacro, mesocycles }) {
   const [editMode, setEditMode] = useState(false)
   const [newComponents, setNewComponents] = useState([])
+  const [componentsList, setComponentsList] = useState([])
+  console.log('🚀 ~ file: ListComponents.jsx:16 ~ ListComponents ~ componentsList:', componentsList)
 
   const mesocycleToComponent = transformMesoToComponent(mesocycles)
 
@@ -29,19 +31,21 @@ export default function ListComponents ({ macrocycleId, components, typeMacro, m
 
   const saveComponents = (newComponent, position) => {
     const newComponentList = newComponents.map((component, index) => position === index ? newComponent : component)
-    setNewComponents(newComponentList)
+    setComponentsList(newComponentList)
   }
 
   return (
     <View style={Style.list}>
       <Txt quickBold extraBig style={{ marginBottom: 10 }}>Componentes</Txt>
-      {components.map((component, index) => (
-        <InfoComponent
-          key={`${component.id}fdaf${index}`}
-          component={component}
-          typeMacro={typeMacro}
-          macrocycleId={macrocycleId}
-        />))}
+      {components
+        ? components.map((component, index) => (
+          <InfoComponent
+            key={`${component.id}fdaf${index}`}
+            component={component}
+            typeMacro={typeMacro}
+            macrocycleId={macrocycleId}
+          />))
+        : <Txt>No tienes componentes</Txt>}
       {editMode && newComponents.map((component, index) => (
         <NewComponentMeso
           key={`${component.type}${component.amount}${component.percent}ll${index}`}

@@ -8,13 +8,13 @@ export default function ComponentMesocycle ({ mesocycle }) {
   return (
     <View style={Style.content}>
       <ContentComponentInfo>
-        <Txt quickBold white>{mesocycle.type}</Txt>
+        <Txt quickBold blue>{mesocycle.type}</Txt>
       </ContentComponentInfo>
       <ContentComponentInfo>
-        <Txt quickBold white>{mesocycle.percent}%</Txt>
+        <Txt quickBold blue>{mesocycle.percent}%</Txt>
       </ContentComponentInfo>
       <ContentComponentInfo>
-        <Txt quickBold white>{mesocycle.amount}</Txt>
+        <Txt quickBold blue>{mesocycle.amount}</Txt>
       </ContentComponentInfo>
       <View style={[Style.flexRow]}>
         {mesocycle.microcycles.map((microcycle, index) => (

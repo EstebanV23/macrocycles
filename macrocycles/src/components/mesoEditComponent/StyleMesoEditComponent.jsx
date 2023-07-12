@@ -10,6 +10,14 @@ const StyleMesoEditComponent = StyleSheet.create({
     backgroundColor: `${theme.colors.blue[400]}`,
     minWidth: Dimensions.get('window').width - 50,
     marginHorizontal: 5
+  },
+  contentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+    gap: 5
   }
 })
 

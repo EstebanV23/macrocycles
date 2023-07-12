@@ -6,7 +6,7 @@ const StyleContentComponentInfo = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
-    backgroundColor: theme.colors.blue[500],
+    backgroundColor: theme.colors.white,
     display: 'flex',
     minWidth: 300,
     flexDirection: 'column',

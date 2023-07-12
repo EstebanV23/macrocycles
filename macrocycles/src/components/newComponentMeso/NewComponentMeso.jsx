@@ -13,14 +13,14 @@ import componentsUnits from '../../constants/componentsUnits'
 import MesoEditComponent from '../mesoEditComponent/MesoEditComponent'
 
 export default function NewComponentMeso ({ component, typeMacro, position, deleteComponent, saveComponents }) {
-  console.log('🚀 ~ file: NewComponentMeso.jsx:9 ~ NewComponentMeso ~ component:', component)
-
   const { type, unitMeasure, amount, mesocycles } = component
 
   const [typeComponent, setTypeComponent] = useState(type)
   const [amountComponent, setAmountComponent] = useState(amount)
   const [unitMeasureComponent, setUnitMeasureComponent] = useState(unitMeasure)
   const [mesosComponent, setMesosComponent] = useState(mesocycles)
+  console.log('🚀 ~ file: NewComponentMeso.jsx:24 ~ NewComponentMeso ~ mesosComponent:', mesosComponent)
+  const [showMesos, setShowMesos] = useState(mesocycles)
 
   const modifyMeso = (newMeso, position) => {
     const newMesos = mesosComponent.map((meso, index) => index === position ? newMeso : meso)
@@ -66,7 +66,7 @@ export default function NewComponentMeso ({ component, typeMacro, position, dele
         style={Style.scroll}
       >
         {
-          mesosComponent.map((meso, index) => (
+          showMesos.map((meso, index) => (
             <MesoEditComponent
               key={`${meso.type}${meso.amount}${meso.percent}x${index}`}
               meso={meso}
@@ -74,6 +74,7 @@ export default function NewComponentMeso ({ component, typeMacro, position, dele
               modifyMeso={modifyMeso}
               typeMacro={typeMacro}
               amountComponent={amountComponent}
+              amountUnit={componentsUnits.find(unit => unit.value === unitMeasureComponent).label}
             />
           ))
         }

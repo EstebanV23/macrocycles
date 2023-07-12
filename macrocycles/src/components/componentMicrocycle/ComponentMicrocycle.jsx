@@ -8,13 +8,13 @@ export default function ComponentMicrocycle ({ microcycle }) {
   return (
     <View style={Style.content}>
       <ContentComponentInfo>
-        <Txt quickBold white>{type}</Txt>
+        <Txt quickBold blue>{type}</Txt>
       </ContentComponentInfo>
       <ContentComponentInfo>
-        <Txt quickBold white>{percent}%</Txt>
+        <Txt quickBold blue>{percent}%</Txt>
       </ContentComponentInfo>
       <ContentComponentInfo>
-        <Txt quickBold white>{amount}</Txt>
+        <Txt quickBold blue>{amount}</Txt>
       </ContentComponentInfo>
     </View>
   )
