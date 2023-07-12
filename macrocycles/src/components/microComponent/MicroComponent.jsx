@@ -4,11 +4,12 @@ import ContentComponentInfo from '../contentComponentInfo/ContentComponentInfo'
 import InputGeneral from '../inputGeneral/InputGeneral'
 import typesMesocycles from '../../constants/typesMesocycles'
 import { useEffect, useState } from 'react'
+import typeMicrocycles from '../../constants/typesMicrocycles'
 
 export default function MicroComponent ({ micro, modifyMicro, amountMeso, position, amountUnit }) {
   const { type, percent, amount } = micro
 
-  const [typeMicro, setTypeMicro] = useState(type)
+  const [typeMicro, setTypeMicro] = useState(typeMicrocycles[Number(type) - 1].label)
   const [percentMicro, setPercentMicro] = useState(percent)
   const [amountMicro, setAmountMicro] = useState(amount)
 
@@ -32,7 +33,7 @@ export default function MicroComponent ({ micro, modifyMicro, amountMeso, positi
         <InputGeneral
           label='Tipo de microciclo'
           disabled
-          value={typesMesocycles[Number(typeMicro) - 1].label}
+          value={typeMicro}
           editable={false}
         />
       </ContentComponentInfo>

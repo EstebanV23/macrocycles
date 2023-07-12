@@ -4,7 +4,7 @@ import Style from './StyleComponentMesocycle'
 import ContentComponentInfo from '../contentComponentInfo/ContentComponentInfo'
 import ComponentMicrocycle from '../componentMicrocycle/ComponentMicrocycle'
 
-export default function ComponentMesocycle ({ mesocycle }) {
+export default function ComponentMesocycle ({ mesocycle, unitValue }) {
   return (
     <View style={Style.content}>
       <ContentComponentInfo>
@@ -14,13 +14,14 @@ export default function ComponentMesocycle ({ mesocycle }) {
         <Txt quickBold blue>{mesocycle.percent}%</Txt>
       </ContentComponentInfo>
       <ContentComponentInfo>
-        <Txt quickBold blue>{mesocycle.amount}</Txt>
+        <Txt quickBold blue>{mesocycle.amount} {unitValue}</Txt>
       </ContentComponentInfo>
       <View style={[Style.flexRow]}>
         {mesocycle.microcycles.map((microcycle, index) => (
           <ComponentMicrocycle
             key={`${microcycle.type}${microcycle.amount}${microcycle.percent}${index}`}
             microcycle={microcycle}
+            unitValue={unitValue}
           />
         ))}
       </View>

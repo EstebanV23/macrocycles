@@ -68,6 +68,7 @@ export default function InfoComponent ({ component, typeMacro }) {
             key={`${mesocycle.type}${mesocycle.amount}${mesocycle.percent}re${index}`}
             mesocycle={mesocycle}
             typeMacro={typeMacro}
+            unitValue={unitValue}
           />
         ))}
       </ScrollView>

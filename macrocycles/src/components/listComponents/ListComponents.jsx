@@ -7,12 +7,19 @@ import iconsConstants from '../../constants/iconConstants'
 import theme from '../../theme/theme'
 import NewComponentMeso from '../newComponentMeso/NewComponentMeso'
 import transformMesoToComponent from '../../logic/transformMesoToComponent'
-import { useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
+import { LoadingContext } from '../../store/LoadingStore'
+import { UserContext } from '../../store/UserStore'
+import addNewComponentToDatabase from '../../logic/addNewComponentToDatabase'
+import { useNavigate } from 'react-router-native'
 
 export default function ListComponents ({ macrocycleId, components, typeMacro, mesocycles }) {
   const [editMode, setEditMode] = useState(false)
   const [newComponents, setNewComponents] = useState([])
   const [componentsList, setComponentsList] = useState([])
+  const { setLoading } = useContext(LoadingContext)
+  const { newAlert } = useContext(UserContext)
+  const navigate = useNavigate()
   console.log('🚀 ~ file: ListComponents.jsx:16 ~ ListComponents ~ componentsList:', componentsList)
 
   const mesocycleToComponent = transformMesoToComponent(mesocycles)
@@ -32,6 +39,20 @@ export default function ListComponents ({ macrocycleId, components, typeMacro, m
   const saveComponents = (newComponent, position) => {
     const newComponentList = newComponents.map((component, index) => position === index ? newComponent : component)
     setComponentsList(newComponentList)
+  }
+
+  const handlerSaveComponents = async () => {
+    try {
+      setLoading(true)
+      const response = await addNewComponentToDatabase(componentsList, macrocycleId)
+      console.log('🚀 ~ file: ListComponents.jsx:46 ~ handlerSaveComponents ~ response:', response)
+      setLoading(false)
+      newAlert(response.type, response.message)
+      navigate(`/macrocycles/${macrocycleId.id}`)
+    } catch (error) {
+      newAlert('error', error.message)
+      setLoading(false)
+    }
   }
 
   return (
@@ -56,24 +77,34 @@ export default function ListComponents ({ macrocycleId, components, typeMacro, m
           saveComponents={saveComponents}
         />
       ))}
-
-      <IconButton
-        icon={<Icon
-          name={iconsConstants.more}
-          color={theme.colors.blue.default}
-          size={40}
-              />}
-        onPress={() => addNewComponent(mesocycleToComponent)}
-      />
-      {editMode &&
+      <View style={Style.content}>
         <IconButton
           icon={<Icon
-            name={iconsConstants.cancel}
-            color={theme.colors.red.default}
+            name={iconsConstants.more}
+            color={theme.colors.blue.default}
             size={40}
                 />}
-          onPress={() => setEditMode(false)}
-        />}
+          onPress={() => addNewComponent(mesocycleToComponent)}
+        />
+        {editMode &&
+          <IconButton
+            icon={<Icon
+              name={iconsConstants.pencil}
+              color={theme.colors.red.default}
+              size={40}
+                  />}
+            onPress={() => setEditMode(false)}
+          />}
+        {editMode &&
+          <IconButton
+            icon={<Icon
+              name={iconsConstants.check}
+              color={theme.colors.green.default}
+              size={40}
+                  />}
+            onPress={() => handlerSaveComponents()}
+          />}
+      </View>
     </View>
   )
 }

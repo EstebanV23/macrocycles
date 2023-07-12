@@ -4,13 +4,12 @@ import ContentComponentInfo from '../contentComponentInfo/ContentComponentInfo'
 import { useEffect, useState } from 'react'
 import InputGeneral from '../inputGeneral/InputGeneral'
 import typesMesocycles from '../../constants/typesMesocycles'
-import Txt from '../Txt/Txt'
 import MicroComponent from '../microComponent/MicroComponent'
 export default function MesoEditComponent ({ meso, position, modifyMeso, typeMacro, amountComponent, amountUnit }) {
   const { type, percent, amount, microcycles } = meso
 
-  const [typeMeso, setTypeMeso] = useState(type)
-  const [percentMeso, setPercentMeso] = useState(percent)
+  const [typeMeso, setTypeMeso] = useState(typesMesocycles[Number(type) - 1].label)
+  const [percentMeso, setPercentMeso] = useState(typeMacro === 2 ? 100 : percent)
   const [amountMeso, setAmountMeso] = useState(amount)
   const [microcyclesMeso, setMicrocyclesMeso] = useState(microcycles)
   const [showMicros, setShowMicros] = useState(microcycles)
@@ -41,7 +40,7 @@ export default function MesoEditComponent ({ meso, position, modifyMeso, typeMac
         <InputGeneral
           disabled
           label='Tipo de mesociclo'
-          value={typesMesocycles[Number(typeMeso) - 1].label}
+          value={typeMeso}
           editable={false}
         />
       </ContentComponentInfo>

@@ -16,7 +16,6 @@ const StyleMesoEditComponent = StyleSheet.create({
     alignItems: 'center',
     display: 'flex',
     width: '100%',
-    justifyContent: 'space-between',
     gap: 5
   }
 })

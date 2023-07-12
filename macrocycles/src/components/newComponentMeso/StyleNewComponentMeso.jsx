@@ -6,6 +6,9 @@ const StyleNewComponentMeso = StyleSheet.create({
   },
   scroll: {
     width: Dimensions.get('window').width - 20
+  },
+  icon: {
+    transform: [{ rotate: '90deg' }]
   }
 })
 

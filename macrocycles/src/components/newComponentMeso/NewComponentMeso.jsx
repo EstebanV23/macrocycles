@@ -19,7 +19,7 @@ export default function NewComponentMeso ({ component, typeMacro, position, dele
   const [amountComponent, setAmountComponent] = useState(amount)
   const [unitMeasureComponent, setUnitMeasureComponent] = useState(unitMeasure)
   const [mesosComponent, setMesosComponent] = useState(mesocycles)
-  console.log('🚀 ~ file: NewComponentMeso.jsx:24 ~ NewComponentMeso ~ mesosComponent:', mesosComponent)
+  // console.log('🚀 ~ file: NewComponentMeso.jsx:24 ~ NewComponentMeso ~ mesosComponent:', mesosComponent)
   const [showMesos, setShowMesos] = useState(mesocycles)
 
   const modifyMeso = (newMeso, position) => {
@@ -39,6 +39,15 @@ export default function NewComponentMeso ({ component, typeMacro, position, dele
 
   return (
     <View style={Style.content}>
+      <IconButton
+        icon={<Icon
+          name={iconsConstants.cancel}
+          color={theme.colors.red.default}
+          size={30}
+              />}
+        onPress={() => deleteComponent(position)}
+        style={Style.icon}
+      />
       <InputGeneral
         value={typeComponent}
         onChangeText={setTypeComponent}
@@ -79,14 +88,6 @@ export default function NewComponentMeso ({ component, typeMacro, position, dele
           ))
         }
       </ScrollView>
-      <IconButton
-        icon={<Icon
-          name={iconsConstants.cancel}
-          color={theme.colors.red.default}
-          size={20}
-              />}
-        onPress={() => deleteComponent(position)}
-      />
     </View>
   )
 }

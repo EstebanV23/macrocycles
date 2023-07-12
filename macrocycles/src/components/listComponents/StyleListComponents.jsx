@@ -6,6 +6,10 @@ const StyleListComponents = StyleSheet.create({
     marginVertical: 5,
     display: 'flex',
     flexDirection: 'column'
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'row'
   }
 })
 
