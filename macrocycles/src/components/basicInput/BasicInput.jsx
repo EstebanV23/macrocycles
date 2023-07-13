@@ -51,7 +51,7 @@ export function BasicInputNoControl ({ editable, selected, setSelected, onChange
       onSubmitEditing={() => onKeyPress()}
       editable={editable}
       placeholder={placeholder}
-      value={String(value)}
+      value={value && String(value)}
       style={[Style.input, disabled && Style.disabled, error && Style.error, selected && Style.selected, style]}
       onChangeText={onChangeText}
       onBlur={() => setSelected(false)}
