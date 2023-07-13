@@ -118,6 +118,7 @@ public class MacrocycleController {
             macrocycle.setName(macrocycleRequest.getName());
             macrocycle.setStart_date(macrocycleRequest.getStart_date());
             macrocycle.setEnd_date(macrocycleRequest.getEnd_date());
+            macrocycle.setType(macrocycleRequest.getType());
 
             // Create components
             List<Macrocycle.Component> components = new ArrayList<>();
