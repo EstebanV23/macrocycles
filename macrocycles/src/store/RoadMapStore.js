@@ -227,9 +227,10 @@ export default function RoadMapStore ({ children }) {
         return responseFetch
       } catch (error) {
         console.error(error)
+        console.log('Error al guardar la información')
         setLoading(false)
-        return { error: true, message: 'Error al guardar la información' }
       }
+      return { error: true, message: 'Error al guardar la información' }
     }
     increment()
     const nextStage = stages.find(stage => stage.roadPosition === nextNumberStage)

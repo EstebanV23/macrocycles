@@ -40,16 +40,23 @@ export default async function serviceAllDataMacro (data, user) {
   const framesNew = transformToArrayId(fetchTimeFrames)
 
   const fetchStages = await Promise.all(stages.map(async (stage) => {
+    console.log('🚀 ~ file: serviceAllDataMacro.js:43 ~ fetchStages ~ stage:', stage)
     const stageFetch = await serviceNewStage(stage)
+    console.log('🚀 ~ file: serviceAllDataMacro.js:45 ~ fetchStages ~ stageFetch:', stageFetch)
     return stageFetch.data
   }))
+  console.log('🚀 ~ file: serviceAllDataMacro.js:46 ~ fetchStages ~ fetchStages:', fetchStages)
 
   const stagesNew = transformToArrayId(fetchStages)
+  console.log('🚀 ~ file: serviceAllDataMacro.js:51 ~ serviceAllDataMacro ~ stagesNew:', stagesNew)
 
   objectMacrocycle.time_frame = framesNew
   objectMacrocycle.mesocycles = mesosNew
   objectMacrocycle.stages = stagesNew
+  objectMacrocycle.components = []
+  console.log('🚀 ~ file: serviceAllDataMacro.js:57 ~ serviceAllDataMacro ~ objectMacrocycle:', objectMacrocycle)
   const macroNew = await serviceNewMacrocycle(objectMacrocycle)
+  console.log('🚀 ~ file: serviceAllDataMacro.js:57 ~ serviceAllDataMacro ~ macroNew:', macroNew)
 
   return await serviceAddMacroToUser(macroNew.data, user)
 }
