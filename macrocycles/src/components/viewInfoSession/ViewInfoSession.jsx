@@ -15,7 +15,11 @@ export default function ViewInfoSession ({
   objectivePhysical,
   objectiveEducational,
   material,
-  stages
+  stages,
+  test,
+  testSession,
+  testDescription,
+  testResult
 }) {
   return (
     <View>
@@ -58,6 +62,23 @@ export default function ViewInfoSession ({
             </View>
           </View>
         </View>
+        {test || <View style={Style.contentInfo}>
+          <Txt quickBold medium orange>Test: </Txt>
+          <View>
+            <View style={Style.contentRow}>
+              <Txt quickBold>• Nombre: </Txt>
+              <Txt quick>{testSession}</Txt>
+            </View>
+            <View style={Style.contentRow}>
+              <Txt quickBold>• Descripción: </Txt>
+              <Txt quick>{testDescription}</Txt>
+            </View>
+            <View style={Style.contentRow}>
+              <Txt quickBold>• Resultados: </Txt>
+              <Txt quick>{testResult}</Txt>
+            </View>
+          </View>
+                 </View>}
         <View style={Style.bgBlue}>
           <View style={Style.contentColumn}>
             <Txt quickBold medium blue style={{ textAlign: 'left' }}>Fases: </Txt>
