@@ -227,7 +227,7 @@ export default function MacroMoreInfo ({ macrocycleId }) {
                         key={`${session.id} ${index}`}
                         style={Style.contentOnlySession}
                         onPress={() => {
-                          navigate(`/sessions/${session.id}/${microToSession.id}/${key}/${macrocycleSelected.id}/${microToSession.test}`)
+                          navigate(`/sessions/${session.id}/${microToSession.id}/${key}/${macrocycleSelected.id}/${microToSession.test ?? ''}`)
                         }}
                       >
                         <View style={Style.containerColumn}>
@@ -253,7 +253,7 @@ export default function MacroMoreInfo ({ macrocycleId }) {
                     ))}
                     <View style={Style.containerCenter}>
                       <IconButton
-                        onPress={() => navigate(`/sessions/na/${microToSession.id}/${key}/${macrocycleSelected.id}/${microToSession.test}`)}
+                        onPress={() => navigate(`/sessions/na/${microToSession.id}/${key}/${macrocycleSelected.id}/${microToSession.test ?? ''}`)}
                         icon={<Icon name={iconsConstants.more} size={30} />}
                         style={Style.iconButton}
                       />
