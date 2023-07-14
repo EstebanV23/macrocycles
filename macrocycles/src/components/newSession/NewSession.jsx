@@ -11,12 +11,15 @@ import { Icon, IconButton } from '@react-native-material/core'
 import iconsConstants from '../../constants/iconConstants'
 import theme from '../../theme/theme'
 
-export default function NewSession ({ microcycleSelected, dateSelected, session, macrocycleSelected, setRetryFetch }) {
+export default function NewSession ({ microcycleSelected, dateSelected, session, macrocycleSelected, setRetryFetch, test }) {
   const [id, setId] = useState(session?.id ?? null)
   const [amountSportsmans, setAmountSportsmans] = useState(session?.amountSportsmans ?? null)
   const [category, setCategory] = useState(session?.category ?? null)
   const [place, setPlace] = useState(session?.place ?? null)
   const [trainner, setTrainner] = useState(session?.trainner ?? null)
+  const [testSession, setTestSession] = useState(session?.test ?? null)
+  const [testDescription, setTestDescription] = useState(session?.testDescription ?? null)
+  const [testResult, setTestResult] = useState(session?.testResult ?? null)
   const [objectiveTec, setObjectiveTec] = useState(session?.objectiveTec ?? null)
   const [objectivePhysical, setObjectivePhysical] = useState(session?.objectiveEducational ?? null)
   const [objectiveEducational, setObjectiveEducational] = useState(session?.objectiveEducational ?? null)
@@ -68,6 +71,10 @@ export default function NewSession ({ microcycleSelected, dateSelected, session,
               objectiveEducational={objectiveEducational}
               material={material}
               stages={stages}
+              test={test}
+              testSession={testSession}
+              testDescription={testDescription}
+              testResult={testResult}
             />
           : <EditSessions
               setRetryFetch={setRetryFetch}
@@ -80,6 +87,10 @@ export default function NewSession ({ microcycleSelected, dateSelected, session,
               objectivePhysical={objectivePhysical}
               objectiveEducational={objectiveEducational}
               material={material}
+              test={test}
+              testSession={testSession}
+              testDescription={testDescription}
+              testResult={testResult}
               stages={stages}
               microId={microcycleSelected}
               date={dateSelected}

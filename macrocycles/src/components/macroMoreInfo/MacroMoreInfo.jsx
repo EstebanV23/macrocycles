@@ -38,6 +38,7 @@ export default function MacroMoreInfo ({ macrocycleId }) {
   const [stageToSession, setStageToSession] = useState(null)
   const [frameToSession, setFrameToSession] = useState(null)
   const [listDates, setListDates] = useState([])
+  const [microTest, setMicroTest] = useState()
 
   const [visibleFirstModal, setVisibleFirstModal] = useState(false)
 
@@ -90,6 +91,7 @@ export default function MacroMoreInfo ({ macrocycleId }) {
     setMicrocyclesSelected(mesocyclesSelected.map((mesocycle) => mesocycle.microcycles).flat())
   }, [mesocyclesSelected])
 
+  console.log('🚀 ~ file: MacroMoreInfo.jsx:149 ~ MacroMoreInfo ~ microToSession:', microToSession)
   return (
     <View style={{ flex: 1 }}>
       <ProgressBarWitData
@@ -143,6 +145,11 @@ export default function MacroMoreInfo ({ macrocycleId }) {
               text={typeMicrocycles[microToSession?.type]?.label}
               color={theme.colors.micros}
             />
+            {microToSession?.test &&
+              <IndicationButton
+                text={`Test: ${microToSession.test}`}
+                color={theme.colors.orange.default}
+              />}
           </View>
           <ScrollView
             style={Style.containerScrollView}
@@ -230,7 +237,7 @@ export default function MacroMoreInfo ({ macrocycleId }) {
                     ))}
                     <View style={Style.containerCenter}>
                       <IconButton
-                        onPress={() => navigate(`/sessions/na/${microToSession.id}/${key}/${macrocycleSelected.id}`)}
+                        onPress={() => navigate(`/sessions/na/${microToSession.id}/${key}/${macrocycleSelected.id}/${microToSession.test}`)}
                         icon={<Icon name={iconsConstants.more} size={30} />}
                         style={Style.iconButton}
                       />
@@ -257,6 +264,11 @@ export default function MacroMoreInfo ({ macrocycleId }) {
                 text={typeMicrocycles[microToSession?.type]?.label}
                 color={theme.colors.micros}
               />
+              {microToSession?.test &&
+                <IndicationButton
+                  text={`Test: ${microToSession.test}`}
+                  color={theme.colors.orange.default}
+                />}
             </View>
             <ButtonGeneral
               onPress={() => setVisibleSecondModal(false)}

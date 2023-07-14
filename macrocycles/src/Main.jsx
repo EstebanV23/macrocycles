@@ -45,7 +45,7 @@ export default function Main () {
           </Route>
           <Route path='/macrocycles' element={<ProtectedRoute userLoged><ListMacrocycles /></ProtectedRoute>} />
           <Route path='/macrocycles/:id' element={<ProtectedRoute userLoged><OnlyMacro /></ProtectedRoute>} />
-          <Route path='/sessions/:id/:microcycle/:date/:macrocycle' element={<ProtectedRoute userLoged><OnlySession /></ProtectedRoute>} />
+          <Route path='/sessions/:id/:microcycle/:date/:macrocycle/:test' element={<ProtectedRoute userLoged><OnlySession /></ProtectedRoute>} />
           <Route path='/user' />
         </Routes>
       </View>

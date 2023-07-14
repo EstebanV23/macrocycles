@@ -19,7 +19,8 @@ const StyleMacroMoreInfo = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     gap: 5,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    marginBottom: 10
   },
   containerCenter: {
     display: 'flex',

@@ -7,7 +7,7 @@ import HeaderBar from '../headerBar/HeaderBar'
 import iconsConstants from '../../constants/iconConstants'
 
 export default function OnlySession () {
-  const { id, date, microcycle, macrocycle } = useParams()
+  const { id, date, microcycle, macrocycle, test } = useParams()
   const [session, setSession] = useState(undefined)
   const [retryFetch, setRetryFetch] = useState(true)
   const navigate = useNavigate()
@@ -39,6 +39,7 @@ export default function OnlySession () {
         microcycleSelected={microcycle}
         session={session}
         macrocycleSelected={macrocycle}
+        test={test}
       />
     </>
   )

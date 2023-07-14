@@ -85,7 +85,7 @@ export default function NewStage ({ arrayToSave, setArrayToSave, stageSelected }
       <View style={Style.content}>
         {exercises.map((item, index) => (
           <NewExercise
-            key={item.id}
+            key={`${item.id}asfdas${index + 10}`}
             arrayToSave={exercises}
             setArrayToSave={setExercises}
             exerciceSelected={item}

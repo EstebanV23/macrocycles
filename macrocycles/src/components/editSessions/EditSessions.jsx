@@ -18,6 +18,7 @@ import serviceUpdateExercise from '../../services/serviceUpdateExercise'
 import { LoadingContext } from '../../store/LoadingStore'
 import serviceUpdateSessionStage from '../../services/serviceUpdateSessionStage'
 import serviceNewSessionStage from '../../services/serviceNewSessionStage'
+import Check from '../check/Check'
 
 const UPDATE = 'update'
 const CREATE = 'create'
@@ -37,7 +38,11 @@ export default function EditSessions ({
   macroId,
   date,
   setFunctionToExecute,
-  setRetryFetch
+  setRetryFetch,
+  test,
+  testSession,
+  testDescription,
+  testResult
 }) {
   const navigate = useNavigate()
   const [newId, setNewId] = useState(id ?? null)
@@ -51,8 +56,12 @@ export default function EditSessions ({
   const [parcialMaterial, setParcialMaterial] = useState('')
   const [newMaterial, setNewMaterial] = useState(material ?? [])
   const [newStages, setNewStages] = useState(stages ?? [])
+  const [newTestSession, setNewTestSession] = useState(testSession ?? '')
+  const [newTestDescription, setNewTestDescription] = useState(testDescription ?? '')
+  const [newTestResult, setNewTestResult] = useState(testResult ?? '')
   const { newAlert } = useContext(UserContext)
   const [addNewStage, setAddNewStage] = useState(0)
+  const [checkTest, setCheckTest] = useState(Boolean(newTestSession))
   const [lastNumber, setLastNumber] = useState(0)
 
   const { setLoading } = useContext(LoadingContext)
@@ -94,6 +103,9 @@ export default function EditSessions ({
           objectiveEducational: newObjectiveEducational,
           material: newMaterial,
           stages: newStageToSave,
+          test: newTestSession,
+          testDescription: newTestDescription,
+          testResult: newTestResult,
           date
         }
         console.log('🚀 ~ file: EditSessions.jsx:124 ~ setFunctionToExecute ~ dataSend:', dataSend)
@@ -115,7 +127,7 @@ export default function EditSessions ({
       setLoading(false)
       setRetryFetch(true)
     })
-  }, [newStages, newMaterial, newObjectiveEducational, newObjectivePhysical, newObjectiveTec, newTrainner, newCategory])
+  }, [newStages, newMaterial, newObjectiveEducational, newObjectivePhysical, newObjectiveTec, newTrainner, newCategory, newPlace, newAmountSportsmans, newTestSession, newTestDescription, newTestResult])
 
   useEffect(() => {
     if (addNewStage === 0) return
@@ -124,6 +136,14 @@ export default function EditSessions ({
     const stageToNew = [...currentsStages, { id }]
     setNewStages(stageToNew)
   }, [addNewStage])
+
+  useEffect(() => {
+    if (!test || checkTest) return
+
+    setNewTestSession('')
+    setNewTestDescription('')
+    setNewTestResult('')
+  }, [checkTest])
 
   function addMaterial () {
     try {
@@ -183,6 +203,35 @@ export default function EditSessions ({
         value={newObjectiveEducational}
         onChangeText={setNewObjectiveEducational}
       />
+      {test && (
+        <Check
+          text={`Test: ${test}`}
+          initialCheck={checkTest}
+          setTopCheck={setCheckTest}
+        />
+      )}
+      {checkTest && (
+        <>
+          <InputGeneral
+            label='Test de la sesión'
+            value={newTestSession}
+            onChangeText={setNewTestSession}
+          />
+          <InputGeneral
+            label='Descripción del test'
+            multiline
+            value={newTestDescription}
+            onChangeText={setNewTestDescription}
+          />
+          <InputGeneral
+            label='Resultado del test'
+            multiline
+            value={newTestResult}
+            onChangeText={setNewTestResult}
+          />
+        </>
+
+      )}
       <InputGeneral
         label='*Material'
         value={parcialMaterial}
