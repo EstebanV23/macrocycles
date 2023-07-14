@@ -152,14 +152,6 @@ export default function EditSessions ({
     setNewStages(stageToNew)
   }, [addNewStage])
 
-  useEffect(() => {
-    if (!test || checkTest) return
-
-    setNewTestSession('')
-    setNewTestDescription('')
-    setNewTestResult('')
-  }, [checkTest])
-
   function addMaterial () {
     try {
       if (parcialMaterial.trim() === '') return

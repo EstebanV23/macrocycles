@@ -25,7 +25,7 @@ export default function NewSession ({ microcycleSelected, dateSelected, session,
   const [objectiveEducational, setObjectiveEducational] = useState(session?.objectiveEducational ?? null)
   const [material, setMaterial] = useState(session?.material ?? null)
   const [stages, setStages] = useState(session?.stages ?? null)
-  const [editMode, setEditMode] = useState(!place || !trainner || !amountSportsmans)
+  const [editMode, setEditMode] = useState((!testSession && (!place || !trainner || !amountSportsmans)) || (testSession && (!testDescription || !testResult)))
   const { setLoading } = useContext(UserContext)
   const [functionToExecute, setFunctionToExecute] = useState(() => {})
   const [year, month, day] = dateSelected.split('-')

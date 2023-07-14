@@ -178,8 +178,16 @@ export default function MacroMoreInfo ({ macrocycleId }) {
                         key={`${session.id} ${index}`}
                         style={Style.containerInfoSession}
                       >
-                        <Txt quick>{session.category}</Txt>
-                        <Txt quick small gray>{session.place} - {session.trainner}</Txt>
+                        {!session.test &&
+                          <>
+                            <Txt quick>{session.category}</Txt>
+                            <Txt quick small gray>{session.place} - {session.trainner}</Txt>
+                          </>}
+                        {session.test &&
+                          <>
+                            <Txt quick>{session.test}</Txt>
+                            <Txt quick small gray>{session.testDescription.slice(0, 10)}... - {session.testResult.slice(0, 10)}...</Txt>
+                          </>}
                       </View>
                     ))}
                   </View>
@@ -230,8 +238,16 @@ export default function MacroMoreInfo ({ macrocycleId }) {
                         <View
                           style={Style.containerInfoSession}
                         >
-                          <Txt quick>{session.category}</Txt>
-                          <Txt quick small gray>{session.place} - {session.trainner}</Txt>
+                          {!session.test &&
+                            <>
+                              <Txt quick>{session.category}</Txt>
+                              <Txt quick small gray>{session.place} - {session.trainner}</Txt>
+                            </>}
+                          {session.test &&
+                            <>
+                              <Txt quick>{session.test}</Txt>
+                              <Txt quick small gray>{session.testDescription.slice(0, 10)}... - {session.testResult.slice(0, 10)}...</Txt>
+                            </>}
                         </View>
                       </Pressable>
                     ))}
