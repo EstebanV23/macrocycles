@@ -219,7 +219,7 @@ export default function MacroMoreInfo ({ macrocycleId }) {
                         key={`${session.id} ${index}`}
                         style={Style.contentOnlySession}
                         onPress={() => {
-                          navigate(`/sessions/${session.id}/${microToSession.id}/${key}/${macrocycleSelected.id}`)
+                          navigate(`/sessions/${session.id}/${microToSession.id}/${key}/${macrocycleSelected.id}/${microToSession.test}`)
                         }}
                       >
                         <View style={Style.containerColumn}>
