@@ -79,25 +79,30 @@ export default function EditSessions ({
           return
         }
 
+        let newStageToSaveData = []
+
         if (checkTest && (newTestSession.trim() === '' || newTestDescription.trim() === '' || newTestResult.trim() === '')) {
           newAlert('info', 'Los campos son * son obligatorios')
           setLoading(false)
           return
         }
-        console.log('🚀 ~ file: EditSessions.jsx:80 ~ newStagesToSave ~ newStages:', newStages)
-        const newStagesToSave = await Promise.all(newStages.map(async (stage, index) => {
-          const { exercises } = stage
-          const newExcercises = await arrToCreateOrEdit({ arr: exercises, functionToCreate: serviceNewExercise, functionToEdit: serviceUpdateExercise, special: true })
-          console.log('🚀 ~ file: EditSessions.jsx:77 ~ newStagesToSave ~ newExcercises:', newExcercises)
-          return {
-            ...stage,
-            exercises: newExcercises
-          }
-        }))
-        console.log('🚀 ~ file: EditSessions.jsx:80 ~ newStagesToSave ~ newStagesToSave:', newStagesToSave)
+        if (!checkTest) {
+          console.log('🚀 ~ file: EditSessions.jsx:80 ~ newStagesToSave ~ newStages:', newStages)
+          const newStagesToSave = await Promise.all(newStages.map(async (stage, index) => {
+            const { exercises } = stage
+            const newExcercises = await arrToCreateOrEdit({ arr: exercises, functionToCreate: serviceNewExercise, functionToEdit: serviceUpdateExercise, special: true })
+            console.log('🚀 ~ file: EditSessions.jsx:77 ~ newStagesToSave ~ newExcercises:', newExcercises)
+            return {
+              ...stage,
+              exercises: newExcercises
+            }
+          }))
+          console.log('🚀 ~ file: EditSessions.jsx:80 ~ newStagesToSave ~ newStagesToSave:', newStagesToSave)
 
-        const newStageToSave = await arrToCreateOrEdit({ arr: newStagesToSave, functionToCreate: serviceNewSessionStage, functionToEdit: serviceUpdateSessionStage })
-        console.log('🚀 ~ file: EditSessions.jsx:84 ~ setFunctionToExecute ~ newStageToSave:', newStageToSave)
+          const newStageToSave = await arrToCreateOrEdit({ arr: newStagesToSave, functionToCreate: serviceNewSessionStage, functionToEdit: serviceUpdateSessionStage })
+          console.log('🚀 ~ file: EditSessions.jsx:84 ~ setFunctionToExecute ~ newStageToSave:', newStageToSave)
+          newStageToSaveData = newStageToSave
+        }
 
         const dataSend = checkTest
           ? {
@@ -115,7 +120,7 @@ export default function EditSessions ({
               objectivePhysical: newObjectivePhysical,
               objectiveEducational: newObjectiveEducational,
               material: newMaterial,
-              stages: newStageToSave,
+              stages: newStageToSaveData,
               date
             }
         console.log('🚀 ~ file: EditSessions.jsx:124 ~ setFunctionToExecute ~ dataSend:', dataSend)
