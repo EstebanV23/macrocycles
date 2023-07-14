@@ -18,8 +18,9 @@ export default function serviceNewSession ({ data, microId }) {
         .then(async (dataMicro) => {
           console.log('🚀 ~ file: serviceNewSession.js:18 ~ .then ~ dataMicro:', dataMicro)
           const { sessions } = dataMicro.data
+          const sessionFormat = sessions ?? [];
           console.log('🚀 ~ file: serviceNewSession.js:20 ~ .then ~ sessions:', sessions)
-          const newSessions = [...sessions, { id: dataSession.data.id }]
+          const newSessions = [...sessionFormat, { id: dataSession.data.id }]
           const arrSession = transformToArrayId(newSessions)
           console.log('🚀 ~ file: serviceNewSession.js:24 ~ .then ~ arrSession:', arrSession)
 
