@@ -119,6 +119,9 @@ public class SessionController {
                 session.setObjectiveTec(updatedSession.getObjectiveTec());
                 session.setObjectivePhysical(updatedSession.getObjectivePhysical());
                 session.setObjectiveEducational(updatedSession.getObjectiveEducational());
+                session.setTest(updatedSession.getTest());
+                session.setTestDescription(updatedSession.getTestDescription());
+                session.setTestResult(updatedSession.getTestResult());
                 session.setStages(updatedSession.getStages());
 
                 Session savedSession = sessionRepository.save(session);
@@ -206,6 +209,23 @@ public class SessionController {
                 if (updatedSession.getObjectiveEducational() != null) {
                     session.setObjectiveEducational(updatedSession.getObjectiveEducational());
                 }
+
+                // Verificar si se proporciona un test actualizado en el cuerpo de la solicitud
+                if (updatedSession.getTest() != null) {
+                    session.setTest(updatedSession.getTest());
+                }
+
+                // Verificar si se proporciona una descripción del test actualizada en el cuerpo de la solicitud
+                if (updatedSession.getTestDescription() != null) {
+                    session.setTestDescription(updatedSession.getTestDescription());
+                }
+
+                // Verificar si se proporciona un resultado del test actualizado en el cuerpo de la solicitud
+                if (updatedSession.getTestResult() != null) {
+                    session.setTestResult(updatedSession.getTestResult());
+                }
+
+
 
                 // Verificar si se proporciona una lista de etapas de sesión actualizada en el cuerpo de la solicitud
                 if (updatedSession.getStages() != null) {

@@ -24,13 +24,16 @@ public class Session {
     private String objectiveTec;
     private String objectivePhysical;
     private String objectiveEducational;
+    private String test;
+    private String testDescription;
+    private String testResult;
     @DBRef
     private List<SessionStage> stages;
 
     public Session() {
     }
 
-    public Session(LocalDate date, int sessionNumber, int amountSportsmans, String category, String place, String trainner, List<String> material, String objectiveTec, String objectivePhysical, String objectiveEducational, List<SessionStage> stages) {
+    public Session(LocalDate date, int sessionNumber, int amountSportsmans, String category, String place, String trainner, List<String> material, String objectiveTec, String objectivePhysical, String objectiveEducational, String test, String testDescription, String testResult, List<SessionStage> stages) {
         this.date = date;
         this.sessionNumber = sessionNumber;
         this.amountSportsmans = amountSportsmans;
@@ -41,10 +44,13 @@ public class Session {
         this.objectiveTec = objectiveTec;
         this.objectivePhysical = objectivePhysical;
         this.objectiveEducational = objectiveEducational;
+        this.test = test;
+        this.testDescription = testDescription;
+        this.testResult = testResult;
         this.stages = stages;
     }
 
-    public Session(String id, LocalDate date, int sessionNumber, int amountSportsmans, String category, String place, String trainner, List<String> material, String objectiveTec, String objectivePhysical, String objectiveEducational, List<SessionStage> stages) {
+    public Session(String id, LocalDate date, int sessionNumber, int amountSportsmans, String category, String place, String trainner, List<String> material, String objectiveTec, String objectivePhysical, String objectiveEducational, String test, String testDescription, String testResult, List<SessionStage> stages) {
         this.id = id;
         this.date = date;
         this.sessionNumber = sessionNumber;
@@ -56,6 +62,9 @@ public class Session {
         this.objectiveTec = objectiveTec;
         this.objectivePhysical = objectivePhysical;
         this.objectiveEducational = objectiveEducational;
+        this.test = test;
+        this.testDescription = testDescription;
+        this.testResult = testResult;
         this.stages = stages;
     }
 
@@ -145,6 +154,30 @@ public class Session {
 
     public void setObjectiveEducational(String objectiveEducational) {
         this.objectiveEducational = objectiveEducational;
+    }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+
+    public String getTestDescription() {
+        return testDescription;
+    }
+
+    public void setTestDescription(String testDescription) {
+        this.testDescription = testDescription;
+    }
+
+    public String getTestResult() {
+        return testResult;
+    }
+
+    public void setTestResult(String testResult) {
+        this.testResult = testResult;
     }
 
     public List<SessionStage> getStages() {
