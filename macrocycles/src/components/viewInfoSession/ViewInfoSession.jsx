@@ -16,16 +16,15 @@ export default function ViewInfoSession ({
   objectiveEducational,
   material,
   stages,
-  test,
   testSession,
   testDescription,
   testResult
 }) {
   return (
     <View>
-      {!test && <Txt quick big center>{category}</Txt>}
+      {!testSession && <Txt quick big center>{category}</Txt>}
       <View style={Style.containerMain}>
-        {!test && <>
+        {!testSession && <>
           <View style={Style.contentCardInfo}>
             <ItemSessionInfo
               text='Lugar'
@@ -63,8 +62,8 @@ export default function ViewInfoSession ({
               </View>
             </View>
           </View>
-                  </>}
-        {test &&
+                         </>}
+        {testSession &&
         (<View style={Style.contentInfo}>
           <Txt quickBold medium orange>Test: </Txt>
           <View>
@@ -81,8 +80,8 @@ export default function ViewInfoSession ({
               <Txt quick>{testResult}</Txt>
             </View>
           </View>
-        </View>)}
-        {!test && <>
+         </View>)}
+        {!testSession && <>
           <View style={Style.bgBlue}>
             <View style={Style.contentColumn}>
               <Txt quickBold medium blue style={{ textAlign: 'left' }}>Fases: </Txt>
@@ -103,7 +102,7 @@ export default function ViewInfoSession ({
               ))}
             </View>
           </View>
-        </>}
+                         </>}
       </View>
     </View>
   )
