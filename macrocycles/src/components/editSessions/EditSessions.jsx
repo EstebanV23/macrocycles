@@ -103,7 +103,8 @@ export default function EditSessions ({
           ? {
               test: newTestSession,
               testDescription: newTestDescription,
-              testResult: newTestResult
+              testResult: newTestResult,
+              date
             }
           : {
               amountSportsmans: Number(newAmountSportsmans),
