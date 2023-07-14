@@ -117,7 +117,7 @@ export default function EditSessions ({
         setLoading(false)
 
         console.log('🚀 ~ file: EditSessions.jsx:97 ~ newData:', newData)
-        navigate(`/sessions/${newData.data.id}/${microId}/${date}/${macroId}`)
+        navigate(`/sessions/${newData.data.id}/${microId}/${date}/${macroId}/${test}`)
         newAlert('success', 'Sesión guardada correctamente')
       } catch (error) {
         setLoading(false)
