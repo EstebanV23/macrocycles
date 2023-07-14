@@ -39,7 +39,7 @@ export default function OnlySession () {
         microcycleSelected={microcycle}
         session={session}
         macrocycleSelected={macrocycle}
-        test={test}
+        test={test === 'na' ? null : test}
       />
     </>
   )
